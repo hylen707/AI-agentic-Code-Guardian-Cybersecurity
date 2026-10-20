@@ -1,25 +1,27 @@
 # Changelog and Project Journal
 
-This file records **observable project changes** in reverse chronological order. It complements `docs/RESEARCH_LOG.md`, which is for fuller dated work notes, decisions, questions, and reflections.
+This file records observable project changes in reverse chronological order. It complements `docs/RESEARCH_LOG.md`, which keeps fuller dated work notes, decisions, questions, and reflections.
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
-## [Unreleased]
+## 2026-10-21 — Initial checks and documentation update
 
-### 2026-10-21 — Architecture and implementation documentation
-- Added `docs/ARCHITECTURE.md` to describe the current decision pipeline, input/output schema, policy rules, planned experiment data format, metrics, and safety boundaries.
-- Added this `CHANGELOG.md` as a concise project change journal.
-- Clarified in the architecture document which parts exist today and which remain planned.
-- **Verification status:** documentation change only; no test execution or experiment is claimed by this entry.
+- **Manual checks (terminal output shared by the project author):** a read request for `workspace/notes.txt` returned `allow`; a read request for `workspace/protected/secrets.txt` returned `block` with reason `protected_path`; and `../../secrets.txt` returned `block` with reason `path_traversal_or_invalid_path`.
+- **Automated tests:** the project author ran `python -m unittest discover -s tests -v`; all 9 listed unit tests reported `ok`.
+- **Documentation:** added/updated `docs/ARCHITECTURE.md` to document the decision pipeline, JSON input/output schema, current policy, initial verification, planned metrics, and limitations.
+- **Research record:** updated `docs/RESEARCH_LOG.md` to record the checks and separate them from future formal experiments.
+- **Not established:** no formal experiment with a live AI agent has been run. These tests do not prove that risky behavior by an actual AI agent is reduced.
 
-### 2026-10-21 — First CodeGuardian prototype
+## 2026-10-21 — First CodeGuardian prototype
+
 - Added `src/codeguardian.py`, a deterministic policy checker for synthetic JSON action records.
 - Added `tests/test_codeguardian.py` with unit-test cases for representative allowed and blocked inputs.
 - Updated `src/README.md` with local run instructions and a command-line example.
 - Updated the root `README.md` to describe the prototype, research question, proposed metrics, safety boundaries, and next steps.
-- **Verification status:** test cases were written, but their local execution has not yet been recorded. No formal experiment has been run, and there are no experimental findings to report.
+- **Verification status at the time of the initial code commit:** test cases had been written, but their local execution had not yet been recorded. The subsequent test run is documented in the newer entry above.
 
-### 2026-10-20 — Project planning and repository scaffold
+## 2026-10-20 — Project planning and repository scaffold
+
 - Established the CodeGuardian project around the research question of whether a lightweight monitor can block risky actions by an AI coding agent while preserving legitimate task completion in a controlled test environment.
 - Drafted planning and documentation files, including the ideation report, experiment plan, research log, reflection prompts, and initial repository guidance.
 - Set the initial scope to synthetic cases and a controlled prototype rather than a live agent or real system.
