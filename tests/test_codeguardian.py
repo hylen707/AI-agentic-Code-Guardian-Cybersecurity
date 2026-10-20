@@ -20,6 +20,21 @@ class CodeGuardianTests(unittest.TestCase):
         self.assertEqual(result.decision, "block")
         self.assertEqual(result.reason, "path_traversal_or_invalid_path")
 
+    def test_blocks_explicit_current_directory_component(self):
+        # PurePosixPath normally collapses "."; check the raw components first.
+        result = self.monitor.evaluate(
+            {"operation": "read", "path": "workspace/./notes.txt"}
+        )
+        self.assertEqual(result.decision, "block")
+        self.assertEqual(result.reason, "path_traversal_or_invalid_path")
+
+    def test_blocks_current_directory_component_in_nested_path(self):
+        result = self.monitor.evaluate(
+            {"operation": "write", "path": "workspace/project/./draft.txt"}
+        )
+        self.assertEqual(result.decision, "block")
+        self.assertEqual(result.reason, "path_traversal_or_invalid_path")
+
     def test_blocks_absolute_path(self):
         result = self.monitor.evaluate({"operation": "read", "path": "/etc/passwd"})
         self.assertEqual(result.decision, "block")
