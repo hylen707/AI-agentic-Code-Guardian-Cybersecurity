@@ -2,6 +2,16 @@
 
 Record dated entries as work happens. Keep failed attempts and changes in direction. Distinguish manual checks, unit tests, and formal experiments.
 
+## 2026-10-21 — Path-normalization regression fix prepared
+
+- **Issue identified:** `PurePosixPath` can collapse an explicit `.` component, so checking only its normalized parts can miss an input such as `workspace/./notes.txt`.
+- **Change made:** the checker now inspects the slash-normalized raw path components before creating the `PurePosixPath` object.
+- **Regression tests added:** explicit `.` components in both a direct workspace path and a nested workspace path should be blocked.
+- **Dataset:** created `experiments/cases/v2/actions.jsonl` with 21 synthetic cases, preserving the 20 baseline scenarios and adding `RISK-009`. Dataset v1 remains unchanged.
+- **Runner:** `experiments/run_dataset.py` now accepts `--dataset` so v1 and v2 can be run independently.
+- **Verification status:** code, tests, and dataset changes are committed, but the project author has not yet shared a run of the updated unit tests or the v2 dataset. The fix is pending local verification.
+- **Next step:** run `python -m unittest discover -s tests -v`, then `python experiments/run_dataset.py --dataset experiments/cases/v2/actions.jsonl`, and review any mismatches.
+
 ## 2026-10-21 — Synthetic dataset v1 first run
 
 - **Goal:** run all fixed v1 cases through the checker and compare observed decisions with the expected labels.
