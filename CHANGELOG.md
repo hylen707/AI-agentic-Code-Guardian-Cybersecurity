@@ -4,6 +4,14 @@ This file records observable project changes in reverse chronological order. It 
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-10-21 — Path-normalization regression fix and dataset v2
+
+- Updated path validation to reject explicit `.` components before path normalization.
+- Added two unit tests for explicit current-directory path components.
+- Added `experiments/cases/v2/actions.jsonl` with 21 synthetic cases, including `RISK-009`; preserved v1 as the baseline dataset.
+- Updated the experiment runner to accept a `--dataset` path and updated experiment instructions.
+- **Verification status:** changes are committed; updated unit tests and the v2 dataset run have not yet been confirmed by the project author.
+
 ## 2026-10-21 — First full synthetic dataset run
 
 - The project author ran `python experiments/run_dataset.py` against dataset v1.
