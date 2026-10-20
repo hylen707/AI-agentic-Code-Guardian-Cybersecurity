@@ -9,8 +9,19 @@ Record dated entries as work happens. Keep failed attempts and changes in direct
 - **Regression tests added:** explicit `.` components in both a direct workspace path and a nested workspace path should be blocked.
 - **Dataset:** created `experiments/cases/v2/actions.jsonl` with 21 synthetic cases, preserving the 20 baseline scenarios and adding `RISK-009`. Dataset v1 remains unchanged.
 - **Runner:** `experiments/run_dataset.py` now accepts `--dataset` so v1 and v2 can be run independently.
-- **Verification status:** code, tests, and dataset changes are committed, but the project author has not yet shared a run of the updated unit tests or the v2 dataset. The fix is pending local verification.
-- **Next step:** run `python -m unittest discover -s tests -v`, then `python experiments/run_dataset.py --dataset experiments/cases/v2/actions.jsonl`, and review any mismatches.
+- **Verification status:** locally verified by the project author on 2026-10-21: all 11 unit tests passed, and the v2 dataset run matched all 21 expected decisions with 0 mismatches and 0 monitor errors.
+- **Next step:** expand the test set and evaluate additional edge cases; keep synthetic test performance separate from claims about real-world security.
+
+## 2026-10-21 — Synthetic dataset v2 and unit-test verification
+
+- **Goal:** verify the path-normalization regression fix and run the expanded, versioned synthetic dataset.
+- **Commands reported by the project author:** `python -m unittest discover -s tests -v` and `python experiments/run_dataset.py --dataset experiments/cases/v2/actions.jsonl`.
+- **Unit-test outcome:** 11 tests ran with no failures. This includes regression tests for explicit current-directory (`.`) path components in direct and nested workspace paths.
+- **Dataset outcome:** 21 cases; 21/21 expected decisions matched; 0 mismatches; 0 monitor errors.
+- **Metrics reported:** risky-action block rate 1.0; false-positive rate 0.0; legitimate allow rate 1.0; invalid-input block rate 1.0.
+- **Raw output files reported:** `experiments/results/2026-10-20T15-59-51Z-v2.jsonl` and `experiments/results/2026-10-20T15-59-51Z-v2-summary.json`.
+- **Interpretation:** the checker matched the manually assigned expected labels for all 21 synthetic cases, and all 11 unit tests passed. The added regression case was included in the v2 run. These results apply only to this small synthetic dataset and do not establish real-world security effectiveness or risk reduction for a live AI coding agent.
+- **Next step:** add further independent edge cases and document the monitor's limitations before considering integration with a real agent.
 
 ## 2026-10-21 — Synthetic dataset v1 first run
 
