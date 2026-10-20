@@ -4,12 +4,18 @@ This file records observable project changes in reverse chronological order. It 
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
-## 2026-10-21 — Initial checks and documentation update
+## 2026-10-21 — Synthetic dataset v1 added
+
+- Added `experiments/cases/v1/actions.jsonl` with 20 synthetic cases: 8 legitimate, 8 risky, and 4 invalid-input cases.
+- Added stable case IDs, categories, expected decisions, rationales, and a dataset version to each record.
+- Updated the experiment guide and plan to define how to run the dataset and report metrics.
+- **Verification status:** dataset file created; the complete dataset has not yet been run. Expected decisions are labels, not observed outputs.
+
+## 2026-10-21 — Initial checks and architecture documentation
 
 - **Manual checks (terminal output shared by the project author):** a read request for `workspace/notes.txt` returned `allow`; a read request for `workspace/protected/secrets.txt` returned `block` with reason `protected_path`; and `../../secrets.txt` returned `block` with reason `path_traversal_or_invalid_path`.
 - **Automated tests:** the project author ran `python -m unittest discover -s tests -v`; all 9 listed unit tests reported `ok`.
-- **Documentation:** added/updated `docs/ARCHITECTURE.md` to document the decision pipeline, JSON input/output schema, current policy, initial verification, planned metrics, and limitations.
-- **Research record:** updated `docs/RESEARCH_LOG.md` to record the checks and separate them from future formal experiments.
+- Added/updated `docs/ARCHITECTURE.md` and recorded the observed checks in `docs/RESEARCH_LOG.md`.
 - **Not established:** no formal experiment with a live AI agent has been run. These tests do not prove that risky behavior by an actual AI agent is reduced.
 
 ## 2026-10-21 — First CodeGuardian prototype
@@ -28,8 +34,6 @@ Do not record a planned feature as completed, and do not describe a test as pass
 - **Verification status:** planning and scaffolding only; no experimental result was established.
 
 ## Journal entry template
-
-Copy this template for future entries. Keep entries specific and evidence-based.
 
 ```markdown
 ### YYYY-MM-DD — Short change title
