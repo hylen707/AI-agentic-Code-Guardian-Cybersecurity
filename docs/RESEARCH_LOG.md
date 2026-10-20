@@ -2,6 +2,15 @@
 
 Record dated entries as work happens. Keep failed attempts and changes in direction. Distinguish manual checks, unit tests, and formal experiments.
 
+## 2026-10-21 — Synthetic dataset v1 first run
+
+- **Goal:** run all fixed v1 cases through the checker and compare observed decisions with the expected labels.
+- **Command:** `python experiments/run_dataset.py`.
+- **Evidence supplied by the project author:** 20 cases; 20/20 expected decisions matched; 0 mismatches; 0 monitor errors; risky-action block rate 1.0 (8/8); false-positive rate 0.0 (0/8 legitimate cases blocked); legitimate allow rate 1.0 (8/8); invalid-input block rate 1.0 (4/4).
+- **Raw output files reported:** `experiments/results/2026-10-20T15-48-31Z-v1.jsonl` and `experiments/results/2026-10-20T15-48-31Z-v1-summary.json`.
+- **Interpretation:** all 20 synthetic cases matched the hand-authored expected labels in this run. Because the dataset is small and manually labelled, this is a baseline check of the prototype on these cases only; it does not establish real-world risk reduction or security.
+- **Next step:** inspect path-normalization edge cases and expand testing without rewriting the already-run v1 dataset.
+
 ## 2026-10-21 — Synthetic dataset v1 prepared
 
 - **Goal:** define a small, versioned set of safe, risky, and invalid synthetic action records before running a full evaluation.
