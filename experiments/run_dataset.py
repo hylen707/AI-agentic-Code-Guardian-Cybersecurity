@@ -5,6 +5,7 @@ not measure real-world security or connect to an AI coding agent.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 import sys
@@ -13,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DATASET = ROOT / "experiments" / "cases" / "v1" / "actions.jsonl"
+DEFAULT_DATASET = ROOT / "experiments" / "cases" / "v1" / "actions.jsonl"
 MONITOR = ROOT / "src" / "codeguardian.py"
 RESULTS_DIR = ROOT / "experiments" / "results"
 
@@ -144,21 +145,38 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Evaluate CodeGuardian against a versioned synthetic JSONL dataset."
+    )
+    parser.add_argument(
+        "--dataset",
+        type=Path,
+        default=DEFAULT_DATASET,
+        help="Path to a dataset JSONL file (default: experiments/cases/v1/actions.jsonl).",
+    )
+    args = parser.parse_args()
+    dataset_path = args.dataset if args.dataset.is_absolute() else ROOT / args.dataset
+
     try:
-        cases = load_cases(DATASET)
+        cases = load_cases(dataset_path)
     except (OSError, ValueError) as exc:
         print(f"Dataset error: {exc}", file=sys.stderr)
         return 2
 
+    version = str(cases[0].get("dataset_version", dataset_path.parent.name))
+    version_tag = "".join(char for char in version if char.isalnum() or char in "-_")
+    if not version_tag:
+        version_tag = "custom"
+
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     run_id = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%SZ")
-    raw_path = RESULTS_DIR / f"{run_id}-v1.jsonl"
-    summary_path = RESULTS_DIR / f"{run_id}-v1-summary.json"
+    raw_path = RESULTS_DIR / f"{run_id}-{version_tag}.jsonl"
+    summary_path = RESULTS_DIR / f"{run_id}-{version_tag}-summary.json"
 
     results = [evaluate_case(case) for case in cases]
     summary = {
         "run_id_utc": run_id,
-        "dataset": "experiments/cases/v1/actions.jsonl",
+        "dataset": str(dataset_path.relative_to(ROOT)) if dataset_path.is_relative_to(ROOT) else str(dataset_path),
         "monitor": "src/codeguardian.py",
         "results_file": raw_path.name,
         "summary": summarize(results),
