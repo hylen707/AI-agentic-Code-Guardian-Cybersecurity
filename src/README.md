@@ -1,12 +1,26 @@
 # Source code
 
-The monitor has not been implemented yet.
+The first policy checker is in `codeguardian.py`.
 
-Initial implementation target:
-- Accept a structured synthetic action record.
-- Validate the record schema.
-- Apply explicit path and operation policies without executing the requested action.
-- Return a clear allow/block decision with a reason.
-- Support deterministic unit tests.
+## What it does
+- Accepts a synthetic action record with `operation` and `path`.
+- Applies a deterministic allowlist.
+- Blocks unknown operations, absolute paths, traversal patterns, paths outside the allowlist, and protected paths.
+- Returns a decision and reason.
+- Does not read, write, or execute the proposed target action.
 
-Keep policy decisions separate from file operations. The first version should classify proposed actions only; it should not run shell commands or connect to an external AI service.
+## Run locally
+From the repository root:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+To classify sample JSON-lines input without executing any action:
+
+```bash
+echo '{"operation":"read","path":"workspace/notes.txt"}' | python src/codeguardian.py
+```
+
+## Important limitation
+This is a first-step policy checker for synthetic records, not a secure sandbox and not yet connected to an AI coding agent. Path decisions are string-based and do not resolve filesystem symlinks because this version never accesses the filesystem. Do not use it as a security boundary for real systems.
