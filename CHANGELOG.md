@@ -4,6 +4,14 @@ This file records observable project changes in reverse chronological order. It 
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-10-21 — First full synthetic dataset run
+
+- The project author ran `python experiments/run_dataset.py` against dataset v1.
+- **Reported output:** 20/20 expected decisions matched; 0 mismatches; 0 monitor errors; risky-action block rate 1.0 (8/8); false-positive rate 0.0 (0/8); legitimate allow rate 1.0 (8/8); invalid-input block rate 1.0 (4/4).
+- The author reported generated raw and summary result files under `experiments/results/` with run timestamp `2026-10-20T15-48-31Z`.
+- **Interpretation limit:** these results cover only 20 hand-authored synthetic cases and do not demonstrate security or reduced risk for a live AI coding agent.
+- **Next:** review edge cases and broaden tests; keep v1 unchanged as the record of this run.
+
 ## 2026-10-21 — Synthetic dataset v1 added
 
 - Added `experiments/cases/v1/actions.jsonl` with 20 synthetic cases: 8 legitimate, 8 risky, and 4 invalid-input cases.
