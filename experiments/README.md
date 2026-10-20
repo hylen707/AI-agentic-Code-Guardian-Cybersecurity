@@ -2,25 +2,32 @@
 
 Store versioned synthetic test cases, raw outputs, and analysis here.
 
-## Current dataset
+## Current datasets
 
-- `cases/v1/actions.jsonl` — version 1 of the synthetic action dataset.
-- **Cases:** 20 total: 8 legitimate, 8 risky, and 4 invalid-input cases.
-- Each JSONL line is a separate case with a stable `case_id`, `dataset_version`, `class`, `category`, `input`, `expected_decision`, and `rationale`.
+- `cases/v1/actions.jsonl` — baseline synthetic action dataset: 20 cases (8 legitimate, 8 risky, 4 invalid-input).
+- `cases/v2/actions.jsonl` — same 20 cases relabelled as dataset version v2 plus one regression case for an explicit `.` path component: 21 cases total (8 legitimate, 9 risky, 4 invalid-input).
+- Each JSONL line has a stable `case_id`, `dataset_version`, `class`, `category`, `input`, `expected_decision`, and `rationale`.
 - The `input` field is the synthetic JSON record intended for the monitor. The other fields are dataset metadata and should not be passed to the monitor as part of the action.
+- Keep v1 unchanged as the record of the first run. Use v2 for regression testing after the path-check change.
 
 ## Run the dataset
 
-From the repository root, run:
+From the repository root, run the baseline dataset:
 
 ```bash
 python experiments/run_dataset.py
 ```
 
+Run v2 with the additional edge case:
+
+```bash
+python experiments/run_dataset.py --dataset experiments/cases/v2/actions.jsonl
+```
+
 The script invokes `src/codeguardian.py` separately for each case and writes two timestamped files under `experiments/results/`:
 
-- `*-v1.jsonl` — one observed output per case, including expected and observed decisions, match status, and any execution/output error.
-- `*-v1-summary.json` — aggregate metrics and any mismatches.
+- `*-vN.jsonl` — one observed output per case, including expected and observed decisions, match status, and any execution/output error.
+- `*-vN-summary.json` — aggregate metrics and any mismatches.
 
 The runner does not change the versioned dataset. It exits with status 1 if any expected decision mismatches or monitor errors occur; otherwise it exits with status 0. The first run creates the results directory automatically.
 
