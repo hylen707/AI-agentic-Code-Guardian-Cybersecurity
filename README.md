@@ -42,9 +42,11 @@ Define the test set and counting rules before running experiments. Report the nu
 ## Repository layout
 
 - `docs/IDEATION_REPORT.md` — question, rationale, threat model, method, and limitations.
+- `docs/ARCHITECTURE.md` — current system flow, input/output schema, policy rules, planned experiment schema, and safety boundaries.
 - `docs/EXPERIMENT_PLAN.md` — test cases, measures, and procedure.
 - `docs/RESEARCH_LOG.md` — dated work log; record what actually happened.
 - `docs/REFLECTION_NOTES.md` — prompts for a later personal reflection.
+- `CHANGELOG.md` — chronological record of meaningful repository changes, verification status, and next steps.
 - `src/` — policy checker.
 - `tests/` — automated unit tests.
 - `experiments/` — synthetic test cases and results.
