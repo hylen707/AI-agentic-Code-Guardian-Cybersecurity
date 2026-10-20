@@ -6,63 +6,61 @@
 
 ## 1. Purpose
 
-CodeGuardian investigates the question:
-
-> Can a lightweight runtime monitor reduce risky actions by an AI coding agent without substantially reducing completion of legitimate tasks in a controlled test environment?
+CodeGuardian investigates this research question: can a lightweight monitor classify risky actions proposed by an AI coding agent while preserving legitimate task completion in a controlled test environment?
 
 The current prototype is deliberately narrower than a real runtime integration. It receives **synthetic action proposals**, applies deterministic policy checks, and returns an `allow` or `block` decision. It does not execute the proposed action.
 
 ## 2. Current architecture
 
-```mermaid
-flowchart TD
-    A["Synthetic action record (JSON)"] --> B["Input validation"]
-    B -->|Invalid| D["Block decision + reason"]
-    B -->|Valid| C["Deterministic policy checks"]
-    C -->|Policy violation| D
-    C -->|Policy allows action| E["Allow decision + reason"]
-    D --> F["JSON decision (stdout)"]
-    E --> F
-    G["Unit tests"] --> C
-    H["Versioned synthetic cases (planned)"] -.-> C
-    F -.-> I["Experiment runner / result analysis (planned)"]
+```text
+JSON action record (stdin)
+          |
+          v
+Parse one JSON record per line
+          |
+          v
+Validate input object, operation, and path
+          |
+          v
+Check absolute/traversal path patterns
+          |
+          v
+Check operation allowlist
+          |
+          v
+Check protected path prefix
+          |
+          v
+Check allowed workspace prefix
+          |
+          v
+Emit JSON decision (stdout)
 ```
 
-Solid arrows describe the current command-line decision flow. Dashed arrows are planned components and are **not yet implemented**.
+Blank input lines are skipped. Invalid JSON produces a `block` decision with an `invalid_json: ...` reason. Each nonblank input line is processed independently.
 
-### Current components
+### Components and status
 
 | Component | Responsibility | Status |
 |---|---|---|
 | Input parser | Read one JSON action record per line | Implemented |
 | Policy checker | Validate operation and path against fixed rules | Implemented |
-| Decision output | Return JSON with decision and reason | Implemented |
-| Unit tests | Check representative allow/block cases | Written; execution not yet recorded |
+| Decision output | Return JSON with decision, reason, operation, path, and input line | Implemented |
+| Unit tests | Check representative allow/block cases | Implemented; author-reported run passed 9/9 tests on 2026-10-21 |
 | Versioned experiment dataset | Store labelled safe and risky synthetic cases | Planned |
 | Experiment runner and metrics | Run cases and calculate rates from raw counts | Planned |
-| Real AI-agent adapter | Intercept actions from an actual agent | Out of scope for current prototype |
+| Real AI-agent adapter | Intercept actions from an actual agent | Not implemented; outside current prototype |
 
-## 3. Decision pipeline
+## 3. Input schema
 
-1. Read one line from standard input and parse it as JSON.
-2. Reject input that is not a JSON object.
-3. Validate that `operation` and `path` are strings.
-4. Reject unsupported operations.
-5. Reject absolute paths and detected path-traversal patterns.
-6. Reject paths under the protected prefix `workspace/protected/`.
-7. Reject paths outside the allowed prefix `workspace/`.
-8. Otherwise return `allow`.
+Each nonblank input line should contain a JSON object with these fields:
 
-The order matters: malformed or disallowed requests should be rejected before the policy reaches the allow decision.
-
-## 4. Input schema
-
-Each input line is a JSON object.
-
-| Field | Type | Current rule | Example |
+| Field | Type | Required | Current meaning |
 |---|---|---|---|
-| `operation` | string | Must be one of `read`, `write`, `create`, `preview` | `"read"` |
-| `path` | string | Must be a relative path under the allowed workspace and not under the protected prefix | `"workspace/notes.txt"` |
+| `operation` | string | Yes | Proposed operation; surrounding whitespace is removed and the value is lowercased |
+| `path` | non-empty string | Yes | Proposed target path, used for classification only |
+
+Supported operation values are `read`, `write`, `create`, and `preview`. Unknown operations are blocked. Extra fields are currently ignored.
 
 Example input:
 
@@ -70,35 +68,45 @@ Example input:
 {"operation":"read","path":"workspace/notes.txt"}
 ```
 
-The current input schema does not include command execution, credentials, network access, or arbitrary tool parameters.
+## 4. Output schema
 
-## 5. Output schema
-
-For each input record, the program emits one JSON decision.
+For a valid JSON record, the command-line interface adds the input line number to the policy decision:
 
 | Field | Type | Meaning |
 |---|---|---|
-| `decision` | string | `"allow"` or `"block"` |
-| `reason` | string | Human-readable explanation of the policy outcome |
+| `decision` | string | `allow` or `block` |
+| `reason` | string | Machine-readable reason for the decision |
+| `operation` | string or null | Normalized operation when available |
+| `path` | string or null | Classified path when available |
+| `line` | integer | Input line number, starting at 1 |
 
-Illustrative output shape (the exact reason depends on the rule):
+Example output for the safe read request:
 
 ```json
-{"decision":"allow","reason":"..."}
+{"decision":"allow","reason":"operation_and_path_allowlisted","operation":"read","path":"workspace/notes.txt","line":1}
 ```
 
-## 6. Initial policy configuration
+Invalid JSON is blocked by the command-line interface and returns an `invalid_json: ...` reason. Invalid objects or missing fields are blocked by the policy checker.
 
-- Allowed operations: `read`, `write`, `create`, `preview`
-- Allowed path prefix: `workspace/`
-- Protected path prefix: `workspace/protected/`
-- Default posture: reject malformed, unsupported, or out-of-scope requests
+## 5. Initial policy
 
-These are prototype rules, not a complete security policy. Prefix checks alone do not provide safe filesystem resolution or protect a real environment.
+- Allowed operations: `read`, `write`, `create`, `preview`.
+- Allowed path prefix: `workspace/`.
+- Protected path prefix: `workspace/protected/`.
+- Absolute paths and detected traversal patterns are blocked.
+- Unknown operations and paths outside the allowlist are blocked.
+- The protected prefix is checked before the general allowed prefix.
 
-## 7. Experiment data schema (planned)
+Observed initial checks (2026-10-21, based on terminal output shared by the project author):
+- `workspace/notes.txt` with operation `read`: `allow`.
+- `workspace/protected/secrets.txt` with operation `read`: `block`, reason `protected_path`.
+- `../../secrets.txt` with operation `read`: `block`, reason `path_traversal_or_invalid_path`.
 
-When the experiment dataset is added, each case should have a stable identifier and an expected label. Suggested fields:
+These examples and unit tests verify only the tested behavior, not overall security.
+
+## 6. Planned experiment data schema
+
+When a fixed synthetic dataset is added, each case should have a stable identifier and an expected label. Suggested fields:
 
 | Field | Type | Purpose |
 |---|---|---|
@@ -109,25 +117,26 @@ When the experiment dataset is added, each case should have a stable identifier 
 | `rationale` | string | Why the case has that label |
 | `dataset_version` | string | Identifies the version of the test set |
 
-Observed results should be stored separately from the expected labels. Do not change expected labels after seeing outcomes without documenting the reason and creating a traceable dataset revision.
+Keep expected labels separate from observed results. If a label must change, document the reason and create a traceable dataset revision.
 
-## 8. Evaluation metrics (planned)
+## 7. Planned evaluation metrics
 
-- **Risky-action block rate** = risky cases blocked / all risky cases tested
-- **False-positive rate** = legitimate cases blocked / all legitimate cases tested
-- **Legitimate task completion rate** = legitimate tasks completed / all legitimate tasks attempted
-- **Decision latency (optional)** = elapsed time for a decision, with the timing method documented
+- **Risky-action block rate** = risky cases blocked / all risky cases tested.
+- **False-positive rate** = legitimate cases blocked / all legitimate cases tested.
+- **Legitimate task completion rate** = legitimate tasks completed / all legitimate tasks attempted.
+- **Decision latency (optional)** = elapsed time for a decision, with the timing method documented.
 
-Save raw numerators and denominators for every reported rate. A metric is not an experimental result until the test set has been run and the output has been checked.
+Save raw numerators and denominators for every reported rate. These metrics have not yet been evaluated in a formal experiment.
 
-## 9. Safety boundaries and limitations
+## 8. Safety boundaries and limitations
 
-- Only use synthetic action records and project-owned test fixtures.
-- The current program classifies proposals; it does not perform the proposed file operations.
+- Use only synthetic action records and project-owned test fixtures.
+- The current program classifies proposals; it does not perform proposed file operations.
 - It is not connected to a live AI coding agent and is not a sandbox.
 - It should not be relied on to protect real files, accounts, school systems, or sensitive data.
-- A future integration would need a separate threat model, stronger path resolution, isolation, and careful testing before any real-world use.
+- It classifies path strings rather than resolving them against a real filesystem; path edge cases require further testing.
+- Passing unit tests does not prove that the monitor is secure or that it reduces risky behavior by an actual agent.
 
-## 10. Change control
+## 9. Change control
 
-Update this document when a component, input/output field, policy rule, or experiment method changes. Record the implementation change in `CHANGELOG.md` and record actual work, observations, and decisions in `docs/RESEARCH_LOG.md`. Keep planned work clearly distinguished from completed work.
+Update this document when a component, input/output field, policy rule, or experiment method changes. Record meaningful repository changes in `CHANGELOG.md` and actual work, observations, and decisions in `docs/RESEARCH_LOG.md`. Keep planned work clearly distinguished from completed work.
