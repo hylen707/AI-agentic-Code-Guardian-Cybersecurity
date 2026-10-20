@@ -70,8 +70,14 @@ class CodeGuardian:
         if path.startswith("/") or (len(path) >= 2 and path[1] == ":"):
             return self._blocked("absolute_paths_are_not_allowed", operation, path)
 
+        # Check the raw normalized components before PurePosixPath can collapse
+        # "." components. This is string-level validation, not filesystem resolution.
+        raw_parts = path.split("/")
+        if not raw_parts or any(part in {".", ".."} for part in raw_parts):
+            return self._blocked("path_traversal_or_invalid_path", operation, path)
+
         parts = PurePosixPath(path).parts
-        if not parts or any(part in {".", ".."} for part in parts):
+        if not parts:
             return self._blocked("path_traversal_or_invalid_path", operation, path)
 
         normalized = str(PurePosixPath(path))
