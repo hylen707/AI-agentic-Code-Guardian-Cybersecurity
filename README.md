@@ -8,13 +8,30 @@ Can a lightweight runtime monitor reduce risky actions by an AI coding agent wit
 
 ## Project status
 
-**Stage:** early implementation  
-**Implemented:** deterministic policy checker for synthetic action records  
-**Tests:** unit tests added; run them locally before recording test status  
-**Experiments:** formal evaluation not yet run  
-**Results:** no experimental findings yet
+- **Stage:** early implementation
+- **Implemented:** deterministic policy checker for synthetic action records
+- **Tests:** 11/11 unit tests passed on 2026-10-26 (Asia/Seoul)
+- **Experiments:** synthetic decision checks completed for v1, v2, and v3; no live-agent evaluation
+- **Results:** v1 20/20, v2 21/21, and v3 45/45 expected decisions matched
 
 This repository is an educational prototype. Do not describe planned measures or hypotheses as experimental findings.
+
+Latest verification used the unchanged checker and runner from commit
+`7ae79aa5d337ad0ac02431f28b8db2a7f859910e`. The [verification record](experiments/results/2026-10-25T16-05-40Z-verification.json)
+contains commands, exit codes, Python version, and SHA-256 hashes. Dates in result
+filenames use UTC; this run occurred on 2026-10-26 in Asia/Seoul.
+
+| Dataset | Expected decisions matched | Risky blocked | Legitimate allowed | Invalid blocked |
+|---|---:|---:|---:|---:|
+| [v1](experiments/results/2026-10-25T16-05-40Z-v1-summary.json) | 20/20 | 8/8 | 8/8 | 4/4 |
+| [v2](experiments/results/2026-10-25T16-05-41Z-v2-summary.json) | 21/21 | 9/9 | 8/8 | 4/4 |
+| [v3](experiments/results/2026-10-25T16-06-42Z-v3-summary.json) | 45/45 | 19/19 | 16/16 | 10/10 |
+
+All three runs had zero decision mismatches, monitor errors, or false positives
+on their legitimate cases. The datasets overlap; do not sum their counts as
+independent observations. These small, hand-authored checks measure agreement
+with policy labels, not real-world security, task completion, or risk reduction
+by a live AI agent. See the [v3 design and limitations](experiments/cases/v3/README.md).
 
 ## Scope and safety boundaries
 
@@ -53,12 +70,11 @@ Define the test set and counting rules before running experiments. Report the nu
 
 ## Next steps
 
-1. Run the unit tests locally and record the actual outcome.
-2. Review the test set and expected labels before formal evaluation.
-3. Add versioned synthetic cases and a result-export format.
-4. Run baseline and monitored tests; save raw results.
-5. Analyze trade-offs and document limitations.
-6. Write a personal reflection based on real decisions, difficulties, and learning.
+1. Review blind spots beyond the v3 string-policy cases, including raw malformed JSON and filesystem-dependent paths.
+2. Define a separate held-out test set before changing policy rules; preserve all measured dataset versions and failed runs.
+3. Design a project-owned fixture harness and a no-monitor comparison before measuring actual task completion or risk reduction.
+4. Define the enforcement boundary and filesystem semantics before considering an agent adapter.
+5. Write a personal reflection based on real decisions, difficulties, and learning.
 
 ## Reproducibility
 
