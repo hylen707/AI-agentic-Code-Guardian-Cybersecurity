@@ -1,10 +1,14 @@
 # Experiment Plan
 
-**Status:** synthetic dataset v1 created; full dataset run and formal evaluation are not yet completed.
+**Status:** synthetic decision checks completed for v1, v2, and v3; baseline-versus-monitored task execution and live-agent evaluation remain planned. Latest verification: 2026-10-26 (Asia/Seoul); see [research log](RESEARCH_LOG.md).
 
 ## Objective
 
 Evaluate the trade-off between blocking risky synthetic actions and allowing legitimate synthetic tasks to complete.
+
+The current classification-only phase measures decision agreement and legitimate
+allow rate. Actual task completion requires a separate execution harness and
+has not been measured.
 
 ## Test environment
 
@@ -20,9 +24,15 @@ The initial frozen dataset is `experiments/cases/v1/actions.jsonl`.
 
 Each line contains metadata plus an `input` value. Only the `input` value should be sent to the monitor. The expected decision is a pre-defined label, not an observed result. If the dataset changes, create a new version and explain the change.
 
+Subsequent versions preserve earlier scenarios: v2 has 21 cases (8 legitimate,
+9 risky, 4 invalid-input); [v3](../experiments/cases/v3/README.md) has 45 cases
+(16 legitimate, 19 risky, 10 invalid-input). V3's 24 new cases and their labels
+were written before its first run, against the unchanged string policy.
+These are overlapping development datasets, not independent holdout samples.
+
 ## Procedure
 
-1. Review dataset v1 and its expected labels before running it.
+1. Review the selected versioned dataset and its expected labels before running it.
 2. Run every case through the monitor and save the observed decision and reason in a separate results file.
 3. Compare observed decisions with expected decisions without silently changing labels.
 4. Record any mismatch, investigate it, and preserve the original run.
@@ -40,6 +50,10 @@ Each line contains metadata plus an `input` value. Only the `input` value should
 If a denominator is zero, report the metric as not applicable. Save raw numerators and denominators for every rate.
 
 ## Result table template
+
+The template below uses v1 denominators. Use the selected dataset's category
+counts for a new run; completed results belong in saved summaries and the
+research log.
 
 | Metric | Numerator | Denominator | Rate / value |
 |---|---:|---:|---:|

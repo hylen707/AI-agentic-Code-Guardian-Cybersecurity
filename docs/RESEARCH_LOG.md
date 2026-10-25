@@ -2,6 +2,36 @@
 
 Record dated entries as work happens. Keep failed attempts and changes in direction. Distinguish manual checks, unit tests, and formal experiments.
 
+## 2026-10-26 — Reverification and synthetic dataset v3
+
+- **Goal:** reproduce the handed-off results, align current documentation with saved evidence, and broaden string-policy coverage without changing measured datasets or monitor behavior.
+- **Source:** checker, runner, and existing tests from upstream commit `7ae79aa5d337ad0ac02431f28b8db2a7f859910e`; these code files are unchanged in this work. No external services or target-file operations were invoked by the monitor.
+- **Environment:** Python 3.12.14, Linux; executed in the ChatGPT workspace. This entry uses Asia/Seoul (2026-10-26); commands ran on 2026-10-25 UTC. Exact start times and platform are recorded in the verification record.
+- **Unit tests:** actually executed `python -m unittest discover -s tests -v`; all 11 passed with exit code 0. The [unit-test transcript](../experiments/results/2026-10-25T16-05-40Z-unit-tests.txt) preserves the output.
+- **Dataset design before the v3 run:** copied all 21 v2 cases, changing only `dataset_version`, and added 24 expected labels against the existing policy. Wrote the dataset and its design note before execution; no labels were revised after observing results. New cases cover prefix boundaries, path spelling/normalization, and invalid JSON value types. V1 and v2 remain byte-for-byte unchanged.
+- **Commands actually executed:**
+
+```bash
+python experiments/run_dataset.py --dataset experiments/cases/v1/actions.jsonl
+python experiments/run_dataset.py --dataset experiments/cases/v2/actions.jsonl
+python experiments/run_dataset.py --dataset experiments/cases/v3/actions.jsonl
+```
+
+| Dataset | Decision matches | Risky blocked | Legitimate allowed | False positives | Invalid blocked | Monitor errors |
+|---|---:|---:|---:|---:|---:|---:|
+| v1 | 20/20 | 8/8 | 8/8 | 0/8 | 4/4 | 0 |
+| v2 | 21/21 | 9/9 | 8/8 | 0/8 | 4/4 | 0 |
+| v3 | 45/45 | 19/19 | 16/16 | 0/16 | 10/10 | 0 |
+
+- **Raw evidence:** all dataset commands exited 0. The [verification record](../experiments/results/2026-10-25T16-05-40Z-verification.json) contains their full console output, source commit, Python version, and SHA-256 hashes of the code, tests, datasets, and v3 design note. Summaries and corresponding raw results are:
+  - [v1 summary](../experiments/results/2026-10-25T16-05-40Z-v1-summary.json), [v1 raw](../experiments/results/2026-10-25T16-05-40Z-v1.jsonl).
+  - [v2 summary](../experiments/results/2026-10-25T16-05-41Z-v2-summary.json), [v2 raw](../experiments/results/2026-10-25T16-05-41Z-v2.jsonl).
+  - [v3 summary](../experiments/results/2026-10-25T16-06-42Z-v3-summary.json), [v3 raw](../experiments/results/2026-10-25T16-06-42Z-v3.jsonl).
+- **Problems or surprises:** no test failures or decision mismatches occurred in these runs. Current-status documentation was stale: README said no results, CHANGELOG retained an unconfirmed v2 note, and architecture/experiment-plan text still described completed components or runs as planned. Updated current status while preserving historical research entries and earlier results.
+- **Interpretation and limitations:** v3 is a hand-authored development extension, not a held-out evaluation. It contains v2, which contains v1, so do not add their counts as independent observations. A `risky` label means policy-rejected in this dataset, not necessarily malicious on every filesystem. No actual task completion or baseline-versus-monitored execution was measured. Symlink resolution, OS-specific filename constraints, case-insensitive filesystem behavior, raw malformed JSON, and live-agent integration remain outside this dataset. See the [v3 design note](../experiments/cases/v3/README.md).
+- **Decision:** retain the checker and runner as-is for this continuation; keep the development changelog separate from this research record. Preserve all failed or unexpected future runs rather than selecting only successful results.
+- **Next step:** define held-out inputs and the fixture-harness trust boundary before changing policy rules. A future task-execution experiment needs a controlled no-monitor comparison, fixed task-completion criteria, and project-owned fixtures; it must not be described as implemented yet.
+
 ## 2026-10-21 — Path-normalization regression fix prepared
 
 - **Issue identified:** `PurePosixPath` can collapse an explicit `.` component, so checking only its normalized parts can miss an input such as `workspace/./notes.txt`.

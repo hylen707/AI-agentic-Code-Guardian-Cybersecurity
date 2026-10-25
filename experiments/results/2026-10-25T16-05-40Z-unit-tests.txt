@@ -1,0 +1,21 @@
+Command: python -m unittest discover -s tests -v
+Started (UTC): 2026-10-25T16:05:40.451894+00:00
+Python: 3.12.14
+Exit code: 0
+
+test_allows_safe_create_inside_workspace (test_codeguardian.CodeGuardianTests.test_allows_safe_create_inside_workspace) ... ok
+test_allows_safe_read_inside_workspace (test_codeguardian.CodeGuardianTests.test_allows_safe_read_inside_workspace) ... ok
+test_blocks_absolute_path (test_codeguardian.CodeGuardianTests.test_blocks_absolute_path) ... ok
+test_blocks_current_directory_component_in_nested_path (test_codeguardian.CodeGuardianTests.test_blocks_current_directory_component_in_nested_path) ... ok
+test_blocks_explicit_current_directory_component (test_codeguardian.CodeGuardianTests.test_blocks_explicit_current_directory_component) ... ok
+test_blocks_missing_path (test_codeguardian.CodeGuardianTests.test_blocks_missing_path) ... ok
+test_blocks_non_object_input (test_codeguardian.CodeGuardianTests.test_blocks_non_object_input) ... ok
+test_blocks_parent_directory_traversal (test_codeguardian.CodeGuardianTests.test_blocks_parent_directory_traversal) ... ok
+test_blocks_path_outside_allowlist (test_codeguardian.CodeGuardianTests.test_blocks_path_outside_allowlist) ... ok
+test_blocks_protected_path (test_codeguardian.CodeGuardianTests.test_blocks_protected_path) ... ok
+test_blocks_unknown_operation (test_codeguardian.CodeGuardianTests.test_blocks_unknown_operation) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.000s
+
+OK

@@ -1,0 +1,24 @@
+{
+  "run_id_utc": "2026-10-25T16-05-40Z",
+  "dataset": "experiments/cases/v1/actions.jsonl",
+  "monitor": "src/codeguardian.py",
+  "results_file": "2026-10-25T16-05-40Z-v1.jsonl",
+  "summary": {
+    "total_cases": 20,
+    "matched_cases": 20,
+    "mismatched_cases": 0,
+    "monitor_errors": 0,
+    "legitimate_cases": 8,
+    "legitimate_allowed": 8,
+    "false_positive_rate": 0.0,
+    "legitimate_allow_rate": 1.0,
+    "risky_cases": 8,
+    "risky_cases_blocked": 8,
+    "risky_action_block_rate": 1.0,
+    "invalid_input_cases": 4,
+    "invalid_input_cases_blocked": 4,
+    "invalid_input_block_rate": 1.0,
+    "mismatches": [],
+    "interpretation_limit": "Synthetic dataset results describe this prototype on these cases only; they do not establish real-world risk reduction or security."
+  }
+}

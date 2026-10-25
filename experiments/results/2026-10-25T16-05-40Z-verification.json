@@ -1,0 +1,71 @@
+{
+  "verification_date_asia_seoul": "2026-10-26",
+  "base_commit": "7ae79aa5d337ad0ac02431f28b8db2a7f859910e",
+  "monitor_and_runner_changed": false,
+  "python_version": "3.12.14",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "sha256": {
+    "src/codeguardian.py": "0b39f00369fbafecf2728fe9d955ad7c398bdc013f76b476eb25239a7b61d892",
+    "tests/test_codeguardian.py": "55d36301444b9514edc40f557fa07f232b3e26fc98410453694a357cf4ecc522",
+    "experiments/run_dataset.py": "4e44d6abc0680f642f29b3f2663ea6156613693c77e5be1f4804661e0d1e4714",
+    "experiments/cases/v1/actions.jsonl": "a4cb8edd8c32e02e632aca42d04dab441b8282480ebe38c7c7e28f599f191064",
+    "experiments/cases/v2/actions.jsonl": "201be4a2403035720971de03402114e654fbdd3a8795d550039da3f662c6fc13",
+    "experiments/cases/v3/actions.jsonl": "e8c96336eaf36f70909a188f1a22d4fb1a2775cc4dd0fe96c5420003bfe9db8e",
+    "experiments/cases/v3/README.md": "af964c5ea8b16d45cd3d039cc7a0ee0d293cf526fc7dc7fff08ed52e5bf63e40"
+  },
+  "unit_test_log": "experiments/results/2026-10-25T16-05-40Z-unit-tests.txt",
+  "runs": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-25T16:05:40.451894+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_allows_safe_create_inside_workspace (test_codeguardian.CodeGuardianTests.test_allows_safe_create_inside_workspace) ... ok\ntest_allows_safe_read_inside_workspace (test_codeguardian.CodeGuardianTests.test_allows_safe_read_inside_workspace) ... ok\ntest_blocks_absolute_path (test_codeguardian.CodeGuardianTests.test_blocks_absolute_path) ... ok\ntest_blocks_current_directory_component_in_nested_path (test_codeguardian.CodeGuardianTests.test_blocks_current_directory_component_in_nested_path) ... ok\ntest_blocks_explicit_current_directory_component (test_codeguardian.CodeGuardianTests.test_blocks_explicit_current_directory_component) ... ok\ntest_blocks_missing_path (test_codeguardian.CodeGuardianTests.test_blocks_missing_path) ... ok\ntest_blocks_non_object_input (test_codeguardian.CodeGuardianTests.test_blocks_non_object_input) ... ok\ntest_blocks_parent_directory_traversal (test_codeguardian.CodeGuardianTests.test_blocks_parent_directory_traversal) ... ok\ntest_blocks_path_outside_allowlist (test_codeguardian.CodeGuardianTests.test_blocks_path_outside_allowlist) ... ok\ntest_blocks_protected_path (test_codeguardian.CodeGuardianTests.test_blocks_protected_path) ... ok\ntest_blocks_unknown_operation (test_codeguardian.CodeGuardianTests.test_blocks_unknown_operation) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python",
+        "experiments/run_dataset.py",
+        "--dataset",
+        "experiments/cases/v1/actions.jsonl"
+      ],
+      "started_at_utc": "2026-10-25T16:05:40.500968+00:00",
+      "exit_code": 0,
+      "stdout": "Dataset cases: 20\nMatched expected decisions: 20/20\nMismatches: 0\nMonitor errors: 0\nRisky-action block rate: 1.0\nFalse-positive rate: 0.0\nLegitimate allow rate: 1.0\nInvalid-input block rate: 1.0\nRaw results: experiments/results/2026-10-25T16-05-40Z-v1.jsonl\nSummary: experiments/results/2026-10-25T16-05-40Z-v1-summary.json\nReminder: these are synthetic prototype results, not real-world security evidence.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "experiments/run_dataset.py",
+        "--dataset",
+        "experiments/cases/v2/actions.jsonl"
+      ],
+      "started_at_utc": "2026-10-25T16:05:41.309320+00:00",
+      "exit_code": 0,
+      "stdout": "Dataset cases: 21\nMatched expected decisions: 21/21\nMismatches: 0\nMonitor errors: 0\nRisky-action block rate: 1.0\nFalse-positive rate: 0.0\nLegitimate allow rate: 1.0\nInvalid-input block rate: 1.0\nRaw results: experiments/results/2026-10-25T16-05-41Z-v2.jsonl\nSummary: experiments/results/2026-10-25T16-05-41Z-v2-summary.json\nReminder: these are synthetic prototype results, not real-world security evidence.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "experiments/run_dataset.py",
+        "--dataset",
+        "experiments/cases/v3/actions.jsonl"
+      ],
+      "started_at_utc": "2026-10-25T16:06:42.701639+00:00",
+      "exit_code": 0,
+      "stdout": "Dataset cases: 45\nMatched expected decisions: 45/45\nMismatches: 0\nMonitor errors: 0\nRisky-action block rate: 1.0\nFalse-positive rate: 0.0\nLegitimate allow rate: 1.0\nInvalid-input block rate: 1.0\nRaw results: experiments/results/2026-10-25T16-06-42Z-v3.jsonl\nSummary: experiments/results/2026-10-25T16-06-42Z-v3-summary.json\nReminder: these are synthetic prototype results, not real-world security evidence.\n",
+      "stderr": ""
+    }
+  ],
+  "interpretation_limit": "The datasets overlap and are hand-authored. This verifies synthetic decision agreement only, not independent generalization, filesystem enforcement, legitimate task completion, or real-agent risk reduction."
+}

@@ -4,6 +4,17 @@ This file records observable project changes in reverse chronological order. It 
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-10-26 — Reverification, dataset v3, and current documentation
+
+- Re-ran the existing 11 unit tests and both frozen datasets against the unchanged checker and runner from `7ae79aa5d337ad0ac02431f28b8db2a7f859910e`: tests 11/11, v1 20/20, v2 21/21.
+- Added v3 with all 21 v2 cases plus 24 predefined edge cases (45 total), a design note, and an explicit statement that these overlapping datasets are not independent holdout evidence.
+- Ran v3: 45/45 expected decisions matched; 19/19 risky and 10/10 invalid-input cases blocked; 16/16 legitimate cases allowed; zero mismatches or monitor errors.
+- Saved new raw outputs, summaries, the unit-test transcript, and a verification record containing commands, exit codes, Python version, source commit, and SHA-256 hashes. Earlier measured datasets and result files are preserved.
+- Updated README, architecture, experiment plan, and experiment instructions to distinguish completed synthetic checks from planned task-execution and agent evaluations. This verification supersedes the older unconfirmed v2 status below; historical entries are retained.
+- **Evidence:** [verification record](experiments/results/2026-10-25T16-05-40Z-verification.json) and [research entry](docs/RESEARCH_LOG.md#2026-10-26--reverification-and-synthetic-dataset-v3). Entry date is Asia/Seoul; result filenames use UTC.
+- **Limit:** classification agreement on hand-authored cases does not establish filesystem enforcement, task completion, or risk reduction for a live AI agent.
+- **Next:** define held-out cases and execution-harness semantics before changing policy or adding an agent adapter.
+
 ## 2026-10-21 — Path-normalization regression fix and dataset v2
 
 - Updated path validation to reject explicit `.` components before path normalization.
