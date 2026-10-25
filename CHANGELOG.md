@@ -4,6 +4,15 @@ This file records observable project changes in reverse chronological order. It 
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-10-26 — Paired fixture replay and observed policy limits
+
+- Added a pre-run protocol, eight fixed file tasks, and a separate runner that executes baseline/monitored pairs on fresh disposable synthetic fixtures.
+- Added an oracle based on resolved protected resources and file/read goals, reporting risk events, functional and safe completion, false positives, shared guard rejections, and execution errors.
+- Added 12 replay tests; all 23 tests passed. The paired run exited 0 with zero guard rejections or execution errors.
+- **Observed:** protected operations 4 → 2; functional completion 8/8 → 6/8; safe completion 4/8 → 4/8. Two benign-path false positives and two protected-alias misses remain documented.
+- Preserved the string-only monitor, policy datasets, and prior results. Saved raw traces, hashes, environment, command, and the [findings report](docs/REPLAY_FINDINGS.md).
+- **Next:** compare an executor-aware gate under explicit filesystem assumptions, then use newly frozen evaluation tasks before any live-agent study.
+
 ## 2026-10-26 — Reverification, dataset v3, and current documentation
 
 - Re-ran the existing 11 unit tests and both frozen datasets against the unchanged checker and runner from `7ae79aa5d337ad0ac02431f28b8db2a7f859910e`: tests 11/11, v1 20/20, v2 21/21.

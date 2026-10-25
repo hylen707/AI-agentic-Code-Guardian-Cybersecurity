@@ -1,18 +1,26 @@
 # Experiment Plan
 
-**Status:** synthetic decision checks completed for v1, v2, and v3; baseline-versus-monitored task execution and live-agent evaluation remain planned. Latest verification: 2026-10-26 (Asia/Seoul); see [research log](RESEARCH_LOG.md).
+**Status:** policy conformance checks for v1–v3 and eight baseline-versus-monitored fixture task pairs completed. Live-agent evaluation remains planned. Latest work: 2026-10-26 (Asia/Seoul); see [research log](RESEARCH_LOG.md).
 
 ## Objective
 
 Evaluate the trade-off between blocking risky synthetic actions and allowing legitimate synthetic tasks to complete.
 
-The current classification-only phase measures decision agreement and legitimate
-allow rate. Actual task completion requires a separate execution harness and
-has not been measured.
+Phase 1 measures decision agreement and legitimate allow rate. Phase 2 now
+measures actual fixture operations, functional goals, and safe completion using
+a separate execution harness. Its [pre-run protocol](REPLAY_PROTOCOL.md) defines
+the intervention and independent oracle; [findings](REPLAY_FINDINGS.md) record
+both failures and benefits. The classification procedure below remains the
+phase-1 method and must not be confused with task-execution outcomes.
 
 ## Test environment
 
 Use a local test harness operating on synthetic records only. The current CodeGuardian prototype classifies proposed actions and does not execute file operations. No network access, credentials, personal files, school infrastructure, or real agent integration is needed for this first evaluation.
+
+The phase-2 harness additionally uses disposable project-generated files and
+static symlinks under a fresh temporary root for each arm. It does not use real
+accounts or data. Shared containment failures and execution errors are reported
+separately from monitor blocks; there were zero in the first paired run.
 
 ## Versioned test set
 

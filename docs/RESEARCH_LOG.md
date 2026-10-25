@@ -2,6 +2,19 @@
 
 Record dated entries as work happens. Keep failed attempts and changes in direction. Distinguish manual checks, unit tests, and formal experiments.
 
+## 2026-10-26 — Paired execution reveals protection and utility trade-offs
+
+- **Goal:** deepen the study with actual fixture effects, a no-monitor comparison, and functional goals independent of policy labels.
+- **Design before execution:** wrote [REPLAY_PROTOCOL.md](REPLAY_PROTOCOL.md) and eight two-action task definitions with file/read goals. Two controls, two benign alternative path spellings, two direct protected accesses, and two aliases were deliberately chosen as diagnostic development cases. They are not held out.
+- **Implementation:** added a separate runner; each arm gets fresh synthetic files and fixed symlinks. Both use the same containment guard and executor; only the monitor gate changes. The oracle uses resolved protected-resource identities, successful operations, and actual file/read observations.
+- **Validation:** executed `python -m unittest discover -s tests -v`; all 23 tests passed (11 original + 12 replay tests). New tests cover protected reads/writes, alias misses, benign-path task loss, isolation, root containment, exclusive create, and malformed task definitions.
+- **Experiment:** executed `python experiments/run_replay.py --dataset experiments/tasks/replay-v1/tasks.json --base-commit 0ffa15a655c3c2569ff0556945ffd83aac1d9efe` on Python 3.12.14/Linux; exit 0. Eight tasks were each run in baseline and monitored arms (16 proposals per arm). No monitor code or earlier dataset labels were changed.
+- **Observed counts:** baseline → monitored protected operations 4/4 → 2/4; functional completion 8/8 → 6/8; safe completion 4/8 → 4/8. Monitored false positives: 2/12 benign proposals. Both arms had 0/16 guard rejections and 0/16 execution errors.
+- **Failures retained:** direct protected names were blocked, but aliases still reached protected resources; harmless contained dot/parent spellings prevented required reads. The final report file alone did not satisfy those read-dependent goals.
+- **Evidence:** [raw outcomes](../experiments/results/2026-10-25T16-23-07-058859Z-replay-v1.jsonl), [summary and provenance](../experiments/results/2026-10-25T16-23-07-058859Z-replay-v1-summary.json), [console](../experiments/results/2026-10-25T16-23-07-058859Z-replay-v1-console.txt), [validation](../experiments/results/2026-10-25T16-23-07-058859Z-replay-v1-validation.txt), and [analysis](REPLAY_FINDINGS.md). Result timestamps use UTC; this entry uses Asia/Seoul.
+- **Interpretation:** enabling the gate prevented two realized protected accesses on these traces but lost two task completions, leaving the joint safe-completion count unchanged. This is a mechanism study on selected tasks, not a general effectiveness estimate. Fixed topology and no adaptive agent are explicit limitations.
+- **Decision and next step:** retain this result before improving enforcement. Compare a gate bound to resolved targets against baseline and string-only approval, then evaluate separately frozen tasks. Live-agent adaptation needs another protocol with model/prompt settings, budgets, and repeated trials.
+
 ## 2026-10-26 — Reverification and synthetic dataset v3
 
 - **Goal:** reproduce the handed-off results, align current documentation with saved evidence, and broaden string-policy coverage without changing measured datasets or monitor behavior.

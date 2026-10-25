@@ -1,0 +1,15 @@
+Validation date: 2026-10-26 (Asia/Seoul)
+Environment: Python 3.12.14, Linux
+Command: python -m unittest discover -s tests -v
+Observed exit code: 0
+Observed output excerpt (the 23 individual test lines are omitted):
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.036s
+
+OK
+
+Composition: 11 original policy tests and 12 new replay tests.
+The tests verify experiment infrastructure and deliberately retained monitor
+limits. Passing them does not mean that all research hypotheses held.
+Exact replay-test and monitor hashes are in the matching run summary.
