@@ -2,6 +2,53 @@
 
 Store versioned synthetic test cases, raw outputs, and analysis here.
 
+## Three-arm gate comparison
+
+The original baseline/string-gate runs are reused unchanged; the added arm
+approves a prepared resolved target and executes that exact request. See
+[GATE_PROTOCOL](../docs/GATE_PROTOCOL.md) and [GATE_FINDINGS](../docs/GATE_FINDINGS.md).
+
+```bash
+python experiments/run_comparison.py --dataset experiments/tasks/replay-v1/tasks.json --suite-role development --base-commit a92964c53f2c86bd1fb2403c8225763fa69201bf --freeze-commit 1d9bbe305625f5b7df55a185463908729c48cc03
+python experiments/run_comparison.py --dataset experiments/tasks/gate-eval-v1/tasks.json --suite-role supplemental --base-commit a92964c53f2c86bd1fb2403c8225763fa69201bf --freeze-commit 1d9bbe305625f5b7df55a185463908729c48cc03
+```
+
+Report development and supplemental outcomes separately. The latter was frozen
+before implementation but was visible to the developer; it is not a blind
+holdout. Summary JSON contains per-arm counts, matched task outcomes, criteria,
+source/dataset hashes, and provenance. Exit 0 denotes clean experiment execution,
+not necessarily successful policy criteria; inspect `summary.criteria`.
+Exit 1 means guard/execution problems, and exit 2 a setup/oracle problem.
+Results use unique timestamped filenames and preserve earlier runs.
+
+## Paired file-task replay
+
+The next phase executes eight fixed tasks with and without the monitor on fresh,
+disposable synthetic fixtures. See the [protocol](../docs/REPLAY_PROTOCOL.md),
+[task definitions](tasks/replay-v1/tasks.json), and [findings](../docs/REPLAY_FINDINGS.md).
+
+```bash
+python experiments/run_replay.py --dataset experiments/tasks/replay-v1/tasks.json --base-commit 0ffa15a655c3c2569ff0556945ffd83aac1d9efe
+```
+
+Use Python 3.10+ on a filesystem with symlink support. Fixture setup failures
+are explicit; alias cases are not silently skipped. The optional `--base-commit`
+records the starting revision; saved hashes identify the exact executed files.
+`--output-dir` selects a result directory (default `experiments/results`).
+
+The runner writes unique microsecond-timestamped raw JSONL and summary JSON
+without overwriting earlier runs. Each raw row is one task/arm outcome with
+action traces, resolved targets, file/read goal checks, and final file hashes.
+The summary includes paired outcomes and provenance. Exit 0 means the experiment
+ran without guard rejections or execution errors, not that all hypotheses held.
+Exit 1 records those per-action problems; exit 2 reports a setup/oracle error.
+
+The first run observed protected operations 4 → 2, functional task completion
+8/8 → 6/8, and safe completion 4/8 → 4/8. False positives were 2/12 benign
+proposals in the monitored arm; two protected alias operations were missed.
+These selected fixed replays do not measure live-agent adaptation or provide
+independent generalization evidence.
+
 ## Current datasets
 
 - `cases/v1/actions.jsonl` — baseline synthetic action dataset: 20 cases (8 legitimate, 8 risky, 4 invalid-input).

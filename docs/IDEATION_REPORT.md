@@ -1,7 +1,8 @@
 # CodeGuardian — Ideation Report
 
-**Status:** initial draft; revise as the project develops  
-**Last updated:** 2026-10-20
+**Status:** prototype, paired study, and executor-aware comparison completed; live-agent evaluation planned
+
+**Last updated:** 2026-10-26 (Asia/Seoul)
 
 ## 1. Project idea
 CodeGuardian explores whether a lightweight runtime monitor can help identify and block risky actions proposed by an AI coding agent, while still allowing ordinary software-development tasks to proceed.
@@ -50,13 +51,22 @@ The intended contribution is a reproducible small-scale demonstration of a runti
 A small synthetic dataset cannot establish how well the approach performs against real AI coding agents or unseen attacks. Rule-based monitoring may miss risks that are not represented in the test cases and may block legitimate work. Test-set design and the chosen rules may bias the result.
 
 ## 9. Results
-**Not available yet.** Complete this section only after running the planned experiments.
-- Number of safe cases: TBD
-- Number of risky cases: TBD
-- Risky actions blocked: TBD
-- False positives: TBD
-- Legitimate tasks completed: TBD
-- Notable failure cases: TBD
+Policy conformance checks matched all 45 expected labels in dataset v3. A
+subsequent eight-pair fixture experiment used actual protected-resource effects
+and task goals as its oracle. Protected operations fell from 4 to 2, functional
+completion fell from 8/8 to 6/8, and safe completion remained 4/8. Two benign
+dot/parent spellings were blocked, while two symlink aliases still accessed
+protected files. See the [findings, evidence, and limits](REPLAY_FINDINGS.md).
+
+These curated fixed replays expose a protection/utility trade-off and motivate
+an executor-aware gate. They do not establish effectiveness for a live agent.
+The original expected contribution remains a research goal, not a claim of
+general security.
+
+The subsequent [executor-aware comparison](GATE_FINDINGS.md) blocked all four
+protected proposals and completed all eight tasks safely in each separately
+reported development/supplemental suite. Both use curated related mechanisms
+and fixed topology. Hardlinks, races, and live-agent behavior remain untested.
 
 ## 10. References
 Add the actual sources read and used. For each source, record its title, author or organization, publication date where available, URL, and the specific idea it informed. Do not list sources that were not consulted.

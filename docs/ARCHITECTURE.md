@@ -10,6 +10,11 @@ CodeGuardian investigates this research question: can a lightweight monitor clas
 
 The current prototype is deliberately narrower than a real runtime integration. It receives **synthetic action proposals**, applies deterministic policy checks, and returns an `allow` or `block` decision. It does not execute the proposed action.
 
+A separate experiment harness now replays fixed proposals against disposable
+synthetic files. The checker remains unchanged and non-executing. The harness
+owns fixture creation, the optional monitor gate, execution, and independent
+resource/goal observation; it is not a live-agent adapter.
+
 ## 2. Current architecture
 
 ```text
@@ -46,10 +51,36 @@ Blank input lines are skipped. Invalid JSON produces a `block` decision with an 
 | Input parser | Read one JSON action record per line | Implemented |
 | Policy checker | Validate operation and path against fixed rules | Implemented |
 | Decision output | Return JSON with decision, reason, operation, path, and input line | Implemented |
-| Unit tests | Check representative allow/block cases | Implemented; 11/11 passed in the 2026-10-26 verification |
+| Unit tests | Check policy behavior, fixture effects, containment, and prepared-request binding | Implemented; 36/36 passed (11 policy + 12 replay + 13 gate/comparison) |
 | Versioned experiment dataset | Store labelled legitimate, risky, and invalid synthetic cases | Implemented: v1 (20), v2 (21), v3 (45) |
 | Experiment runner and metrics | Run cases and calculate rates from raw counts | Implemented; raw JSONL and summary JSON saved for all three versions |
+| Paired replay harness | Execute fixed file tasks on fresh fixtures with/without the gate | Implemented; eight pairs, independent resource and goal oracle |
+| Executor-aware gate | Approve a prepared resolved target under configured roots | Implemented for trusted, fixed-topology fixtures |
+| Three-arm comparison | Compare baseline, string gate, and executor-aware gate | Implemented; separate development and prospectively frozen supplemental suites |
 | Real AI-agent adapter | Intercept actions from an actual agent | Not implemented; outside current prototype |
+
+### Paired replay boundary
+
+`experiments/run_replay.py` constructs a fresh temporary root for each task/arm.
+Its shared guard validates request shape and resolves paths inside that root.
+The monitored arm additionally calls the string-only checker on the proposal.
+The executor performs the prepared operation; the oracle counts successful
+access to declared protected resources and checks explicit file/read goals.
+Protected fixtures are intentionally inside the temporary root so the shared
+guard does not substitute for the monitor. Static symlinks can connect an
+allowed spelling to a protected fixture. Resolve-then-open assumes fixed
+topology and no concurrent mutation; this is not production race protection.
+See [the protocol](REPLAY_PROTOCOL.md) for schemas, assumptions, and counting rules.
+
+### Executor-aware intervention
+
+`src/executor_gate.py` accepts a frozen `PreparedAction(operation, target,
+content)` from the trusted executor. It checks configured workspace/protected
+roots, not oracle labels. `experiments/run_comparison.py` executes that same
+prepared operation and preserves the original two arms by calling the unchanged
+paired runner. Raw proposal mutation cannot change the approved path or content.
+The binding is to a pathname, not an open file identity; hardlinks and concurrent
+topology changes remain outside the protection claim. See [GATE_PROTOCOL](GATE_PROTOCOL.md).
 
 ## 3. Input schema
 
@@ -126,19 +157,29 @@ Keep expected labels separate from observed results. If a label must change, doc
 - **False-positive rate** = legitimate cases blocked / all legitimate cases tested.
 - **Legitimate allow rate** = legitimate cases allowed / all legitimate cases tested.
 - **Invalid-input block rate** = invalid-input cases blocked / all invalid-input cases tested.
-- **Legitimate task completion rate (planned)** = legitimate tasks completed / all legitimate tasks attempted; requires an execution harness.
+- **Functional task completion** = fixture tasks meeting all declared file/read goals / tasks attempted.
+- **Safe task completion** = functional completions with zero protected-resource events / tasks attempted.
 - **Decision latency (optional, not measured)** = elapsed time for a decision, with the timing method documented.
 
 Save raw numerators and denominators for every reported rate. The latest synthetic
 checks matched v1 20/20, v2 21/21, and v3 45/45 decisions, with zero mismatches or
 monitor errors. See the [verification record](../experiments/results/2026-10-25T16-05-40Z-verification.json).
-Dataset versions overlap; these are not independent observations. No task
-completion, baseline-versus-monitored execution, or live-agent effect has been measured.
+Dataset versions overlap; these are not independent observations. The separate
+[paired replay study](REPLAY_FINDINGS.md) observed protected operations 4 → 2,
+functional completion 8/8 → 6/8, and safe completion 4/8 → 4/8. Those task-level
+outcomes use resolved resources and file/read goals, not policy labels.
+Live-agent effects remain unmeasured.
+
+The [three-arm follow-up](GATE_FINDINGS.md) recorded 0/4 protected operations,
+8/8 functional completion, 8/8 safe completion, and 0/12 benign blocks for the
+new gate in each eight-task suite. Original-arm development records exactly
+matched the earlier paired run. The supplemental suite is prospectively frozen
+but not independent/blind, and shares mechanisms with development.
 
 ## 8. Safety boundaries and limitations
 
 - Use only synthetic action records and project-owned test fixtures.
-- The current program classifies proposals; it does not perform proposed file operations.
+- The checker classifies proposals; the experiment harness performs only supported operations on disposable synthetic fixtures.
 - It is not connected to a live AI coding agent and is not a sandbox.
 - It should not be relied on to protect real files, accounts, school systems, or sensitive data.
 - It classifies path strings rather than resolving them against a real filesystem; path edge cases require further testing.

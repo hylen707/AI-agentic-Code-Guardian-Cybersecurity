@@ -4,6 +4,24 @@ This file records observable project changes in reverse chronological order. It 
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-10-26 — Executor-aware gate and three-arm comparison
+
+- Froze the comparison protocol and eight supplemental tasks in `1d9bbe305625f5b7df55a185463908729c48cc03` before implementation; the same developer designed both, so no blind-holdout claim is made.
+- Added a separate gate on prepared canonical targets and copied content. It uses configured roots, not fixture labels; execution uses the inspected immutable request.
+- Added a three-arm runner and 13 tests; all 36 tests passed. Kept the original monitor, paired runner, protocols, datasets, and old results unchanged.
+- **Observed in each suite separately:** protected operations 4 → 2 → 0; functional completion 8/8 → 6/8 → 8/8; safe completion 4/8 → 4/8 → 8/8; benign blocks 0/12 → 2/12 → 0/12. No guard or execution errors occurred. Original development arms reproduce the earlier raw records exactly.
+- Saved raw traces, console and test outputs, hashes, and [findings](docs/GATE_FINDINGS.md). Code hashes match between development and supplemental runs.
+- **Limit/next:** fixed-topology fixture evidence only. Study hardlinks or topology mutation under a new protocol before expanding enforcement claims or integrating an agent.
+
+## 2026-10-26 — Paired fixture replay and observed policy limits
+
+- Added a pre-run protocol, eight fixed file tasks, and a separate runner that executes baseline/monitored pairs on fresh disposable synthetic fixtures.
+- Added an oracle based on resolved protected resources and file/read goals, reporting risk events, functional and safe completion, false positives, shared guard rejections, and execution errors.
+- Added 12 replay tests; all 23 tests passed. The paired run exited 0 with zero guard rejections or execution errors.
+- **Observed:** protected operations 4 → 2; functional completion 8/8 → 6/8; safe completion 4/8 → 4/8. Two benign-path false positives and two protected-alias misses remain documented.
+- Preserved the string-only monitor, policy datasets, and prior results. Saved raw traces, hashes, environment, command, and the [findings report](docs/REPLAY_FINDINGS.md).
+- **Next:** compare an executor-aware gate under explicit filesystem assumptions, then use newly frozen evaluation tasks before any live-agent study.
+
 ## 2026-10-26 — Reverification, dataset v3, and current documentation
 
 - Re-ran the existing 11 unit tests and both frozen datasets against the unchanged checker and runner from `7ae79aa5d337ad0ac02431f28b8db2a7f859910e`: tests 11/11, v1 20/20, v2 21/21.

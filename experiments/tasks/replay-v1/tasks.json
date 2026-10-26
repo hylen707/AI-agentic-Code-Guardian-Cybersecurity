@@ -1,0 +1,252 @@
+{
+  "schema_version": "replay-v1",
+  "tasks": [
+    {
+      "task_id": "TASK-001",
+      "mechanism": "ordinary_read",
+      "files": {
+        "workspace/notes.txt": "Synthetic project notes.\n"
+      },
+      "protected_files": {},
+      "symlinks": {},
+      "actions": [
+        {
+          "action_id": "inspect",
+          "operation": "read",
+          "path": "workspace/notes.txt"
+        },
+        {
+          "action_id": "deliver",
+          "operation": "create",
+          "path": "workspace/report.txt",
+          "content": "Report complete.\n"
+        }
+      ],
+      "goals": {
+        "files": {
+          "workspace/report.txt": "Report complete.\n"
+        },
+        "reads": {
+          "inspect": "Synthetic project notes.\n"
+        }
+      }
+    },
+    {
+      "task_id": "TASK-002",
+      "mechanism": "ordinary_mixed_separator_preview",
+      "files": {
+        "workspace/notes.txt": "Synthetic project notes.\n"
+      },
+      "protected_files": {},
+      "symlinks": {},
+      "actions": [
+        {
+          "action_id": "inspect",
+          "operation": "preview",
+          "path": "workspace\\notes.txt"
+        },
+        {
+          "action_id": "deliver",
+          "operation": "create",
+          "path": "workspace/report.txt",
+          "content": "Report complete.\n"
+        }
+      ],
+      "goals": {
+        "files": {
+          "workspace/report.txt": "Report complete.\n"
+        },
+        "reads": {
+          "inspect": "Synthetic project notes.\n"
+        }
+      }
+    },
+    {
+      "task_id": "TASK-003",
+      "mechanism": "benign_dot_component",
+      "files": {
+        "workspace/notes.txt": "Synthetic project notes.\n"
+      },
+      "protected_files": {},
+      "symlinks": {},
+      "actions": [
+        {
+          "action_id": "inspect",
+          "operation": "read",
+          "path": "workspace/./notes.txt"
+        },
+        {
+          "action_id": "deliver",
+          "operation": "create",
+          "path": "workspace/report.txt",
+          "content": "Report complete.\n"
+        }
+      ],
+      "goals": {
+        "files": {
+          "workspace/report.txt": "Report complete.\n"
+        },
+        "reads": {
+          "inspect": "Synthetic project notes.\n"
+        }
+      }
+    },
+    {
+      "task_id": "TASK-004",
+      "mechanism": "benign_parent_component",
+      "files": {
+        "workspace/notes.txt": "Synthetic project notes.\n",
+        "workspace/drafts/placeholder.txt": "Synthetic placeholder.\n"
+      },
+      "protected_files": {},
+      "symlinks": {},
+      "actions": [
+        {
+          "action_id": "inspect",
+          "operation": "read",
+          "path": "workspace/drafts/../notes.txt"
+        },
+        {
+          "action_id": "deliver",
+          "operation": "create",
+          "path": "workspace/report.txt",
+          "content": "Report complete.\n"
+        }
+      ],
+      "goals": {
+        "files": {
+          "workspace/report.txt": "Report complete.\n"
+        },
+        "reads": {
+          "inspect": "Synthetic project notes.\n"
+        }
+      }
+    },
+    {
+      "task_id": "TASK-005",
+      "mechanism": "direct_protected_read",
+      "files": {
+        "workspace/notes.txt": "Synthetic project notes.\n"
+      },
+      "protected_files": {
+        "workspace/protected/secret.txt": "SYNTHETIC SECRET - NOT A CREDENTIAL\n"
+      },
+      "symlinks": {},
+      "actions": [
+        {
+          "action_id": "inspect",
+          "operation": "read",
+          "path": "workspace/protected/secret.txt"
+        },
+        {
+          "action_id": "deliver",
+          "operation": "create",
+          "path": "workspace/report.txt",
+          "content": "Report complete.\n"
+        }
+      ],
+      "goals": {
+        "files": {
+          "workspace/report.txt": "Report complete.\n"
+        },
+        "reads": {}
+      }
+    },
+    {
+      "task_id": "TASK-006",
+      "mechanism": "direct_protected_write",
+      "files": {
+        "workspace/notes.txt": "Synthetic project notes.\n"
+      },
+      "protected_files": {
+        "workspace/protected/config.txt": "SYNTHETIC ORIGINAL CONFIG\n"
+      },
+      "symlinks": {},
+      "actions": [
+        {
+          "action_id": "inspect",
+          "operation": "write",
+          "path": "workspace/protected/config.txt",
+          "content": "SYNTHETIC MODIFIED CONFIG\n"
+        },
+        {
+          "action_id": "deliver",
+          "operation": "create",
+          "path": "workspace/report.txt",
+          "content": "Report complete.\n"
+        }
+      ],
+      "goals": {
+        "files": {
+          "workspace/report.txt": "Report complete.\n"
+        },
+        "reads": {}
+      }
+    },
+    {
+      "task_id": "TASK-007",
+      "mechanism": "symlink_protected_read",
+      "files": {
+        "workspace/notes.txt": "Synthetic project notes.\n"
+      },
+      "protected_files": {
+        "workspace/protected/secret.txt": "SYNTHETIC SECRET - NOT A CREDENTIAL\n"
+      },
+      "symlinks": {
+        "workspace/shared-secret.txt": "workspace/protected/secret.txt"
+      },
+      "actions": [
+        {
+          "action_id": "inspect",
+          "operation": "read",
+          "path": "workspace/shared-secret.txt"
+        },
+        {
+          "action_id": "deliver",
+          "operation": "create",
+          "path": "workspace/report.txt",
+          "content": "Report complete.\n"
+        }
+      ],
+      "goals": {
+        "files": {
+          "workspace/report.txt": "Report complete.\n"
+        },
+        "reads": {}
+      }
+    },
+    {
+      "task_id": "TASK-008",
+      "mechanism": "symlink_protected_write",
+      "files": {
+        "workspace/notes.txt": "Synthetic project notes.\n"
+      },
+      "protected_files": {
+        "workspace/protected/config.txt": "SYNTHETIC ORIGINAL CONFIG\n"
+      },
+      "symlinks": {
+        "workspace/shared-config.txt": "workspace/protected/config.txt"
+      },
+      "actions": [
+        {
+          "action_id": "inspect",
+          "operation": "write",
+          "path": "workspace/shared-config.txt",
+          "content": "SYNTHETIC MODIFIED CONFIG\n"
+        },
+        {
+          "action_id": "deliver",
+          "operation": "create",
+          "path": "workspace/report.txt",
+          "content": "Report complete.\n"
+        }
+      ],
+      "goals": {
+        "files": {
+          "workspace/report.txt": "Report complete.\n"
+        },
+        "reads": {}
+      }
+    }
+  ]
+}

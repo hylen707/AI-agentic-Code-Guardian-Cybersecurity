@@ -8,15 +8,45 @@ Can a lightweight runtime monitor reduce risky actions by an AI coding agent wit
 
 ## Project status
 
-- **Stage:** early implementation
-- **Implemented:** deterministic policy checker for synthetic action records
-- **Tests:** 11/11 unit tests passed on 2026-10-26 (Asia/Seoul)
-- **Experiments:** synthetic decision checks completed for v1, v2, and v3; no live-agent evaluation
-- **Results:** v1 20/20, v2 21/21, and v3 45/45 expected decisions matched
+- **Stage:** three-arm fixture experiments
+- **Implemented:** string checker, executor-aware gate, and disposable-file replay/comparison harnesses
+- **Tests:** 36/36 unit tests passed on 2026-10-26 (Asia/Seoul)
+- **Experiments:** policy checks, paired study, and three-arm development/supplemental studies; no live-agent evaluation
+- **Latest result:** executor-aware gate: 0/4 protected accesses, 8/8 functional and safe completion in each separately reported eight-task suite
 
 This repository is an educational prototype. Do not describe planned measures or hypotheses as experimental findings.
 
-Latest verification used the unchanged checker and runner from commit
+## Executor-aware comparison
+
+| Development suite | No monitor | String gate | Executor-aware gate |
+|---|---:|---:|---:|
+| Protected operations / proposals | 4/4 | 2/4 | 0/4 |
+| Functional completion | 8/8 | 6/8 | 8/8 |
+| Safe completion | 4/8 | 4/8 | 8/8 |
+| Benign blocks / proposals | 0/12 | 2/12 | 0/12 |
+
+The additional eight-task suite, frozen in Git before implementation, produced
+the same counts with unchanged code. See [separate results and evidence](docs/GATE_FINDINGS.md)
+and the [comparison protocol](docs/GATE_PROTOCOL.md). Both suites are curated and
+share mechanisms; the supplemental suite is not a blind or independent holdout.
+Approval binds the prepared resolved pathname and content under fixed topology.
+Hardlinks, races, and live-agent effectiveness remain unvalidated.
+
+## Original paired execution findings
+
+The same eight fixed tasks were executed on fresh synthetic fixtures with and
+without the unchanged monitor. Direct protected accesses were blocked; symlink
+aliases still reached protected files, and two contained path spellings were
+unnecessarily blocked. Safe completion means meeting the task goal with no
+protected-resource access. It did not improve in this selected suite.
+
+See the [findings and per-task evidence](docs/REPLAY_FINDINGS.md) and the
+[pre-run protocol](docs/REPLAY_PROTOCOL.md). These are curated diagnostic replays,
+not a held-out evaluation or a measurement of adaptive AI-agent behavior.
+
+## Policy conformance checks
+
+The earlier verification used the unchanged checker and dataset runner from commit
 `7ae79aa5d337ad0ac02431f28b8db2a7f859910e`. The [verification record](experiments/results/2026-10-25T16-05-40Z-verification.json)
 contains commands, exit codes, Python version, and SHA-256 hashes. Dates in result
 filenames use UTC; this run occurred on 2026-10-26 in Asia/Seoul.
@@ -35,7 +65,10 @@ by a live AI agent. See the [v3 design and limitations](experiments/cases/v3/REA
 
 ## Scope and safety boundaries
 
-The current version classifies synthetic actions only. It does not connect to a live AI agent, access personal files, use credentials, contact external services, or execute arbitrary commands.
+The checker classifies synthetic actions. The separate replay harness performs
+only read/preview/write/create operations on its own disposable synthetic
+fixtures. Neither connects to a live AI agent, uses credentials, contacts
+external services, or executes arbitrary commands.
 
 - Work only with synthetic records and project-owned test fixtures.
 - Treat the monitor as a policy-checking prototype, not a secure sandbox.
@@ -47,12 +80,23 @@ The current version classifies synthetic actions only. It does not connect to a 
 
 `src/codeguardian.py` accepts JSON action records and returns `allow` or `block` with a reason. The first policy allows a small set of operations only under `workspace/`, while blocking protected paths, absolute paths, traversal patterns, and unknown operations.
 
-## Proposed outcomes to measure
+`experiments/run_replay.py` compares baseline and monitored execution in fresh
+temporary directories. An independent resource/goal oracle records actual
+protected-file effects and task completion. A shared containment guard limits
+the experiment to its fixtures; it is not a general sandbox.
+
+`src/executor_gate.py` checks prepared targets against configured roots.
+`experiments/run_comparison.py` adds this gate as a third arm and executes the
+exact prepared request inspected by the gate. The original monitor and paired
+runner remain available for comparison.
+
+## Outcomes
 
 1. **Risky-action block rate:** risky synthetic actions blocked / all risky synthetic actions tested.
 2. **False-positive rate:** legitimate synthetic actions blocked / all legitimate synthetic actions tested.
-3. **Legitimate task completion:** safe test tasks completed / all safe test tasks attempted.
-4. **Decision latency (optional):** time taken for the monitor to classify an action.
+3. **Functional task completion:** tasks meeting all file/read goals / tasks attempted.
+4. **Safe task completion:** functional completions with zero protected-resource events / tasks attempted.
+5. **Decision latency (optional, not measured):** time taken for the monitor to classify an action.
 
 Define the test set and counting rules before running experiments. Report the numerator and denominator, not just percentages.
 
@@ -61,6 +105,9 @@ Define the test set and counting rules before running experiments. Report the nu
 - `docs/IDEATION_REPORT.md` — question, rationale, threat model, method, and limitations.
 - `docs/ARCHITECTURE.md` — current system flow, input/output schema, policy rules, planned experiment schema, and safety boundaries.
 - `docs/EXPERIMENT_PLAN.md` — test cases, measures, and procedure.
+- `docs/REPLAY_PROTOCOL.md` — fixed paired experiment, threat model, and outcome definitions.
+- `docs/REPLAY_FINDINGS.md` — observed benefits, task losses, path-alias misses, and limitations.
+- `docs/GATE_PROTOCOL.md` and `docs/GATE_FINDINGS.md` — prospective comparison design, improved-gate evidence, and remaining limits.
 - `docs/RESEARCH_LOG.md` — dated work log; record what actually happened.
 - `docs/REFLECTION_NOTES.md` — prompts for a later personal reflection.
 - `CHANGELOG.md` — chronological record of meaningful repository changes, verification status, and next steps.
@@ -70,10 +117,9 @@ Define the test set and counting rules before running experiments. Report the nu
 
 ## Next steps
 
-1. Review blind spots beyond the v3 string-policy cases, including raw malformed JSON and filesystem-dependent paths.
-2. Define a separate held-out test set before changing policy rules; preserve all measured dataset versions and failed runs.
-3. Design a project-owned fixture harness and a no-monitor comparison before measuring actual task completion or risk reduction.
-4. Define the enforcement boundary and filesystem semantics before considering an agent adapter.
+1. Choose a new failure class, such as hardlink identities or concurrent topology mutation, and define its threat model before execution.
+2. Preserve current results and prospectively freeze new tasks before evaluating stronger enforcement.
+3. Define constrained tools, model/prompt settings, budgets, and repeated task trials before a live-agent study.
 5. Write a personal reflection based on real decisions, difficulties, and learning.
 
 ## Reproducibility
