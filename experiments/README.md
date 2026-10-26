@@ -2,6 +2,21 @@
 
 Store versioned synthetic test cases, raw outputs, and analysis here.
 
+## Filesystem-identity comparison
+
+The hardlink-focused four-arm study compares baseline, the original string gate,
+the resolved-target gate, and the identity gate:
+
+```bash
+python experiments/run_identity_comparison.py --dataset experiments/tasks/identity-eval-v1/tasks.json --base-commit 174330958da6ec22e85972d5b4cf5f760852878f --freeze-commit 8e0910d86636c9cd4264b9c1f3e70da4c7b8b39f
+```
+
+The task suite was frozen before implementation. The identity gate caught both
+protected hardlink aliases, while the resolved-target gate did not. Results use
+unique timestamps and include raw traces, task outcomes, source/dataset hashes,
+and criteria in the summary JSON. This is a curated fixed-topology study, not
+independent or production security evidence.
+
 ## Three-arm gate comparison
 
 The original baseline/string-gate runs are reused unchanged; the added arm

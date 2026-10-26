@@ -2,6 +2,19 @@
 
 Record dated entries as work happens. Keep failed attempts and changes in direction. Distinguish manual checks, unit tests, and formal experiments.
 
+## 2026-10-26 — Filesystem identity detects hardlink aliases
+
+- **Question:** can protected-file device/inode identities close the hardlink gap left by lexical and resolved-path checks?
+- **Freeze:** committed [IDENTITY_PROTOCOL](IDENTITY_PROTOCOL.md) and six tasks at `8e0910d86636c9cd4264b9c1f3e70da4c7b8b39f` before implementing the new gate. The suite is prospective but developer-visible, not blind or independent.
+- **Implementation:** added `IdentityAwareGate` and a four-arm runner. It checks configured protected subtree paths and `(st_dev, st_ino)` identities of existing protected files, then executes the exact prepared action. Existing checker, replay runner, and resolved-target gate are preserved.
+- **Validation:** 44/44 unit tests passed (11 policy, 12 replay, 13 executor-aware, 8 identity). Hardlink creation and identity equivalence are tested explicitly.
+- **Run:** Python 3.12.14/Linux with hardlink support. Six tasks × four arms, 12 proposals per arm, exit 0. Zero guard rejections and execution errors.
+- **Counts:** baseline → string → resolved → identity protected operations 3/3 → 3/3 → 2/3 → 0/3; functional completion 6/6 → 5/6 → 6/6 → 6/6; safe completion 3/6 → 2/6 → 4/6 → 6/6; benign blocks 0/9 → 1/9 → 0/9 → 0/9.
+- **Mechanism:** the resolved-target gate catches the protected symlink but sees a hardlink alias as an ordinary path. The identity gate catches both hardlinks and still allows an ordinary hardlink and contained parent path.
+- **Evidence:** [summary](../experiments/results/2026-10-26T07-35-54-971592Z-identity-v1-summary.json), [raw outcomes](../experiments/results/2026-10-26T07-35-54-971592Z-identity-v1.jsonl), [validation](../experiments/results/2026-10-26T07-35-54-971592Z-identity-v1-validation.txt), and [analysis](IDENTITY_FINDINGS.md).
+- **Interpretation:** the identity check resolves the demonstrated fixed-topology hardlink failure while preserving utility in this selected suite. It is still check-then-open and not race-safe; no production or live-agent claim follows.
+- **Next:** define a race-aware protocol and compare pathname checking with OS-level handle/capability enforcement.
+
 ## 2026-10-26 — Executor-aware gate restores utility in fixed fixtures
 
 - **Question:** can approval of the executor's resolved target prevent protected aliases while recovering legitimate dot/parent spellings?
