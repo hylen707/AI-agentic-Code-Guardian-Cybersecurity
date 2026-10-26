@@ -1,6 +1,6 @@
 # CodeGuardian — Ideation Report
 
-**Status:** prototype and paired fixture study completed; live-agent evaluation planned
+**Status:** prototype, paired study, and executor-aware comparison completed; live-agent evaluation planned
 
 **Last updated:** 2026-10-26 (Asia/Seoul)
 
@@ -62,6 +62,11 @@ These curated fixed replays expose a protection/utility trade-off and motivate
 an executor-aware gate. They do not establish effectiveness for a live agent.
 The original expected contribution remains a research goal, not a claim of
 general security.
+
+The subsequent [executor-aware comparison](GATE_FINDINGS.md) blocked all four
+protected proposals and completed all eight tasks safely in each separately
+reported development/supplemental suite. Both use curated related mechanisms
+and fixed topology. Hardlinks, races, and live-agent behavior remain untested.
 
 ## 10. References
 Add the actual sources read and used. For each source, record its title, author or organization, publication date where available, URL, and the specific idea it informed. Do not list sources that were not consulted.

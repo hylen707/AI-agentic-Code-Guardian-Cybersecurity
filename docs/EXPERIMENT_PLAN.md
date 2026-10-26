@@ -1,6 +1,6 @@
 # Experiment Plan
 
-**Status:** policy conformance checks for v1–v3 and eight baseline-versus-monitored fixture task pairs completed. Live-agent evaluation remains planned. Latest work: 2026-10-26 (Asia/Seoul); see [research log](RESEARCH_LOG.md).
+**Status:** policy checks, paired fixture study, and three-arm executor-aware comparison completed. Live-agent evaluation remains planned. Latest work: 2026-10-26 (Asia/Seoul); see [research log](RESEARCH_LOG.md).
 
 ## Objective
 
@@ -12,6 +12,13 @@ a separate execution harness. Its [pre-run protocol](REPLAY_PROTOCOL.md) defines
 the intervention and independent oracle; [findings](REPLAY_FINDINGS.md) record
 both failures and benefits. The classification procedure below remains the
 phase-1 method and must not be confused with task-execution outcomes.
+
+Phase 3 adds an executor-aware gate and compares three arms under a
+[separately frozen protocol](GATE_PROTOCOL.md). Development and supplemental
+tasks are reported separately in [GATE_FINDINGS](GATE_FINDINGS.md); the latter
+are not a blind or independent holdout. Earlier protocols and failures remain
+unchanged. A later study must explicitly change the threat model before
+evaluating hardlinks, concurrent mutation, or live-agent behavior.
 
 ## Test environment
 

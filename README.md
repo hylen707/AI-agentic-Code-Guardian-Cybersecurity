@@ -8,15 +8,31 @@ Can a lightweight runtime monitor reduce risky actions by an AI coding agent wit
 
 ## Project status
 
-- **Stage:** paired fixture experiments
-- **Implemented:** deterministic checker plus a separate disposable-file replay harness
-- **Tests:** 23/23 unit tests passed on 2026-10-26 (Asia/Seoul)
-- **Experiments:** policy conformance checks and eight paired file tasks; no live-agent evaluation
-- **Latest result:** protected accesses 4 → 2, functional completion 8/8 → 6/8, safe completion 4/8 → 4/8
+- **Stage:** three-arm fixture experiments
+- **Implemented:** string checker, executor-aware gate, and disposable-file replay/comparison harnesses
+- **Tests:** 36/36 unit tests passed on 2026-10-26 (Asia/Seoul)
+- **Experiments:** policy checks, paired study, and three-arm development/supplemental studies; no live-agent evaluation
+- **Latest result:** executor-aware gate: 0/4 protected accesses, 8/8 functional and safe completion in each separately reported eight-task suite
 
 This repository is an educational prototype. Do not describe planned measures or hypotheses as experimental findings.
 
-## Paired execution findings
+## Executor-aware comparison
+
+| Development suite | No monitor | String gate | Executor-aware gate |
+|---|---:|---:|---:|
+| Protected operations / proposals | 4/4 | 2/4 | 0/4 |
+| Functional completion | 8/8 | 6/8 | 8/8 |
+| Safe completion | 4/8 | 4/8 | 8/8 |
+| Benign blocks / proposals | 0/12 | 2/12 | 0/12 |
+
+The additional eight-task suite, frozen in Git before implementation, produced
+the same counts with unchanged code. See [separate results and evidence](docs/GATE_FINDINGS.md)
+and the [comparison protocol](docs/GATE_PROTOCOL.md). Both suites are curated and
+share mechanisms; the supplemental suite is not a blind or independent holdout.
+Approval binds the prepared resolved pathname and content under fixed topology.
+Hardlinks, races, and live-agent effectiveness remain unvalidated.
+
+## Original paired execution findings
 
 The same eight fixed tasks were executed on fresh synthetic fixtures with and
 without the unchanged monitor. Direct protected accesses were blocked; symlink
@@ -69,6 +85,11 @@ temporary directories. An independent resource/goal oracle records actual
 protected-file effects and task completion. A shared containment guard limits
 the experiment to its fixtures; it is not a general sandbox.
 
+`src/executor_gate.py` checks prepared targets against configured roots.
+`experiments/run_comparison.py` adds this gate as a third arm and executes the
+exact prepared request inspected by the gate. The original monitor and paired
+runner remain available for comparison.
+
 ## Outcomes
 
 1. **Risky-action block rate:** risky synthetic actions blocked / all risky synthetic actions tested.
@@ -86,6 +107,7 @@ Define the test set and counting rules before running experiments. Report the nu
 - `docs/EXPERIMENT_PLAN.md` — test cases, measures, and procedure.
 - `docs/REPLAY_PROTOCOL.md` — fixed paired experiment, threat model, and outcome definitions.
 - `docs/REPLAY_FINDINGS.md` — observed benefits, task losses, path-alias misses, and limitations.
+- `docs/GATE_PROTOCOL.md` and `docs/GATE_FINDINGS.md` — prospective comparison design, improved-gate evidence, and remaining limits.
 - `docs/RESEARCH_LOG.md` — dated work log; record what actually happened.
 - `docs/REFLECTION_NOTES.md` — prompts for a later personal reflection.
 - `CHANGELOG.md` — chronological record of meaningful repository changes, verification status, and next steps.
@@ -95,10 +117,9 @@ Define the test set and counting rules before running experiments. Report the nu
 
 ## Next steps
 
-1. Compare an executor-aware gate with the baseline and original string-only gate; retain these initial failures.
-2. Predefine a goal of blocking protected aliases while recovering contained benign-path completion, with shared guard blocks reported separately.
-3. Freeze new evaluation tasks separately from the development suite before running the changed policy.
-4. Define race assumptions and agent settings before a constrained, repeated live-agent experiment.
+1. Choose a new failure class, such as hardlink identities or concurrent topology mutation, and define its threat model before execution.
+2. Preserve current results and prospectively freeze new tasks before evaluating stronger enforcement.
+3. Define constrained tools, model/prompt settings, budgets, and repeated task trials before a live-agent study.
 5. Write a personal reflection based on real decisions, difficulties, and learning.
 
 ## Reproducibility

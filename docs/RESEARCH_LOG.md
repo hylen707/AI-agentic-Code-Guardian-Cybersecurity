@@ -2,6 +2,18 @@
 
 Record dated entries as work happens. Keep failed attempts and changes in direction. Distinguish manual checks, unit tests, and formal experiments.
 
+## 2026-10-26 — Executor-aware gate restores utility in fixed fixtures
+
+- **Question:** can approval of the executor's resolved target prevent protected aliases while recovering legitimate dot/parent spellings?
+- **Prospective freeze:** committed [GATE_PROTOCOL](GATE_PROTOCOL.md) and eight supplemental tasks in `1d9bbe305625f5b7df55a185463908729c48cc03` before implementing the gate. The cases were visible to the developer, so they are supplemental, not an independent blind holdout. Neither frozen file changed afterward.
+- **Intervention:** added `src/executor_gate.py`, which approves prepared targets using configured roots, and `experiments/run_comparison.py`, which executes that same immutable target/content. It does not consult oracle labels. The original monitor, paired runner, and previous results remain unchanged.
+- **Validation:** actually ran `python -m unittest discover -s tests -v`; all 36 tests passed (23 existing plus 13 new). Tests cover direct/alias protection, benign paths and links, policy independence, new protected targets, raw request mutation, shared guard accounting, and complete task/arm matching.
+- **Runs:** Python 3.12.14/Linux. Ran development first, then the frozen supplemental suite with identical source hashes; both commands exited 0. Full commands and hashes are in their summaries. No tuning occurred between runs.
+- **Counts, each suite separately, baseline → string gate → executor-aware:** protected accesses 4/4 → 2/4 → 0/4; functional completion 8/8 → 6/8 → 8/8; safe completion 4/8 → 4/8 → 8/8; benign blocks 0/12 → 2/12 → 0/12. Every arm had zero shared guard rejections and execution errors. All stated criteria held; the original two development arms exactly reproduced the earlier raw records.
+- **Evidence:** [development summary](../experiments/results/2026-10-26T02-23-10-090530Z-gate-v1-development-summary.json), [supplemental summary](../experiments/results/2026-10-26T02-23-27-301341Z-gate-v1-supplemental-summary.json), [unit output](../experiments/results/2026-10-26T02-23-10-090530Z-gate-v1-development-unit-tests.json), and [findings with raw/console links](GATE_FINDINGS.md).
+- **Interpretation:** binding approval to the resolved pathname resolves the demonstrated fixed-topology failures. It is not binding to an immutable file identity and does not address hardlinks or races. Small related suites do not establish generalization, production safety, or live-agent effectiveness.
+- **Next:** choose and freeze a new threat-model extension (hardlink identities or topology mutation), preserve any failures, and only then evaluate stronger enforcement or a constrained agent protocol.
+
 ## 2026-10-26 — Paired execution reveals protection and utility trade-offs
 
 - **Goal:** deepen the study with actual fixture effects, a no-monitor comparison, and functional goals independent of policy labels.

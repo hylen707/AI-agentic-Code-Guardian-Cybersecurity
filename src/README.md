@@ -1,5 +1,10 @@
 # Source code
 
+`executor_gate.py` adds an experimental gate for a trusted fixture executor.
+It approves a prepared canonical target and copied content under configured
+workspace/protected roots. Use the three-arm experiment runner to evaluate it;
+it is not a race-safe sandbox. See `docs/GATE_PROTOCOL.md` for assumptions.
+
 The first policy checker is in `codeguardian.py`.
 
 ## What it does
