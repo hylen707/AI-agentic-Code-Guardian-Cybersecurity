@@ -1,0 +1,38 @@
+{
+  "verification": "PASS",
+  "method": "Recomputed identity, protected effects, and original-object outcomes from raw records without the runner summarizer; verified source hashes and frozen Git blob identities.",
+  "records": 30,
+  "recomputed": {
+    "baseline": {
+      "protected_content_operations": 6,
+      "protected_opens": 6,
+      "original_completions": 2
+    },
+    "identity_path": {
+      "protected_content_operations": 4,
+      "protected_opens": 4,
+      "original_completions": 2
+    },
+    "descriptor_bound": {
+      "protected_content_operations": 0,
+      "protected_opens": 2,
+      "original_completions": 8
+    }
+  },
+  "frozen_files_verified": [
+    "docs/REPLAY_PROTOCOL.md",
+    "docs/GATE_PROTOCOL.md",
+    "docs/IDENTITY_PROTOCOL.md",
+    "experiments/cases/v3/README.md",
+    "docs/RACE_PROTOCOL.md",
+    "experiments/tasks/race-eval-v1/tasks.json"
+  ],
+  "earlier_materialized_artifacts_unchanged": 41,
+  "markdown_files_reviewed": 19,
+  "relative_markdown_links_checked": 125,
+  "unit_test_count": 55,
+  "unit_transcript_sha256": "fccc3192e4d69ca8de55321bdc592b5ba4a10f503b54cddbd973614e4ce242ef",
+  "raw_sha256": "ff558b659715358c8831f0d8c8371e28da0bc93f86cfd441a10bc1de150e1ff4",
+  "summary_sha256": "4822dfbe7ab4e8d97689005f9162a42e696e30341106533dd59f5c8c3c3cc78a",
+  "limits": "Artifact checks are not additional empirical samples. Remote-only historical result content is preserved by the base Git tree, not rerun."
+}

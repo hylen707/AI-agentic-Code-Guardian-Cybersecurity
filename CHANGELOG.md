@@ -1,8 +1,18 @@
-# Changelog and Project Journal
+# Changelog
 
-This file records observable project changes in reverse chronological order. It complements `docs/RESEARCH_LOG.md`, which keeps fuller dated work notes, decisions, questions, and reflections.
+This record tracks implemented changes and their validation in reverse chronological order. The [research log](docs/RESEARCH_LOG.md) records questions, decisions, and interpretation. Older entries retain what was known at the time.
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
+
+## 2026-10-26 — Descriptor binding and research presentation
+
+- Froze the [replacement protocol](docs/RACE_PROTOCOL.md) and ten-case manifest at `d0ddc20aac99365adb85bc48ef53539c8028a127` before implementation.
+- Added a descriptor-owning executor for existing regular-file reads/writes, a three-arm deterministic replacement runner, and 11 tests. Preserved all earlier implementation files and measured datasets.
+- Observed baseline → identity-path → descriptor-bound protected content operations of 6/6 → 4/6 → 0/6 and original-object completion of 2/8 → 2/8 → 8/8. All arms had zero benign blocks and infrastructure errors. The descriptor arm still opened two protected objects for metadata authorization.
+- All 55 tests passed. Saved raw records, source/task hashes, test output, and [findings](docs/RACE_FINDINGS.md). Counts describe fixed schedules, not concurrent win rates or live-agent tasks.
+- Reworked living Markdown into an English research portfolio: a concise project overview, explicit technical argument, study map, architecture, reproduction guide, and evidence-linked reflection prompts. Updated prior findings with historical scope and follow-up links. Added an accurate disclosure of AI assistance without inventing personal experience or independent authorship.
+- Audited all pre-existing Markdown. Preserved three earlier frozen protocols and the v3 design note byte-for-byte; retained historical log entries and raw results. Their integrity takes precedence over cosmetic rewriting.
+- Next: define object-state and policy-membership experiments before extending the descriptor claim; creation and general confinement remain unimplemented research obligations.
 
 ## 2026-10-26 — Filesystem-identity gate closes hardlink bypass
 

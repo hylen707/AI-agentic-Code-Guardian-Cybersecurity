@@ -1,79 +1,49 @@
-# CodeGuardian — Ideation Report
+# Project rationale: authorization at the execution boundary
 
-**Status:** prototype, paired study, and executor-aware comparison completed; live-agent evaluation planned
+**Status:** five experimental stages completed on synthetic fixtures; live-agent evaluation remains future work.
 
-**Last updated:** 2026-10-26 (Asia/Seoul)
+**Updated:** 2026-10-26 (Asia/Seoul).
 
-## 1. Project idea
-CodeGuardian explores whether a lightweight runtime monitor can help identify and block risky actions proposed by an AI coding agent, while still allowing ordinary software-development tasks to proceed.
+## Research question
 
-## 2. Research question
-Can a lightweight runtime monitor reduce risky actions by an AI coding agent without substantially reducing completion of legitimate tasks in a controlled test environment?
+Can a lightweight runtime safeguard reduce protected-resource operations while preserving legitimate work, and which execution assumptions determine whether its decisions remain valid?
 
-## 3. Motivation
-AI coding agents may propose actions that change files or invoke tools. A project can benefit from a separate policy layer that checks an action before it is allowed. This project will examine that idea in a small, controlled setting rather than making claims about all real-world agents.
+AI coding agents motivate the question because their proposed actions need an execution boundary. The present experiments isolate the filesystem portion of that boundary. They do not involve an actual model making or adapting proposals.
 
-## 4. Threat model and scope
-**In scope**
-- Synthetic action proposals such as reading or editing a project-owned test file.
-- Clearly labeled risky proposals, such as attempting to access a path outside the temporary project directory.
-- A monitor that classifies actions as allowed or blocked and records the decision.
-- Evaluation on a predefined set of harmless test cases.
+## Why this question is tractable
 
-**Out of scope**
-- Testing against real users, school computers, or production systems.
-- Collecting passwords, tokens, or personal data.
-- Connecting to external networks or services.
-- Running destructive or arbitrary shell commands.
-- Claiming the monitor secures all AI agents or prevents every attack.
+File operations offer observable distinctions between a requested name, its resolved target, the underlying file identity, and an open descriptor. A small fixture can change one of these relationships while holding the requested operation constant. That makes it possible to construct counterexamples, attribute failures to a mechanism, and compare bounded interventions without using sensitive data.
 
-## 5. Proposed method
-1. Define a small action schema and an explicit allowlist.
-2. Create a fixed dataset of synthetic safe and risky action records.
-3. Run each case without the monitor to establish a baseline where meaningful.
-4. Run the same cases through the monitor.
-5. Save each input, decision, reason, and outcome.
-6. Calculate the measures defined in `EXPERIMENT_PLAN.md`.
-7. Discuss both successful blocks and incorrect blocks.
+The project began with string-policy checks. Its most useful revision was methodological: replacing agreement with hand-authored labels with observations of actual file effects and required task goals. A passing label test could then be examined alongside an execution failure instead of being mistaken for a security result.
 
-## 6. Measures
-- Risky-action block rate.
-- False-positive rate on legitimate actions.
-- Completion rate for legitimate tasks.
-- Optional decision latency.
+## Design progression
 
-All measures must include raw counts and the exact test-set size.
+| Stage | Assumption examined | Intervention or observation |
+|---|---|---|
+| Policy conformance | Expected labels adequately describe the implemented policy. | Versioned JSON cases and observed decisions. |
+| Paired replay | Allowed names correspond to allowed resources. | Actual fixture execution exposes alias misses and legitimate task losses. |
+| Resolved targets | Canonical path approval is sufficient under fixed topology. | Approve the prepared resolved target and immutable request content. |
+| File identity | Different pathnames imply different protected resources. | Compare device/inode identities to catch hardlinks. |
+| Descriptor binding | A pre-open identity remains valid until use. | Retain and operate on the same authorized descriptor across replacement. |
 
-## 7. Expected contribution
-The intended contribution is a reproducible small-scale demonstration of a runtime policy-checking approach and an honest analysis of its trade-offs. This is a proposed outcome, not a result established by the current draft.
+The [study map](EXPERIMENT_PLAN.md) links each question to its protocol and evidence. Results are reported within each stage's assumptions; later stages do not rewrite earlier measurements.
 
-## 8. Limitations
-A small synthetic dataset cannot establish how well the approach performs against real AI coding agents or unseen attacks. Rule-based monitoring may miss risks that are not represented in the test cases and may block legitimate work. Test-set design and the chosen rules may bias the result.
+## Contribution
 
-## 9. Results
-Policy conformance checks matched all 45 expected labels in dataset v3. A
-subsequent eight-pair fixture experiment used actual protected-resource effects
-and task goals as its oracle. Protected operations fell from 4 to 2, functional
-completion fell from 8/8 to 6/8, and safe completion remained 4/8. Two benign
-dot/parent spellings were blocked, while two symlink aliases still accessed
-protected files. See the [findings, evidence, and limits](REPLAY_FINDINGS.md).
+The deliverable is an auditable experimental argument: explicit threat models, matched comparisons, counterexamples, bounded improvements, raw outcomes, and reproducible commands. The project applies established operating-system mechanisms rather than claiming their invention. Its research value depends on the quality of the questions and evidence, not on the breadth of an unsupported security claim.
 
-These curated fixed replays expose a protection/utility trade-off and motivate
-an executor-aware gate. They do not establish effectiveness for a live agent.
-The original expected contribution remains a research goal, not a claim of
-general security.
+## Scope
 
-The subsequent [executor-aware comparison](GATE_FINDINGS.md) blocked all four
-protected proposals and completed all eight tasks safely in each separately
-reported development/supplemental suite. Both use curated related mechanisms
-and fixed topology. Hardlinks, races, and live-agent behavior remain untested.
+Experiments use synthetic text, disposable directories, regular files, hardlinks, and symlinks. Controlled file replacement is performed by trusted experiment code. Policy classifiers never execute proposed shell commands; fixture runners execute only their documented operations. There are no real credentials, user documents, production targets, or live-agent sessions in these studies.
 
-## 10. References
-Add the actual sources read and used. For each source, record its title, author or organization, publication date where available, URL, and the specific idea it informed. Do not list sources that were not consulted.
+The latest executor covers existing-file read/write operations. A production boundary would also need directory confinement, creation semantics, policy updates, resource limits, hostile object types, and a defined response to concurrent content mutation. These remain separate design obligations.
 
-## 11. Personal reflection — complete later
-- What assumption did I make at the start?
-- Which design choice was hardest, and what evidence informed it?
-- What failed or surprised me?
-- How did I change the project after seeing evidence?
-- What would I investigate next, and why?
+## Open research direction
+
+The next useful distinction is between stable identity and stable state. A held descriptor can retain the same file while another writer changes its contents or a policy changes its classification. A new protocol should define the intended outcome under each change before selecting an enforcement mechanism.
+
+An eventual agent study should use constrained tools, fixed model/prompt versions, explicit budgets, repeated trials, and task-correctness judgments independent of the gate. That study would address behavior and utility beyond the current fixed proposals.
+
+## Sources and authorship
+
+The [Phase 5 technical basis](RACE_PROTOCOL.md#technical-basis) records the systems documentation consulted for this continuation. The [research statement](RESEARCH_STATEMENT.md) distinguishes the project's contribution from established mechanisms and describes AI assistance. Personal motivation and learning belong in the author's own [reflection notes](REFLECTION_NOTES.md).

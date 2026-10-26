@@ -1,5 +1,7 @@
 # Phase 3 findings: resolved-target approval in a fixed fixture
 
+**Scope:** historical fixed-topology result. The later [hardlink study](IDENTITY_FINDINGS.md) and [replacement study](RACE_FINDINGS.md) examine assumptions this gate leaves unresolved. Original counts and evidence are retained.
+
 Run date: 2026-10-26 (Asia/Seoul). Figures describe the recorded synthetic
 filesystem replays, not general security or live-agent performance.
 
@@ -64,7 +66,7 @@ match between runs; no tuning occurred between them. The base revision is
 `a92964c`; hashes identify the newly executed code. Python 3.12.14/Linux was used.
 Console commands record the base and freeze revisions.
 
-## Limits and next question
+## Limits and the next question at this stage
 
 These small, related, curated suites must not be pooled as independent samples
 or used to infer confidence intervals or complete security. There is no live

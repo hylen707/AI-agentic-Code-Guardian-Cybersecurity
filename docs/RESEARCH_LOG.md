@@ -1,6 +1,22 @@
-# Research Log
+# Research log
 
-Record dated entries as work happens. Keep failed attempts and changes in direction. Distinguish manual checks, unit tests, and formal experiments.
+This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
+
+## 2026-10-26 — Pathname replacement challenges pre-open identity approval
+
+**Question and design.** Does the Phase 4 identity check remain valid when a path changes between approval and open? The [protocol](RACE_PROTOCOL.md) and ten-case manifest were frozen at `d0ddc20aac99365adb85bc48ef53539c8028a127` before implementation. Read/write pairs cover controls, protected hardlinks before and after checking, protected parent substitution, and benign replacement. These developer-visible deterministic schedules are not a blind evaluation or concurrent probability sample.
+
+**Implementation.** Added `DescriptorExecutor`, which opens without truncation, authorizes with `fstat`, and uses the held descriptor for content I/O. A separate runner compares it with no gate and the unchanged Phase 4 gate. The oracle observes actual I/O descriptors, a retained original-object witness, and protected bytes. The executor cannot consult expected outcomes or the oracle's held descriptor.
+
+**Observed result.** Across 30 case/arm records, baseline → identity-path → descriptor-bound protected content operations were 6/6 → 4/6 → 0/6; original-object completions were 2/8 → 2/8 → 8/8. All arms had zero benign blocks and infrastructure errors. The identity-path gate failed all four after-check protected substitutions. The descriptor executor made two protected metadata opens and denied both before content I/O. These opens remain explicitly reported.
+
+**Validation and evidence.** All 55 unit tests passed, including 11 new tests. The experiment exited 0 and all seven summary criteria held. See [raw records](../experiments/results/2026-10-26T08-23-21-637204Z-race-v1.jsonl), [summary and hashes](../experiments/results/2026-10-26T08-23-21-637204Z-race-v1-summary.json), [test transcript](../experiments/results/2026-10-26T08-23-21-637204Z-race-v1-unit-tests.txt), and [findings](RACE_FINDINGS.md). The original eight-case completion denominator was defined before execution and overlaps the six attack cases.
+
+**Interpretation.** Pre-open identity checking observes a name binding at one instant. Holding the authorized descriptor preserves the object through the tested later name changes. This does not freeze its contents or protected membership, prevent metadata opens, or establish general confinement. Earlier fixed-topology results remain intact; their assumptions are now more visible.
+
+**Presentation and attribution.** Revised living Markdown to foreground questions, evidence, technical reasoning, limitations, and reproducibility. Added the [research statement](RESEARCH_STATEMENT.md) and updated study/architecture guides. Frozen protocols, the v3 design note, historical entries, and raw results were retained. This continuation used ChatGPT/Codex for design, implementation, execution, analysis, and editing; personal learning and independent-contribution claims remain for the owner to substantiate.
+
+**Next decision.** Specify whether future authorization concerns identity, content version, or current protected membership, then freeze a new protocol before testing those changes. A live-agent adapter remains outside the completed work.
 
 ## 2026-10-26 — Filesystem identity detects hardlink aliases
 

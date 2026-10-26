@@ -1,87 +1,43 @@
-# Experiment Plan
+# Study map and evaluation standards
 
-**Status:** policy checks, paired fixture study, and three-arm executor-aware comparison completed. Live-agent evaluation remains planned. Latest work: 2026-10-26 (Asia/Seoul); see [research log](RESEARCH_LOG.md).
+**Status:** living overview through Phase 5, 2026-10-26 (Asia/Seoul). Frozen protocols govern their respective runs.
 
-## Objective
+## Questions, units, and evidence
 
-Evaluate the trade-off between blocking risky synthetic actions and allowing legitimate synthetic tasks to complete.
+| Stage | Unit and comparison | Outcome | Protocol or design | Findings |
+|---|---|---|---|---|
+| 1. Policy conformance | 20, 21, and 45 overlapping synthetic inputs | Agreement with expected policy labels | [v3 design](../experiments/cases/v3/README.md) | [Verification](../experiments/results/2026-10-25T16-05-40Z-verification.json) |
+| 2. Paired replay | Eight tasks, baseline and string gate | Protected operations; functional and safe completion | [Replay protocol](REPLAY_PROTOCOL.md) | [Replay findings](REPLAY_FINDINGS.md) |
+| 3. Resolved targets | Eight development and eight supplemental tasks, three arms; suites separate | Protected operations and task goals | [Gate protocol](GATE_PROTOCOL.md) | [Gate findings](GATE_FINDINGS.md) |
+| 4. File identity | Six hardlink-focused tasks, four arms | Protected operations and task goals | [Identity protocol](IDENTITY_PROTOCOL.md) | [Identity findings](IDENTITY_FINDINGS.md) |
+| 5. Descriptor binding | Ten deterministic replacement cases, three arms | Protected content I/O, protected opens, original-object completion | [Replacement protocol](RACE_PROTOCOL.md) | [Replacement findings](RACE_FINDINGS.md) |
 
-Phase 1 measures decision agreement and legitimate allow rate. Phase 2 now
-measures actual fixture operations, functional goals, and safe completion using
-a separate execution harness. Its [pre-run protocol](REPLAY_PROTOCOL.md) defines
-the intervention and independent oracle; [findings](REPLAY_FINDINGS.md) record
-both failures and benefits. The classification procedure below remains the
-phase-1 method and must not be confused with task-execution outcomes.
+These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
-Phase 3 adds an executor-aware gate and compares three arms under a
-[separately frozen protocol](GATE_PROTOCOL.md). Development and supplemental
-tasks are reported separately in [GATE_FINDINGS](GATE_FINDINGS.md); the latter
-are not a blind or independent holdout. Earlier protocols and failures remain
-unchanged. A later study must explicitly change the threat model before
-evaluating hardlinks, concurrent mutation, or live-agent behavior.
+## Outcome definitions
 
-## Test environment
+**Policy agreement** compares the observed decision with a predefined label. It establishes conformance on those inputs, not resource protection.
 
-Use a local test harness operating on synthetic records only. The current CodeGuardian prototype classifies proposed actions and does not execute file operations. No network access, credentials, personal files, school infrastructure, or real agent integration is needed for this first evaluation.
+**Functional completion** in Phases 2–4 requires all declared file/read goals. **Safe completion** additionally requires zero protected-resource events. A final report file alone is insufficient when a required read did not occur.
 
-The phase-2 harness additionally uses disposable project-generated files and
-static symlinks under a fresh temporary root for each arm. It does not use real
-accounts or data. Shared containment failures and execution errors are reported
-separately from monitor blocks; there were zero in the first paired run.
+**Protected content operations** in Phase 5 count successful read/write operations through a descriptor whose identity matches the protected fixture. **Protected opens** are counted independently, even when the gate subsequently denies content I/O. Failed attempts remain in the trace and in the attempt count.
 
-## Versioned test set
+**Original-object completion** in Phase 5 requires the specified operation on the initial ordinary inode and the expected content outcome. Its eight-case denominator excludes the two before-check substitutions prospectively. It is a narrower measure than task completion, and overlaps with the six attack schedules.
 
-The initial frozen dataset is `experiments/cases/v1/actions.jsonl`.
+**Benign blocks** count denials on each protocol's ordinary cases. Infrastructure failures, shared-guard rejections, and policy denials are distinct categories. An error must not improve an apparent protection rate by disappearing from the record.
 
-- 8 legitimate cases expected to be allowed.
-- 8 risky cases expected to be blocked.
-- 4 invalid-input cases expected to be blocked; report these separately from the risky-action block rate and false-positive rate.
+## Experimental controls
 
-Each line contains metadata plus an `input` value. Only the `input` value should be sent to the monitor. The expected decision is a pre-defined label, not an observed result. If the dataset changes, create a new version and explain the change.
+Every compared arm receives a fresh fixture. Within a study, proposals, initial bytes, schedules, and goals are fixed across arms. The intervention changes the approval/execution mechanism; the oracle observes resource identity and effects independently of the decision label. Synthetic fixtures keep the experiments bounded while allowing actual filesystem behavior to be observed.
 
-Subsequent versions preserve earlier scenarios: v2 has 21 cases (8 legitimate,
-9 risky, 4 invalid-input); [v3](../experiments/cases/v3/README.md) has 45 cases
-(16 legitimate, 19 risky, 10 invalid-input). V3's 24 new cases and their labels
-were written before its first run, against the unchanged string policy.
-These are overlapping development datasets, not independent holdout samples.
+Raw records precede interpretation. Each study saves input/source hashes, environment information, commands, counts, and criteria. Historical failures remain visible. New hypotheses require a new protocol or explicitly versioned amendment, not edited labels in a measured dataset.
 
-## Procedure
+## Next protocol, not yet executed
 
-1. Review the selected versioned dataset and its expected labels before running it.
-2. Run every case through the monitor and save the observed decision and reason in a separate results file.
-3. Compare observed decisions with expected decisions without silently changing labels.
-4. Record any mismatch, investigate it, and preserve the original run.
-5. If policy rules or test cases change, record the change and run a new version.
-6. Report raw counts, rates, examples of errors, and limitations.
+The next study should hold the pathname or descriptor identity constant while varying content or protected membership. It must specify whether authorization concerns an object, a content version, or current policy membership. Creation needs a separate design because no existing file identity is available before the operation.
 
-## Metrics and definitions
+Before live-agent evaluation, record model and prompt versions, tool schema, permissions, task budgets, repeated trials, and an independent task-correctness oracle. Evaluate useful work and protection jointly. Current fixture results do not supply those observations.
 
-- **Risky-action block rate** = risky cases blocked / total risky cases.
-- **False-positive rate** = legitimate cases blocked / total legitimate cases.
-- **Legitimate allow rate** = legitimate cases allowed / total legitimate cases. This is a policy-classification proxy, not proof that a real task completed.
-- **Invalid-input block rate** = invalid-input cases blocked / total invalid-input cases.
-- **Decision latency (optional)** = elapsed time between receiving a synthetic action and recording the decision.
+## Documentation and evidence integrity
 
-If a denominator is zero, report the metric as not applicable. Save raw numerators and denominators for every rate.
-
-## Result table template
-
-The template below uses v1 denominators. Use the selected dataset's category
-counts for a new run; completed results belong in saved summaries and the
-research log.
-
-| Metric | Numerator | Denominator | Rate / value |
-|---|---:|---:|---:|
-| Risky-action block rate | TBD | 8 | TBD |
-| False-positive rate | TBD | 8 | TBD |
-| Legitimate allow rate | TBD | 8 | TBD |
-| Invalid-input block rate | TBD | 4 | TBD |
-| Decision latency (optional) | TBD | TBD | TBD |
-
-## Quality checks
-
-- Use the same versioned dataset for repeated comparisons.
-- Keep raw inputs and outputs so results can be reproduced.
-- Record software version, date, and changes to the rules.
-- Include failed and unexpected cases.
-- Do not claim broad real-world effectiveness from this small controlled evaluation.
+Living summaries use concise academic English: question, method, result, interpretation, and limitation. Earlier protocol text, the v3 design note, task manifests, and raw outputs are preserved byte-for-byte to maintain their recorded hashes. Dated log entries describe what was known at the time; a later entry supplies corrections or extensions. This distinction allows a readable portfolio without retroactively improving the experimental record.
