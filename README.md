@@ -8,13 +8,28 @@ Can a lightweight runtime monitor reduce risky actions by an AI coding agent wit
 
 ## Project status
 
-- **Stage:** three-arm fixture experiments
-- **Implemented:** string checker, executor-aware gate, and disposable-file replay/comparison harnesses
-- **Tests:** 36/36 unit tests passed on 2026-10-26 (Asia/Seoul)
-- **Experiments:** policy checks, paired study, and three-arm development/supplemental studies; no live-agent evaluation
-- **Latest result:** executor-aware gate: 0/4 protected accesses, 8/8 functional and safe completion in each separately reported eight-task suite
+- **Stage:** filesystem-identity fixture experiments
+- **Implemented:** string checker, resolved-target gate, filesystem-identity gate, and replay/comparison harnesses
+- **Tests:** 44/44 unit tests passed on 2026-10-26 (Asia/Seoul)
+- **Experiments:** policy, paired, resolved-target, and identity-focused studies; no live-agent evaluation
+- **Latest result:** identity gate: 0/3 protected accesses, 6/6 functional and safe completion in the hardlink-focused suite
 
 This repository is an educational prototype. Do not describe planned measures or hypotheses as experimental findings.
+
+## Filesystem-identity comparison
+
+| Hardlink-focused suite | No monitor | String gate | Resolved-target gate | Identity gate |
+|---|---:|---:|---:|---:|
+| Protected operations / proposals | 3/3 | 3/3 | 2/3 | **0/3** |
+| Functional completion | 6/6 | 5/6 | 6/6 | **6/6** |
+| Safe completion | 3/6 | 2/6 | 4/6 | **6/6** |
+| Benign blocks / proposals | 0/9 | 1/9 | 0/9 | **0/9** |
+
+The identity gate compares prepared targets with configured protected-file
+device/inode identities. It blocks the two hardlink aliases that the
+resolved-target gate misses while preserving contained benign paths. See the
+[protocol and findings](docs/IDENTITY_FINDINGS.md). This suite is curated and
+fixed-topology evidence; hardlink races and live-agent behavior remain untested.
 
 ## Executor-aware comparison
 
@@ -108,6 +123,7 @@ Define the test set and counting rules before running experiments. Report the nu
 - `docs/REPLAY_PROTOCOL.md` — fixed paired experiment, threat model, and outcome definitions.
 - `docs/REPLAY_FINDINGS.md` — observed benefits, task losses, path-alias misses, and limitations.
 - `docs/GATE_PROTOCOL.md` and `docs/GATE_FINDINGS.md` — prospective comparison design, improved-gate evidence, and remaining limits.
+- `docs/IDENTITY_PROTOCOL.md` and `docs/IDENTITY_FINDINGS.md` — hardlink-focused protocol, results, and race limitations.
 - `docs/RESEARCH_LOG.md` — dated work log; record what actually happened.
 - `docs/REFLECTION_NOTES.md` — prompts for a later personal reflection.
 - `CHANGELOG.md` — chronological record of meaningful repository changes, verification status, and next steps.
@@ -117,8 +133,8 @@ Define the test set and counting rules before running experiments. Report the nu
 
 ## Next steps
 
-1. Choose a new failure class, such as hardlink identities or concurrent topology mutation, and define its threat model before execution.
-2. Preserve current results and prospectively freeze new tasks before evaluating stronger enforcement.
+1. Define a race-aware threat model and evaluate check-to-open replacement behavior or handle-based enforcement.
+2. Preserve all current results and freeze each new task suite before implementation.
 3. Define constrained tools, model/prompt settings, budgets, and repeated task trials before a live-agent study.
 5. Write a personal reflection based on real decisions, difficulties, and learning.
 

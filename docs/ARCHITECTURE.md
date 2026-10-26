@@ -51,12 +51,13 @@ Blank input lines are skipped. Invalid JSON produces a `block` decision with an 
 | Input parser | Read one JSON action record per line | Implemented |
 | Policy checker | Validate operation and path against fixed rules | Implemented |
 | Decision output | Return JSON with decision, reason, operation, path, and input line | Implemented |
-| Unit tests | Check policy behavior, fixture effects, containment, and prepared-request binding | Implemented; 36/36 passed (11 policy + 12 replay + 13 gate/comparison) |
+| Unit tests | Check policy behavior, fixture effects, containment, prepared-request binding, and file identities | Implemented; 44/44 passed (11 policy + 12 replay + 13 resolved-gate + 8 identity) |
 | Versioned experiment dataset | Store labelled legitimate, risky, and invalid synthetic cases | Implemented: v1 (20), v2 (21), v3 (45) |
 | Experiment runner and metrics | Run cases and calculate rates from raw counts | Implemented; raw JSONL and summary JSON saved for all three versions |
 | Paired replay harness | Execute fixed file tasks on fresh fixtures with/without the gate | Implemented; eight pairs, independent resource and goal oracle |
 | Executor-aware gate | Approve a prepared resolved target under configured roots | Implemented for trusted, fixed-topology fixtures |
 | Three-arm comparison | Compare baseline, string gate, and executor-aware gate | Implemented; separate development and prospectively frozen supplemental suites |
+| Filesystem-identity gate | Compare prepared target identity to configured protected-file identities | Implemented for fixed-topology hardlink-focused fixtures |
 | Real AI-agent adapter | Intercept actions from an actual agent | Not implemented; outside current prototype |
 
 ### Paired replay boundary
@@ -169,6 +170,12 @@ Dataset versions overlap; these are not independent observations. The separate
 functional completion 8/8 → 6/8, and safe completion 4/8 → 4/8. Those task-level
 outcomes use resolved resources and file/read goals, not policy labels.
 Live-agent effects remain unmeasured.
+
+The [identity-focused follow-up](IDENTITY_FINDINGS.md) added a fourth arm. In
+its six-task suite it observed protected operations 3/3 → 3/3 → 2/3 → 0/3 and
+safe completion 3/6 → 2/6 → 4/6 → 6/6 from baseline through identity gate.
+The suite is curated and fixed-topology; `stat` check-to-open races remain
+outside the claim.
 
 The [three-arm follow-up](GATE_FINDINGS.md) recorded 0/4 protected operations,
 8/8 functional completion, 8/8 safe completion, and 0/12 benign blocks for the

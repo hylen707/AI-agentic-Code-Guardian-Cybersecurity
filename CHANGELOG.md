@@ -4,6 +4,14 @@ This file records observable project changes in reverse chronological order. It 
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-10-26 — Filesystem-identity gate closes hardlink bypass
+
+- Froze `IDENTITY_PROTOCOL.md` and six hardlink-focused tasks in commit `8e0910d86636c9cd4264b9c1f3e70da4c7b8b39f` before implementing the identity gate.
+- Added `IdentityAwareGate`, a four-arm runner, hardlink fixture setup, and eight identity tests. The gate checks prepared target path plus `(st_dev, st_ino)` identities of configured protected files.
+- **Observed:** baseline → string gate → resolved-target gate → identity gate protected operations 3/3 → 3/3 → 2/3 → 0/3; functional completion 6/6 → 5/6 → 6/6 → 6/6; safe completion 3/6 → 2/6 → 4/6 → 6/6; benign blocks 0/9 → 1/9 → 0/9 → 0/9.
+- All 44 tests passed; the comparison exited 0 with zero guard rejections and execution errors. Source and task hashes are recorded in the [summary](experiments/results/2026-10-26T07-35-54-971592Z-identity-v1-summary.json).
+- **Limit/next:** `stat` check-to-open is not race-safe and does not validate handle-level enforcement. Define a race-aware protocol before the next intervention.
+
 ## 2026-10-26 — Executor-aware gate and three-arm comparison
 
 - Froze the comparison protocol and eight supplemental tasks in `1d9bbe305625f5b7df55a185463908729c48cc03` before implementation; the same developer designed both, so no blind-holdout claim is made.

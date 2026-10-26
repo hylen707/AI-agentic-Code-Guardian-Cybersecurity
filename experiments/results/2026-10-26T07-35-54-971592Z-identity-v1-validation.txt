@@ -1,0 +1,13 @@
+Validation date: 2026-10-26 (Asia/Seoul)
+Environment: Python 3.12.14 on Linux with hardlink support
+Command: python -m unittest discover -s tests -v
+Observed: 44 tests passed; exit code 0
+Composition: 11 policy + 12 replay + 13 executor-aware gate/comparison + 8 identity-gate tests
+
+Command: python experiments/run_identity_comparison.py --dataset experiments/tasks/identity-eval-v1/tasks.json --base-commit 174330958da6ec22e85972d5b4cf5f760852878f --freeze-commit 8e0910d86636c9cd4264b9c1f3e70da4c7b8b39f
+Observed: exit code 0
+Criteria: all identity-gate criteria true; resolved-target gate missed both hardlink aliases; zero guard rejections and execution errors in all arms.
+
+The full per-action output is preserved in the matching JSONL file. The summary
+contains command, revisions, Python/platform, source hashes, dataset hash,
+arm metrics, task outcomes, and interpretation limits.
