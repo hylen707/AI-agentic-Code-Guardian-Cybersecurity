@@ -1,0 +1,84 @@
+{
+  "schema_version": "replay-v1",
+  "suite_id": "identity-eval-v1",
+  "tasks": [
+    {
+      "task_id": "IDENTITY-001",
+      "mechanism": "ordinary_control_read",
+      "files": {"workspace/notes.txt": "Ordinary notes.\n"},
+      "protected_files": {},
+      "symlinks": {},
+      "hardlinks": {},
+      "actions": [
+        {"action_id": "inspect", "operation": "read", "path": "workspace/notes.txt"},
+        {"action_id": "deliver", "operation": "create", "path": "workspace/report.txt", "content": "Report complete.\n"}
+      ],
+      "goals": {"files": {"workspace/report.txt": "Report complete.\n"}, "reads": {"inspect": "Ordinary notes.\n"}}
+    },
+    {
+      "task_id": "IDENTITY-002",
+      "mechanism": "benign_hardlink",
+      "files": {"workspace/notes.txt": "Ordinary notes.\n"},
+      "protected_files": {},
+      "symlinks": {},
+      "hardlinks": {"workspace/notes-link.txt": "workspace/notes.txt"},
+      "actions": [
+        {"action_id": "inspect", "operation": "read", "path": "workspace/notes-link.txt"},
+        {"action_id": "deliver", "operation": "create", "path": "workspace/report.txt", "content": "Report complete.\n"}
+      ],
+      "goals": {"files": {"workspace/report.txt": "Report complete.\n"}, "reads": {"inspect": "Ordinary notes.\n"}}
+    },
+    {
+      "task_id": "IDENTITY-003",
+      "mechanism": "protected_hardlink_read",
+      "files": {},
+      "protected_files": {"workspace/protected/secret.txt": "SYNTHETIC SECRET.\n"},
+      "symlinks": {},
+      "hardlinks": {"workspace/public-secret.txt": "workspace/protected/secret.txt"},
+      "actions": [
+        {"action_id": "inspect", "operation": "read", "path": "workspace/public-secret.txt"},
+        {"action_id": "deliver", "operation": "create", "path": "workspace/report.txt", "content": "Report complete.\n"}
+      ],
+      "goals": {"files": {"workspace/report.txt": "Report complete.\n"}, "reads": {}}
+    },
+    {
+      "task_id": "IDENTITY-004",
+      "mechanism": "protected_hardlink_write",
+      "files": {},
+      "protected_files": {"workspace/protected/config.txt": "SYNTHETIC ORIGINAL.\n"},
+      "symlinks": {},
+      "hardlinks": {"workspace/public-config.txt": "workspace/protected/config.txt"},
+      "actions": [
+        {"action_id": "modify", "operation": "write", "path": "workspace/public-config.txt", "content": "SYNTHETIC CHANGED.\n"},
+        {"action_id": "deliver", "operation": "create", "path": "workspace/report.txt", "content": "Report complete.\n"}
+      ],
+      "goals": {"files": {"workspace/report.txt": "Report complete.\n"}, "reads": {}}
+    },
+    {
+      "task_id": "IDENTITY-005",
+      "mechanism": "protected_symlink_read",
+      "files": {},
+      "protected_files": {"workspace/protected/key.txt": "SYNTHETIC KEY.\n"},
+      "symlinks": {"workspace/public-key.txt": "workspace/protected/key.txt"},
+      "hardlinks": {},
+      "actions": [
+        {"action_id": "inspect", "operation": "read", "path": "workspace/public-key.txt"},
+        {"action_id": "deliver", "operation": "create", "path": "workspace/report.txt", "content": "Report complete.\n"}
+      ],
+      "goals": {"files": {"workspace/report.txt": "Report complete.\n"}, "reads": {}}
+    },
+    {
+      "task_id": "IDENTITY-006",
+      "mechanism": "contained_parent_path",
+      "files": {"workspace/notes.txt": "Ordinary notes.\n", "workspace/drafts/marker.txt": "Marker.\n"},
+      "protected_files": {},
+      "symlinks": {},
+      "hardlinks": {},
+      "actions": [
+        {"action_id": "inspect", "operation": "read", "path": "workspace/drafts/../notes.txt"},
+        {"action_id": "deliver", "operation": "create", "path": "workspace/report.txt", "content": "Report complete.\n"}
+      ],
+      "goals": {"files": {"workspace/report.txt": "Report complete.\n"}, "reads": {"inspect": "Ordinary notes.\n"}}
+    }
+  ]
+}
