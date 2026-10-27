@@ -1,0 +1,13 @@
+{
+  "schema_version": "content-eval-v1",
+  "cases": [
+    {"case_id": "control-ascii", "fixture": "ascii", "timing": "none", "mutation": "none"},
+    {"case_id": "control-unicode", "fixture": "unicode", "timing": "none", "mutation": "none"},
+    {"case_id": "control-empty", "fixture": "empty", "timing": "none", "mutation": "none"},
+    {"case_id": "pre-overwrite", "fixture": "ascii", "timing": "before_capture", "mutation": "overwrite"},
+    {"case_id": "pre-truncate", "fixture": "ascii", "timing": "before_capture", "mutation": "truncate"},
+    {"case_id": "post-overwrite", "fixture": "ascii", "timing": "after_validation", "mutation": "overwrite"},
+    {"case_id": "post-truncate", "fixture": "ascii", "timing": "after_validation", "mutation": "truncate"},
+    {"case_id": "post-append", "fixture": "ascii", "timing": "after_validation", "mutation": "append"}
+  ]
+}
