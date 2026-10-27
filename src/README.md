@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains four successive authorization mechanisms. Earlier implementations remain unchanged so their measured failures can be reproduced.
+The source directory contains resource-authorization mechanisms and a version-specific content reader. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -8,8 +8,11 @@ The source directory contains four successive authorization mechanisms. Earlier 
 | `executor_gate.py` | Prepared resolved pathname and content | Three-arm fixed-topology comparison |
 | `identity_gate.py` | Prepared path plus current file identity | Hardlink comparison and replacement study |
 | `descriptor_executor.py` | Held regular-file descriptor for read/write | Deterministic replacement comparison |
+| `verified_content_reader.py` | Captured UTF-8 value matching a trusted version digest | Same-inode content mutation comparison |
 
 The first three return a policy decision. The descriptor executor owns open, authorization, content I/O, and close to preserve the binding it checks. It opens without truncation, checks `fstat`, and uses the same descriptor after approval. It can open a protected object for metadata inspection before denying content I/O; it does not enforce a no-open policy.
+
+The content reader composes that executor without changing it. It captures once, validates the captured value against an owner-configured digest, and returns that same value. A failed check returns no payload, although inspection reads have already occurred. A successful value may be stale relative to the live file. Actions cannot select their own approved digest.
 
 ## Local validation
 

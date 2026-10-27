@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 5, 2026-10-26 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 6, 2026-10-27 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 ## Questions, units, and evidence
 
@@ -11,6 +11,7 @@
 | 3. Resolved targets | Eight development and eight supplemental tasks, three arms; suites separate | Protected operations and task goals | [Gate protocol](GATE_PROTOCOL.md) | [Gate findings](GATE_FINDINGS.md) |
 | 4. File identity | Six hardlink-focused tasks, four arms | Protected operations and task goals | [Identity protocol](IDENTITY_PROTOCOL.md) | [Identity findings](IDENTITY_FINDINGS.md) |
 | 5. Descriptor binding | Ten deterministic replacement cases, three arms | Protected content I/O, protected opens, original-object completion | [Replacement protocol](RACE_PROTOCOL.md) | [Replacement findings](RACE_FINDINGS.md) |
+| 6. Approved content | Eight same-inode mutation cases, three arms | Unapproved/approved deliveries, content denials, approved but stale values | [Content protocol](CONTENT_PROTOCOL.md) | [Content findings](CONTENT_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -24,6 +25,8 @@ These studies develop a mechanism argument. They do not estimate a population su
 
 **Original-object completion** in Phase 5 requires the specified operation on the initial ordinary inode and the expected content outcome. Its eight-case denominator excludes the two before-check substitutions prospectively. It is a narrower measure than task completion, and overlaps with the six attack schedules.
 
+**Approved-version delivery** in Phase 6 requires exact returned UTF-8 bytes equal to the trusted approved version. All eight cases remain in this denominator, including two mutations before capture that both digest arms deny. **Unapproved delivery** counts returned mismatches among five mutation schedules. **Approved but stale** means returned bytes match the approved version but differ from final live-file bytes. These are payload measures, not protected-resource access or agent-task measures. Inspection reads can occur even when delivery is denied.
+
 **Benign blocks** count denials on each protocol's ordinary cases. Infrastructure failures, shared-guard rejections, and policy denials are distinct categories. An error must not improve an apparent protection rate by disappearing from the record.
 
 ## Experimental controls
@@ -34,7 +37,7 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-The next study should hold the pathname or descriptor identity constant while varying content or protected membership. It must specify whether authorization concerns an object, a content version, or current policy membership. Creation needs a separate design because no existing file identity is available before the operation.
+Phase 6 has now varied content while holding identity constant. The next protocol should define how legitimate version changes become authorized and how consumers handle approved but stale values. Changes during capture, dynamic protected membership, and creation remain untested; each needs explicit success criteria before implementation.
 
 Before live-agent evaluation, record model and prompt versions, tool schema, permissions, task budgets, repeated trials, and an independent task-correctness oracle. Evaluate useful work and protection jointly. Current fixture results do not supply those observations.
 

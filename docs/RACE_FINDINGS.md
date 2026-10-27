@@ -1,5 +1,7 @@
 # Phase 5 findings: the object checked must be the object used
 
+**Follow-up:** [Phase 6](CONTENT_FINDINGS.md) holds the inode constant while changing its bytes. It tests approved-version delivery, a different contract from the resource-identity claim evaluated here. Original counts and artifacts are retained.
+
 **Study:** ten deterministic pathname-replacement cases, three arms, 30 records.
 
 **Run:** 2026-10-26 (Asia/Seoul); result filenames use UTC.

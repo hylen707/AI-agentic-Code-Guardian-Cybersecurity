@@ -1,0 +1,61 @@
+{
+  "verification": "PASS",
+  "method": "Recomputed delivery, mismatch, stale-value, control, and identity outcomes directly from raw hashes/lengths and predefined fixture bytes, without importing the comparison summarizer. Verified frozen Git blobs, executed source/task/configuration hashes, and prior materialized code/results.",
+  "records": 24,
+  "recomputed": {
+    "identity_only": {
+      "deliveries": 8,
+      "approved_deliveries": 3,
+      "unapproved_deliveries": 5,
+      "content_blocks": 0,
+      "approved_control_deliveries": 3,
+      "approved_but_stale": 0,
+      "identity_continuity_cases": 8,
+      "infrastructure_errors": 0
+    },
+    "hash_then_reread": {
+      "deliveries": 6,
+      "approved_deliveries": 3,
+      "unapproved_deliveries": 3,
+      "content_blocks": 2,
+      "approved_control_deliveries": 3,
+      "approved_but_stale": 0,
+      "identity_continuity_cases": 8,
+      "infrastructure_errors": 0
+    },
+    "verified_buffer": {
+      "deliveries": 6,
+      "approved_deliveries": 6,
+      "unapproved_deliveries": 0,
+      "content_blocks": 2,
+      "approved_control_deliveries": 3,
+      "approved_but_stale": 3,
+      "identity_continuity_cases": 8,
+      "infrastructure_errors": 0
+    }
+  },
+  "frozen_files_verified": [
+    "docs/CONTENT_PROTOCOL.md",
+    "docs/GATE_PROTOCOL.md",
+    "docs/IDENTITY_PROTOCOL.md",
+    "docs/RACE_PROTOCOL.md",
+    "docs/REPLAY_PROTOCOL.md",
+    "experiments/cases/v3/README.md",
+    "experiments/tasks/content-eval-v1/tasks.json",
+    "experiments/tasks/gate-eval-v1/tasks.json",
+    "experiments/tasks/identity-eval-v1/tasks.json",
+    "experiments/tasks/race-eval-v1/tasks.json",
+    "experiments/tasks/replay-v1/tasks.json"
+  ],
+  "earlier_materialized_artifacts_unchanged": 49,
+  "markdown_files_checked": 21,
+  "relative_markdown_links_checked": 148,
+  "local_heading_anchors_checked": 6,
+  "unit_tests": 67,
+  "unit_test_exit_code": 0,
+  "experiment_exit_code": 0,
+  "unit_transcript_sha256": "b2e6175191b28d4e02208cdb9816cad1338647cc288e0fc9d88b68fd7c74d5ed",
+  "raw_sha256": "4de1b50ea1d7720e1a58044de797592f1ed867e57d300707b98e134babe80687",
+  "summary_sha256": "05758328dcdea811e13aa92b818b5b6d8ce3569636fe6a343e905d4719c7a1ce",
+  "limits": "Artifact consistency is not independent replication; hash recounting assumes collision resistance. In-run oracle used direct byte equality. Remote-only earlier artifacts are retained via the Git base tree."
+}

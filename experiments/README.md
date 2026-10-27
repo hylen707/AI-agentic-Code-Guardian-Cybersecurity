@@ -10,7 +10,17 @@ Use Python 3.10+ and the standard library. Filesystem studies require hardlink/s
 python -m unittest discover -s tests -v
 ```
 
-The latest recorded run passed 55 tests. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The latest recorded run passed 67 tests. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+
+## Phase 6: approved content on a stable inode
+
+```bash
+python experiments/run_content_comparison.py --dataset experiments/tasks/content-eval-v1/tasks.json --base-commit 4b47ab21db9808646cfc4a0dfd1be308896bf227 --freeze-commit ce3fd6d245a2013090f7bd8c6367d08895132723
+```
+
+Eight cases run in `identity_only`, `hash_then_reread`, and `verified_buffer` arms. Five schedules change ordinary-file bytes through a hardlink; three controls use unchanged ASCII, Unicode, and empty content. Linux `pread` supports the diagnostic inspection/reread comparator without moving its descriptor offset.
+
+Observed unapproved deliveries are 5/5 → 3/5 → 0/5; approved-version deliveries are 3/8 → 3/8 → 6/8. Both digest arms deny two pre-capture mutations after inspection. The buffer returns three approved but stale values. These are content-delivery measures under a new rule, not protected-resource access counts or live-agent completion. See the [protocol](../docs/CONTENT_PROTOCOL.md), [findings](../docs/CONTENT_FINDINGS.md), and [summary/provenance](results/2026-10-27T12-21-15-144558Z-content-v1-summary.json).
 
 ## Phase 5: deterministic pathname replacement
 

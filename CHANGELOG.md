@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-10-27 — Approved content delivery under same-inode mutation
+
+- Froze the [content protocol](docs/CONTENT_PROTOCOL.md) and eight-case manifest at `ce3fd6d245a2013090f7bd8c6367d08895132723` before implementation, building on PR #4's `4b47ab21db9808646cfc4a0dfd1be308896bf227`.
+- Added a verified-content reader that composes the unchanged descriptor executor, a diagnostic hash/reread comparator, a three-arm runner, and 12 tests. Trusted expected digests are copied from owner configuration; actions cannot supply them.
+- Observed identity-only → hash/reread → verified-buffer unapproved deliveries of 5/5 → 3/5 → 0/5 and approved deliveries of 3/8 → 3/8 → 6/8. Both digest arms denied two pre-capture changes; the buffer returned three approved but stale values. All 24 rows retained inode identity, with zero infrastructure errors.
+- All 67 tests passed. Saved raw records, source/task/configuration hashes, test output, and [findings](docs/CONTENT_FINDINGS.md). Added the content-version argument and freshness trade-off to living research documents without altering earlier code, frozen plans, or results.
+- Next: define legitimate version updates and stale-value handling before extending the claim. Capture-time mutation, streaming, policy distribution, and live-agent evaluation remain untested.
+
 ## 2026-10-26 — Descriptor binding and research presentation
 
 - Froze the [replacement protocol](docs/RACE_PROTOCOL.md) and ten-case manifest at `d0ddc20aac99365adb85bc48ef53539c8028a127` before implementation.

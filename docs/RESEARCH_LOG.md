@@ -2,6 +2,20 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-10-27 — Stable identity does not establish an approved content version
+
+**Question and prospective design.** Does a descriptor or a passing digest ensure that the consumer receives the approved bytes? The [content protocol](CONTENT_PROTOCOL.md) and eight-case manifest were committed at `ce3fd6d245a2013090f7bd8c6367d08895132723` before implementation. The study adds a version-specific delivery rule to the unchanged Phase 5 resource gate. It does not reinterpret Phase 5's protected-resource results. Three controls cover ASCII, Unicode, and empty values; five mutation schedules overwrite, truncate, or append through a hardlink without changing the inode.
+
+**Implementation.** Added `VerifiedContentReader`, which captures once, checks an owner-configured SHA-256 digest, and returns the same immutable UTF-8 value. A diagnostic comparator hashes through `pread` and then lets the unchanged descriptor executor reread for delivery. A separate oracle compares returned bytes with approved and final bytes, retains a file descriptor, and confirms identity continuity. Actions cannot choose their own expected digest.
+
+**Observed outcome.** Identity-only → hash/reread → verified-buffer unapproved deliveries were 5/5 → 3/5 → 0/5; approved-version deliveries were 3/8 → 3/8 → 6/8. Both digest arms denied the two before-capture changes after inspecting bytes. All unchanged controls were delivered correctly, including empty content. The buffer returned three approved but stale values. All 24 case/arm records retained the original inode and had zero infrastructure errors.
+
+**Evidence.** All 67 tests passed, including 12 new tests. The measured run exited 0 and all nine summary criteria held. See [raw records](../experiments/results/2026-10-27T12-21-15-144558Z-content-v1.jsonl), [summary and provenance](../experiments/results/2026-10-27T12-21-15-144558Z-content-v1-summary.json), [test transcript](../experiments/results/2026-10-27T12-21-15-144558Z-content-v1-unit-tests.txt), and [findings](CONTENT_FINDINGS.md). Earlier code and results were retained, including the identity-only implementation.
+
+**Interpretation and limitation.** A digest constrains the bytes actually inspected, not a later read of the same inode. Retaining the checked value binds delivery to the approved version under the trusted-digest and memory assumptions. It does not ensure freshness, prevent inspection of changed bytes, or create an atomic filesystem snapshot. These small deterministic schedules are developer-visible, not an independent holdout or concurrency-frequency study.
+
+**Decision and next question.** Keep approved delivery and freshness separate in the portfolio argument. Define how a legitimate new version becomes trusted and how consumers handle stale approved values before adding reauthorization. Capture-time mutation, streaming, dynamic protected membership, creation, and live-agent behavior remain outside the completed work. This continuation used AI assistance for design, code, execution, analysis, and editing as disclosed in the research statement.
+
 ## 2026-10-26 — Pathname replacement challenges pre-open identity approval
 
 **Question and design.** Does the Phase 4 identity check remain valid when a path changes between approval and open? The [protocol](RACE_PROTOCOL.md) and ten-case manifest were frozen at `d0ddc20aac99365adb85bc48ef53539c8028a127` before implementation. Read/write pairs cover controls, protected hardlinks before and after checking, protected parent substitution, and benign replacement. These developer-visible deterministic schedules are not a blind evaluation or concurrent probability sample.

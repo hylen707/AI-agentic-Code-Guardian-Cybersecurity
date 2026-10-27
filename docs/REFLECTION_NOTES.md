@@ -10,7 +10,8 @@ This document is a working guide for the author's own account. It does not suppl
 | A stronger gate still had a narrower validity domain. | [Hardlink study](IDENTITY_FINDINGS.md): the resolved gate missed two aliases. | How would you explain path versus object identity in your own words? |
 | Time invalidated a correct earlier observation. | [Replacement study](RACE_FINDINGS.md): identity-path gate allowed four protected operations. | What new assumption did this experiment challenge? |
 | The improved mechanism still opened protected objects. | Descriptor arm: two protected opens, zero protected content operations. | Why is that distinction necessary for an honest claim? |
-| A held object can still change internally. | [Next research question](RESEARCH_STATEMENT.md#validity-and-open-questions). | What outcome should a future test require, and why? |
+| A held object can still change internally. | [Content study](CONTENT_FINDINGS.md): hashing then rereading returns three unapproved versions. | Why does a passing digest fail to authorize a different read? |
+| An approved value need not be the newest value. | Verified buffer: zero unapproved deliveries, three approved but stale values. | Which consistency rule should an application require, and who should authorize a new version? |
 
 ## Contribution record
 
