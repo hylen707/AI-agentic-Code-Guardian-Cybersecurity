@@ -1,37 +1,43 @@
 # CodeGuardian
 
-**What must a runtime safeguard authorize: a path, a file, or an open handle?**
+**What must a runtime safeguard authorize: a path, an object, or a content version?**
 
-CodeGuardian is a reproducible systems-security study motivated by AI coding agents. It tests how authorization changes when a file has multiple names or when a name changes between inspection and execution. Five experimental stages move from policy-label agreement to observed file effects, retaining the failures that motivate each intervention.
+CodeGuardian is a reproducible systems-security study motivated by AI coding agents. Six experimental stages examine what happens when resource names, identities, and contents diverge between inspection and execution. The project retains the counterexamples that motivate each intervention.
 
-The current contribution is a set of controlled counterexamples and comparisons. The experiments execute real operating-system file operations on disposable synthetic fixtures. They do not evaluate a live agent or establish a production security boundary.
+The experiments perform real operating-system file operations on disposable synthetic fixtures. They establish bounded mechanism results, not live-agent effectiveness or a production security boundary.
 
 ## Research at a glance
 
 | Question | Evidence | Consequence |
 |---|---|---|
-| Does policy-label agreement imply resource protection? | 45/45 v3 label matches coexist with two symlink misses and two legitimate task losses in the paired replay. | Evaluate actual resources and task goals separately from policy labels. |
-| Does resolving a path address aliases? | The resolved-target gate achieves 0/4 protected operations and 8/8 safe completions in each of two related suites, reported separately. | Resolve the executor's target; retain fixed-topology assumptions. |
-| Is a canonical path a unique file identity? | Hardlink-focused comparison: resolved gate 2/3 protected operations; identity gate 0/3. | Include device/inode identity for existing files. |
-| Does a pre-open identity check survive replacement? | Deterministic replacement study: identity-path gate 4/6 protected content operations; descriptor-bound executor 0/6. | Authorize and use the same open object under the stated assumptions. |
+| Does policy agreement imply resource protection? | 45/45 label matches coexist with two symlink misses and two legitimate task losses in paired replay. | Measure resources and task goals separately from labels. |
+| Does path resolution address aliases? | 0/4 protected operations and 8/8 safe completions in each of two related suites, reported separately. | Approve the resolved target under explicit topology assumptions. |
+| Is a pathname a unique file identity? | Resolved gate: 2/3 protected operations; identity gate: 0/3 in the hardlink suite. | Account for device/inode identity. |
+| Does pre-open identity checking survive name replacement? | Identity-path gate: 4/6 protected content operations; descriptor executor: 0/6. | Use the same authorized open object. |
+| Does the same object guarantee the approved bytes? | Hash/reread: 3/5 unapproved deliveries; verified buffer: 0/5, with three stale approved deliveries. | Validate the value actually delivered and distinguish approval from freshness. |
 
-These suites answer different questions and overlap in mechanisms. Their counts are not independent samples and should not be pooled into an overall security percentage.
+These suites answer different questions and overlap in mechanisms. Their counts must not be pooled into an overall security percentage.
 
-## Latest experiment: pathname replacement
+## Latest experiment: same file, different content
 
-Ten cases pair reads and writes with ordinary controls, protected hardlink substitution before or after authorization, parent-directory substitution, and benign replacement. Each case runs in three fresh fixtures: 30 case/arm records.
+Eight cases compare identity-only reads, a digest check followed by a reread, and delivery of the captured value that passed validation. Three unchanged controls cover ASCII, Unicode, and empty content; five schedules change bytes without replacing the inode. Every case runs in three fresh fixtures: 24 case/arm records.
 
-| Outcome | No gate | Identity check, then pathname open | Descriptor-bound executor |
+| Outcome | Identity only | Hash, then reread | Verified buffer |
 |---|---:|---:|---:|
-| Protected content operations / attack schedules | 6/6 | 4/6 | **0/6** |
-| Original-object completion / eligible cases | 2/8 | 2/8 | **8/8** |
-| Benign blocks / benign cases | 0/4 | 0/4 | **0/4** |
-| Protected opens, including metadata authorization | 6 | 4 | **2** |
+| Unapproved deliveries / mutation cases | 5/5 | 3/5 | **0/5** |
+| Approved-version deliveries / all cases | 3/8 | 3/8 | **6/8** |
+| Content-version denials | 0 | 2 | 2 |
+| Unchanged controls delivered correctly | 3/3 | 3/3 | **3/3** |
+| Approved but stale deliveries | 0 | 0 | **3** |
 | Infrastructure errors | 0 | 0 | 0 |
 
-The descriptor arm opens two protected objects to inspect metadata, denies both, and performs no protected content I/O. Its `0/6` therefore means zero successful protected reads or writes in these six schedules, **not zero protected opens**. Original-object completion measures the specified operation on the initial ordinary inode; it is not live-agent task completion. The 6-case and 8-case denominators overlap.
+The verified reader prevents delivery of an unapproved version in these schedules, but it still reads changed bytes for inspection in the two denied cases. It also returns an older approved value in three cases. This is neither a no-read policy nor a freshness guarantee. The identity-only comparator never implemented the newly introduced version rule; its result does not invalidate Phase 5's identity claim.
 
-The protocol and manifest were [frozen before implementation](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/d0ddc20aac99365adb85bc48ef53539c8028a127). Read the [findings](docs/RACE_FINDINGS.md), [protocol](docs/RACE_PROTOCOL.md), and [raw evidence](experiments/results/2026-10-26T08-23-21-637204Z-race-v1.jsonl). All **55 unit tests passed** on 2026-10-26 (Asia/Seoul).
+The protocol and manifest were [frozen before implementation](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/ce3fd6d245a2013090f7bd8c6367d08895132723). Read the [findings](docs/CONTENT_FINDINGS.md), [protocol](docs/CONTENT_PROTOCOL.md), and [raw evidence](experiments/results/2026-10-27T12-21-15-144558Z-content-v1.jsonl). All **67 unit tests passed** on 2026-10-27 (Asia/Seoul).
+
+## Prior result: pathname replacement
+
+The [Phase 5 study](docs/RACE_FINDINGS.md) observed 6/6 → 4/6 → 0/6 protected content operations across no-gate, identity-path, and descriptor-bound arms. The descriptor arm completed original-object operations in 8/8 eligible cases, but still opened two protected objects for metadata authorization before denying content I/O. These resource-access measures are different from Phase 6's content-delivery measures.
 
 ## Read the research
 
@@ -43,24 +49,22 @@ The protocol and manifest were [frozen before implementation](https://github.com
 | Review implementation and trust boundaries | [Architecture](docs/ARCHITECTURE.md) and [source guide](src/README.md) |
 | Reproduce a result | [Experiment guide](experiments/README.md) |
 | Audit development and decisions | [Research log](docs/RESEARCH_LOG.md) and [changelog](CHANGELOG.md) |
-| Trace prior findings | [Paired replay](docs/REPLAY_FINDINGS.md), [resolved targets](docs/GATE_FINDINGS.md), [file identity](docs/IDENTITY_FINDINGS.md) |
+| Trace prior findings | [Paired replay](docs/REPLAY_FINDINGS.md), [resolved targets](docs/GATE_FINDINGS.md), [file identity](docs/IDENTITY_FINDINGS.md), [descriptor binding](docs/RACE_FINDINGS.md) |
 | Prepare an authentic personal account | [Reflection notes](docs/REFLECTION_NOTES.md) |
 
 ## Reproduce the latest study
 
-Use Python 3.10+ on Linux with hardlink and symlink support. The implementation uses the standard library.
+Use Python 3.10+ on Linux with hardlink support and `pread`; the standard library is sufficient. The full test suite also exercises symlinks and FIFOs.
 
 ```bash
 python -m unittest discover -s tests -v
-python experiments/run_race_comparison.py --dataset experiments/tasks/race-eval-v1/tasks.json --base-commit 1829252dfc7421511f9d6c4aa1d49a0eb9f57ec0 --freeze-commit d0ddc20aac99365adb85bc48ef53539c8028a127
+python experiments/run_content_comparison.py --dataset experiments/tasks/content-eval-v1/tasks.json --base-commit 4b47ab21db9808646cfc4a0dfd1be308896bf227 --freeze-commit ce3fd6d245a2013090f7bd8c6367d08895132723
 ```
 
-Each run saves raw records and a summary with hashes, environment, commands, and explicit criteria. Earlier code, measured datasets, frozen protocols, and raw results remain available. The current documentation was edited for clarity without rewriting experimental history.
+Runs save raw records and summaries with hashes, environment, commands, and criteria. Earlier implementations, measured datasets, frozen protocols, and raw results remain available. New findings refine the scope of claims without rewriting experimental history.
 
 ## Scope and next question
 
-The descriptor experiment covers existing regular-file reads and writes under deterministic name replacement, static protected membership, and trusted descriptor ownership. It does not establish confinement against arbitrary filesystem changes, protection against writes to the same inode, a no-open policy, or a concurrent attack success rate. Creation, dynamic policy updates, and live-agent adaptation require new protocols.
+The latest reader operates on small existing UTF-8 files with static approved digests and trusted process memory. It does not provide atomic filesystem snapshots, streaming validation, general directory confinement, dynamic policy updates, or live-agent integration. The next question is how to authorize a legitimate new version while making stale approved values explicit to the consumer.
 
-The next research question is whether object continuity remains useful when the intended object itself changes: concurrent content mutation, changes to protected membership, and the semantics of newly created files. A future agent study also needs fixed model settings, constrained tools, task budgets, and an independently administered evaluation.
-
-This continuation includes AI-assisted implementation, analysis, and editing. Repository evidence supports technical claims; personal contribution and learning claims require the author's own account. See [attribution and interpretation](docs/RESEARCH_STATEMENT.md#attribution-and-interpretation).
+This continuation includes AI-assisted design, implementation, execution, analysis, and editing. Repository evidence supports technical claims; personal contribution and learning claims require the author's own account. See [attribution and interpretation](docs/RESEARCH_STATEMENT.md#attribution-and-interpretation).

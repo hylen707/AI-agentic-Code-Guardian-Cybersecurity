@@ -1,18 +1,26 @@
-# From pathname approval to object continuity
+# From pathname approval to object and content continuity
 
 ## Abstract
 
-CodeGuardian studies a narrow problem relevant to tool-using AI systems: whether a runtime decision remains valid for the resource an executor eventually uses. A sequence of synthetic filesystem experiments separates lexical policy conformance, resolved paths, file identities, and descriptor-bound execution. Earlier positive results are preserved alongside counterexamples to their broader interpretation. In the latest ten-case deterministic replacement study, a pre-open identity gate permits four protected content operations across six attack schedules. A descriptor-bound executor permits none and completes the specified operation on the original object in all eight eligible cases. It still opens two protected objects for metadata inspection. The contribution is a reproducible account of authorization assumptions and failure mechanisms, with explicit limits on generalization.
+CodeGuardian studies whether a runtime decision remains valid for the resource and value an executor ultimately uses. Six synthetic filesystem stages separate lexical policy, resolved paths, file identities, held descriptors, and approved content versions. Descriptor binding prevents the selected pathname substitutions from redirecting content I/O, but does not freeze file contents. In the latest eight-case study, hashing and then rereading the same descriptor delivers an unapproved value in three of five mutation schedules. Returning the captured value that passed validation eliminates those unapproved deliveries while producing three approved but stale values. The contribution is a reproducible account of authorization assumptions, counterexamples, and semantic trade-offs, not a general security guarantee.
 
 ## The central argument
 
 A policy decision concerns a representation of a resource. Execution concerns an operating-system object. Protection requires the relationship between those two to survive until the operation occurs.
 
-Let `R(p, t)` denote the object reached by pathname `p` at time `t`, and let `P` be the fixed set of protected file identities. A pathname gate can establish `R(p, t_check) ∉ P`. That observation does not imply `R(p, t_use) ∉ P` when names can change. The latest experiment constructs the missing step directly: the gate approves an ordinary object, the fixture controller changes the name binding, and the later open reaches a protected object.
+Let `R(p, t)` denote the object reached by pathname `p` at time `t`, and let `P` be the fixed set of protected file identities. A pathname gate can establish `R(p, t_check) ∉ P`. That observation does not imply `R(p, t_use) ∉ P` when names can change. Phase 5 constructs the missing step directly: the gate approves an ordinary object, the fixture controller changes the name binding, and the later open reaches a protected object.
 
 For an open descriptor `d`, the proposed invariant is narrower: authorization and content I/O refer to the same held object. If `identity(d) ∉ P` at authorization, `P` remains fixed, and the trusted executor retains exclusive control of `d`, subsequent name replacement cannot redirect that descriptor to another object. The executor must avoid reopening the pathname and must defer truncation until after approval. This argument follows established descriptor semantics; the experiment tests the implementation in selected schedules rather than proving all possible executions. See the technical sources in the [protocol](RACE_PROTOCOL.md#technical-basis).
 
-Object continuity does not imply content integrity. Another actor could alter bytes in the same inode. Nor does it implement a no-open policy: descriptor inspection requires an open. Those are different properties and would require different experiments.
+Object continuity does not imply content-version continuity. Let `C(d, t)` be a value read through descriptor `d`. A digest check of `C(d, t1)` cannot authorize `C(d, t2)` if a writer changes the bytes between those reads. Phase 6 keeps the inode constant and exposes exactly that failure. A verified buffer instead checks `H(b) = h*` for the captured value `b` and returns that same value. This conditional argument assumes a trustworthy approved digest, collision resistance, and trusted process memory.
+
+Returning `b` does not imply that `b` equals the current file contents. The latest result separates three properties:
+
+| Property | What the experiment establishes within scope | Remaining distinction |
+|---|---|---|
+| Object continuity | A held descriptor survives the tested name substitutions. | The object's contents can still change. |
+| Approved-version delivery | A validated captured value is the value returned. | Inspection may already have read unapproved bytes. |
+| Freshness | Not guaranteed; three approved payloads are stale. | Reauthorization or a different consistency contract is needed. |
 
 ## Evidence that changed the design
 
@@ -22,6 +30,8 @@ The [resolved-target intervention](GATE_FINDINGS.md) recovered legitimate comple
 
 The [replacement study](RACE_FINDINGS.md) challenged that dependency. All four after-check protected substitutions bypassed the identity-path arm. The descriptor arm retained the initial ordinary object through the same substitutions and through benign replacements. Ordinary controls rule out blanket refusal as the explanation for its zero protected content operations. Before-check substitutions distinguish identity authorization from merely holding whichever file was opened.
 
+The [content-version study](CONTENT_FINDINGS.md) then changed bytes without replacing the inode. Identity-only reads returned five unapproved versions; hash/reread returned three; a verified buffer returned none. Both digest arms denied the two changes that preceded capture. All eight cases remained in the delivery denominator: the buffer delivered an approved version in 6/8 cases and an approved but stale version in three. This makes its benefit and limitation visible together. The new delivery rule does not retroactively change the earlier resource-protection oracle.
+
 ## Contribution and research judgment
 
 This repository contributes an inspectable experimental progression: a failed assumption, a bounded intervention, and a follow-up that tests the intervention's remaining dependency. It also contributes raw traces, task-level or object-level oracles, prospective protocol freezes, and separate accounting for policy blocks and infrastructure errors.
@@ -30,9 +40,9 @@ The security mechanisms themselves are established systems concepts. The project
 
 ## Validity and open questions
 
-All cases are curated and visible during development. Related cases are not independent samples. The latest schedules deterministically arrange the check/use ordering; they do not measure how often an adversary wins a concurrent race. No confidence interval or population security rate is justified by these data. The baseline and intervention share controlled fixtures and content-I/O routines, but the intervention deliberately changes the order of open and authorization.
+All cases are curated and visible during development. Related cases are not independent samples. The schedules deterministically arrange check/use ordering; they do not measure concurrent race probability. No confidence interval or population security rate is justified. The arms share controlled fixtures and the earlier descriptor executor; Phase 6 deliberately changes whether the checked value is retained or reread. Its mutations occur before capture or after validation, not during a capture.
 
-The next studies should distinguish object identity from object state, test fail-closed behavior under policy-inventory changes, and define creation semantics. Agent integration should follow a separate protocol with model and prompt versions, constrained tool permissions, budgets, repeated task trials, and an external or otherwise independent assessment of task correctness.
+The next studies should define legitimate version updates, stale-value handling, and changes during capture before extending the delivery claim. Dynamic protected membership and creation remain separate obligations. Agent integration requires a distinct protocol with model/prompt versions, constrained tools, budgets, repeated task trials, and independent task-correctness assessment.
 
 ## Attribution and interpretation
 

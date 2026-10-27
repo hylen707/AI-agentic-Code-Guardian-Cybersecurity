@@ -1,0 +1,93 @@
+{
+  "started_at_utc": "2026-10-27T12:21:15.144558+00:00",
+  "finished_at_utc": "2026-10-27T12:21:15.164258+00:00",
+  "python_version": "3.12.14",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "base_commit": "4b47ab21db9808646cfc4a0dfd1be308896bf227",
+  "freeze_commit": "ce3fd6d245a2013090f7bd8c6367d08895132723",
+  "dataset_sha256": "e3da00f530938984c0ef65eaf318bef669f794754fe4244aa876174cba10ee6b",
+  "approved_fixture_sha256": {
+    "ascii": "bef935bb502c4320d5f03bd037d33097f183d04bed18e43bd5a987849d34d914",
+    "unicode": "01a5ff92edd3f4ef3eb6e6b46104e848b0c27d4db08909f0dfd0d3bda438f4ea",
+    "empty": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "configuration_sha256": "ecf15eabcb69164e75fbf8dc60d2413a62f70c5de2dabcc1cd648ac7083f23d0",
+  "source_sha256": {
+    "src/verified_content_reader.py": "29578e41946b637beaefd53ab7f44d8771559434881ab1d0930ffc77e9f735b2",
+    "src/descriptor_executor.py": "8617f19694c1c1c7e6170883d69533a32e736b084962b139e4c0a1093a248804",
+    "src/executor_gate.py": "8c1e9eeeb1693ad29b851a2911774fedf5b9fc7f575e337ee96a896783d71501",
+    "src/codeguardian.py": "0b39f00369fbafecf2728fe9d955ad7c398bdc013f76b476eb25239a7b61d892",
+    "experiments/run_content_comparison.py": "2fa486070c38cd78f175dfb50cef397f0f2a3c7e7f3c2ab9d8b8335f8190447c",
+    "tests/test_verified_content_reader.py": "1d49366a210b061a1c1f81deb935db8c7e72ac6d6744ec3e15aff2d3d7171945",
+    "docs/CONTENT_PROTOCOL.md": "33ce0e9cbd7312e0ae25f9874dac76e612369ef19fb59c1a70964f4680d7bf44"
+  },
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "experiments/run_content_comparison.py",
+    "--dataset",
+    "experiments/tasks/content-eval-v1/tasks.json",
+    "--base-commit",
+    "4b47ab21db9808646cfc4a0dfd1be308896bf227",
+    "--freeze-commit",
+    "ce3fd6d245a2013090f7bd8c6367d08895132723"
+  ],
+  "results_file": "2026-10-27T12-21-15-144558Z-content-v1.jsonl",
+  "summary": {
+    "arms": {
+      "identity_only": {
+        "cases": 8,
+        "mutation_cases": 5,
+        "deliveries": 8,
+        "approved_deliveries": 3,
+        "unapproved_deliveries": 5,
+        "content_blocks": 0,
+        "other_blocks": 0,
+        "controls": 3,
+        "approved_control_deliveries": 3,
+        "approved_but_stale": 0,
+        "identity_continuity_cases": 8,
+        "infrastructure_errors": 0
+      },
+      "hash_then_reread": {
+        "cases": 8,
+        "mutation_cases": 5,
+        "deliveries": 6,
+        "approved_deliveries": 3,
+        "unapproved_deliveries": 3,
+        "content_blocks": 2,
+        "other_blocks": 0,
+        "controls": 3,
+        "approved_control_deliveries": 3,
+        "approved_but_stale": 0,
+        "identity_continuity_cases": 8,
+        "infrastructure_errors": 0
+      },
+      "verified_buffer": {
+        "cases": 8,
+        "mutation_cases": 5,
+        "deliveries": 6,
+        "approved_deliveries": 6,
+        "unapproved_deliveries": 0,
+        "content_blocks": 2,
+        "other_blocks": 0,
+        "controls": 3,
+        "approved_control_deliveries": 3,
+        "approved_but_stale": 3,
+        "identity_continuity_cases": 8,
+        "infrastructure_errors": 0
+      }
+    },
+    "criteria": {
+      "identity_only_five_unapproved_deliveries": true,
+      "reread_three_unapproved_deliveries": true,
+      "buffer_zero_unapproved_deliveries": true,
+      "buffer_six_approved_deliveries": true,
+      "both_digest_arms_block_two_pre_capture_changes": true,
+      "all_controls_delivered_correctly": true,
+      "buffer_three_approved_but_stale_deliveries": true,
+      "all_identities_stable": true,
+      "no_infrastructure_errors_or_other_blocks": true
+    }
+  },
+  "interpretation_limit": "Eight deterministic same-inode cases; approved delivery is distinct from freshness, protected-resource access, and live-agent completion."
+}
