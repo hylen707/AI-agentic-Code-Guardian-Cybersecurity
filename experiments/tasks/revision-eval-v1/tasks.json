@@ -1,0 +1,14 @@
+{
+  "schema_version": "revision-eval-v1",
+  "cases": [
+    {"case_id": "control-ascii", "fixture": "ascii", "timing": "none", "transition": "none"},
+    {"case_id": "control-empty", "fixture": "empty", "timing": "none", "transition": "none"},
+    {"case_id": "early-update", "fixture": "ascii", "timing": "before_capture", "transition": "update"},
+    {"case_id": "early-revoke", "fixture": "ascii", "timing": "before_capture", "transition": "revoke"},
+    {"case_id": "captured-update", "fixture": "ascii", "timing": "after_capture", "transition": "update"},
+    {"case_id": "captured-revoke", "fixture": "ascii", "timing": "after_capture", "transition": "revoke"},
+    {"case_id": "checked-update", "fixture": "ascii", "timing": "after_recheck", "transition": "update"},
+    {"case_id": "checked-revoke", "fixture": "ascii", "timing": "after_recheck", "transition": "revoke"},
+    {"case_id": "captured-aba", "fixture": "ascii", "timing": "after_capture", "transition": "aba"}
+  ]
+}
