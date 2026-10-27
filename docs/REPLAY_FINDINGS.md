@@ -1,5 +1,7 @@
 # Phase 2 findings: protection, completion cost, and path aliases
 
+**Scope:** historical paired-replay result. The subsequent [resolved-target study](GATE_FINDINGS.md) tests the intervention motivated here; the [research statement](RESEARCH_STATEMENT.md) connects the full progression. Original counts and evidence are retained.
+
 Run date: 2026-10-26 (Asia/Seoul); raw timestamps use 2026-10-25 UTC.
 
 ## Result
@@ -84,7 +86,7 @@ the research hypotheses. The base commit identifies the starting source, while
 SHA-256 hashes identify the newly added runner, test file, protocol, dataset,
 and unchanged monitor actually used.
 
-## Limits and next intervention
+## Limits and the intervention motivated by this result
 
 This is an eight-task diagnostic development suite. Its cases were deliberately
 chosen to expose mechanisms, not sampled independently or held out. Results are

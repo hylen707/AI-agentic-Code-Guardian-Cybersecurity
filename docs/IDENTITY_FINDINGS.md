@@ -1,5 +1,7 @@
 # Phase 4 findings: filesystem identity closes the hardlink gap
 
+**Scope:** historical fixed-topology result. The subsequent [pathname-replacement study](RACE_FINDINGS.md) reproduces a check-to-open failure and compares descriptor binding. The 0/3 below remains specific to the original six-task suite.
+
 Run date: 2026-10-26 (Asia/Seoul). This is a six-task, hardlink-focused
 diagnostic suite on fixed synthetic fixtures. It is not a blind holdout,
 production security evaluation, or live-agent result.
@@ -48,7 +50,7 @@ executor-aware gate tests, and 8 identity-gate tests. The comparison runner
 exited 0 and its criteria all evaluated true. Source and dataset hashes are in
 the summary; the task file was unchanged after the freeze commit.
 
-## Limits and next question
+## Limits and the next question at this stage
 
 The identity check uses `stat` before opening the target. A concurrent attacker
 could replace a pathname between the check and the operation. The experiment

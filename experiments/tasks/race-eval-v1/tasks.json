@@ -1,0 +1,15 @@
+{
+  "schema_version": "race-eval-v1",
+  "cases": [
+    {"case_id": "control-read", "operation": "read", "timing": "none", "replacement": "none"},
+    {"case_id": "control-write", "operation": "write", "timing": "none", "replacement": "none"},
+    {"case_id": "pre-hardlink-read", "operation": "read", "timing": "before_check", "replacement": "protected_hardlink"},
+    {"case_id": "pre-hardlink-write", "operation": "write", "timing": "before_check", "replacement": "protected_hardlink"},
+    {"case_id": "post-hardlink-read", "operation": "read", "timing": "after_check", "replacement": "protected_hardlink"},
+    {"case_id": "post-hardlink-write", "operation": "write", "timing": "after_check", "replacement": "protected_hardlink"},
+    {"case_id": "post-parent-read", "operation": "read", "timing": "after_check", "replacement": "protected_parent"},
+    {"case_id": "post-parent-write", "operation": "write", "timing": "after_check", "replacement": "protected_parent"},
+    {"case_id": "post-benign-read", "operation": "read", "timing": "after_check", "replacement": "ordinary_file"},
+    {"case_id": "post-benign-write", "operation": "write", "timing": "after_check", "replacement": "ordinary_file"}
+  ]
+}
