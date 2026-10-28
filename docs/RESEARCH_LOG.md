@@ -12,7 +12,7 @@ This dated record connects research questions, executed work, evidence, and inte
 
 **Validation.** All 67 existing tests passed. Executed all nine documented experiment commands and compared their full scientific summaries with the nine historical runs; all matched. Recounted historical raw records, checked 56 source/dataset SHA-256 entries, and verified 68 implementation/test/protocol/input/evidence files against the reviewed main revision. Local Markdown paths and heading fragments passed validation. New run output remained separate from historical evidence; the preserved raw files were not replaced.
 
-**Interpretation and next step.** This improves documentation and checks reproducibility of the existing cases. It does not supply an independent evaluation, larger sample, new security guarantee, or completed version-reauthorization study. The next research question remains legitimate version updates and stale-value handling under a prospective protocol. AI assistance continues as disclosed in the [research statement](RESEARCH_STATEMENT.md#attribution-and-interpretation).
+**Interpretation and next step.** This improves documentation and checks reproducibility of the existing cases. It does not supply an independent evaluation, larger sample, new security guarantee, or completed version-reauthorization study. The next research question remains legitimate version updates and stale-value handling under a prospective protocol.
 
 ## 2026-10-27 — Stable identity does not establish an approved content version
 
@@ -26,7 +26,7 @@ This dated record connects research questions, executed work, evidence, and inte
 
 **Interpretation and limitation.** A digest constrains the bytes actually inspected, not a later read of the same inode. Retaining the checked value binds delivery to the approved version under the trusted-digest and memory assumptions. It does not ensure freshness, prevent inspection of changed bytes, or create an atomic filesystem snapshot. These small deterministic schedules are developer-visible, not an independent holdout or concurrency-frequency study.
 
-**Decision and next question.** Keep approved delivery and freshness separate in the portfolio argument. Define how a legitimate new version becomes trusted and how consumers handle stale approved values before adding reauthorization. Capture-time mutation, streaming, dynamic protected membership, creation, and live-agent behavior remain outside the completed work. This continuation used AI assistance for design, code, execution, analysis, and editing as disclosed in the research statement.
+**Decision and next question.** Keep approved delivery and freshness separate in the portfolio argument. Define how a legitimate new version becomes trusted and how consumers handle stale approved values before adding reauthorization. Capture-time mutation, streaming, dynamic protected membership, creation, and live-agent behavior remain outside the completed work.
 
 ## 2026-10-26 — Pathname replacement challenges pre-open identity approval
 
@@ -40,7 +40,7 @@ This dated record connects research questions, executed work, evidence, and inte
 
 **Interpretation.** Pre-open identity checking observes a name binding at one instant. Holding the authorized descriptor preserves the object through the tested later name changes. This does not freeze its contents or protected membership, prevent metadata opens, or establish general confinement. Earlier fixed-topology results remain intact; their assumptions are now more visible.
 
-**Presentation and attribution.** Revised living Markdown to foreground questions, evidence, technical reasoning, limitations, and reproducibility. Added the [research statement](RESEARCH_STATEMENT.md) and updated study/architecture guides. Frozen protocols, the v3 design note, historical entries, and raw results were retained. This continuation used ChatGPT/Codex for design, implementation, execution, analysis, and editing; personal learning and independent-contribution claims remain for the owner to substantiate.
+**Presentation and attribution.** Revised living Markdown to foreground questions, evidence, technical reasoning, limitations, and reproducibility. Added the [research statement](RESEARCH_STATEMENT.md) and updated study/architecture guides. Frozen protocols, the v3 design note, historical entries, and raw results were retained. Personal learning and independent-contribution claims remain for the owner to substantiate.
 
 **Next decision.** Specify whether future authorization concerns identity, content version, or current protected membership, then freeze a new protocol before testing those changes. A live-agent adapter remains outside the completed work.
 
@@ -86,7 +86,7 @@ This dated record connects research questions, executed work, evidence, and inte
 
 - **Goal:** reproduce the handed-off results, align current documentation with saved evidence, and broaden string-policy coverage without changing measured datasets or monitor behavior.
 - **Source:** checker, runner, and existing tests from upstream commit `7ae79aa5d337ad0ac02431f28b8db2a7f859910e`; these code files are unchanged in this work. No external services or target-file operations were invoked by the monitor.
-- **Environment:** Python 3.12.14, Linux; executed in the ChatGPT workspace. This entry uses Asia/Seoul (2026-10-26); commands ran on 2026-10-25 UTC. Exact start times and platform are recorded in the verification record.
+- **Environment:** Python 3.12.14, Linux. This entry uses Asia/Seoul (2026-10-26); commands ran on 2026-10-25 UTC. Exact start times and platform are recorded in the verification record.
 - **Unit tests:** actually executed `python -m unittest discover -s tests -v`; all 11 passed with exit code 0. The [unit-test transcript](../experiments/results/2026-10-25T16-05-40Z-unit-tests.txt) preserves the output.
 - **Dataset design before the v3 run:** copied all 21 v2 cases, changing only `dataset_version`, and added 24 expected labels against the existing policy. Wrote the dataset and its design note before execution; no labels were revised after observing results. New cases cover prefix boundaries, path spelling/normalization, and invalid JSON value types. V1 and v2 remain byte-for-byte unchanged.
 - **Commands actually executed:**

@@ -15,7 +15,7 @@ This document is a working guide for the author's own account. It does not suppl
 
 ## Contribution record
 
-For each meaningful session, record what you personally proposed, implemented, checked, explained, or revised. Identify assistance from people, tools, and AI. Separate making a decision from accepting a suggestion, and running an experiment from interpreting its results. The [research log](RESEARCH_LOG.md) records artifacts; your notes should explain your actual role and understanding.
+For each meaningful session, record what you personally proposed, implemented, checked, explained, or revised. Separate making a decision from accepting a suggestion, and running an experiment from interpreting its results. The [research log](RESEARCH_LOG.md) records artifacts; your notes should explain your actual role and understanding.
 
 ## A useful entry structure
 

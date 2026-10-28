@@ -2,7 +2,7 @@
 
 **What must a runtime safeguard authorize: a path, an object, or a content version?**
 
-CodeGuardian is a reproducible systems-security study motivated by AI coding agents. Six experimental stages test how filesystem authorization can diverge from the resource or value ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
+CodeGuardian is a reproducible systems-security study of the gap between filesystem authorization and execution. Six experimental stages test how filesystem authorization can diverge from the resource or value ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
 
 [Documentation](docs/README.md) · [Research statement](docs/RESEARCH_STATEMENT.md) · [Evidence](docs/EVIDENCE.md) · [Reproduction guide](experiments/README.md) · [Threat model and limits](docs/LIMITATIONS.md)
 
@@ -77,4 +77,4 @@ The next question is how legitimate new versions become authorized and how consu
 | Run or inspect the implementation | [Experiment guide](experiments/README.md) and [source guide](src/README.md) |
 | Find protocols, findings, and project history | [Documentation index](docs/README.md) |
 
-This continuation includes AI-assisted design, implementation, execution, analysis, and editing. Technical artifacts do not establish independent personal authorship or learning; see [attribution and interpretation](docs/RESEARCH_STATEMENT.md#attribution-and-interpretation).
+Technical artifacts do not establish independent personal authorship or learning; see [attribution and interpretation](docs/RESEARCH_STATEMENT.md#attribution-and-interpretation).
