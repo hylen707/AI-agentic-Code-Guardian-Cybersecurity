@@ -47,4 +47,4 @@ An eventual agent study should use constrained tools, fixed model/prompt version
 
 ## Sources and authorship
 
-The technical bases for [descriptor binding](RACE_PROTOCOL.md#technical-basis) and [content validation](CONTENT_PROTOCOL.md#technical-basis) record the systems documentation consulted. The [research statement](RESEARCH_STATEMENT.md) distinguishes the project's contribution from established mechanisms and describes AI assistance. Personal motivation and learning belong in the author's own [reflection notes](REFLECTION_NOTES.md).
+The technical bases for [descriptor binding](RACE_PROTOCOL.md#technical-basis) and [content validation](CONTENT_PROTOCOL.md#technical-basis) record the systems documentation consulted. The [research statement](RESEARCH_STATEMENT.md) distinguishes the project's contribution from established mechanisms. Personal motivation and learning belong in the author's own [reflection notes](REFLECTION_NOTES.md).

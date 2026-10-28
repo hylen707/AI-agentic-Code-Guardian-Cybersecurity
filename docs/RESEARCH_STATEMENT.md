@@ -48,6 +48,6 @@ The next studies should define legitimate version updates, stale-value handling,
 
 ## Attribution and interpretation
 
-The repository owner directs the project. This continuation used ChatGPT/Codex to assist with experiment design, implementation, execution, analysis, and English-language editing. The commits, logs, and artifacts document what was produced and tested; they do not establish which concepts the owner developed independently or what the owner personally learned.
+The repository owner directs the project. The commits, logs, and artifacts document what was produced and tested; they do not establish which concepts the owner developed independently or what the owner personally learned.
 
-A portfolio or application account should identify the owner's actual decisions, revisions, explanations, and independent work, and disclose assistance where relevant. [Reflection notes](REFLECTION_NOTES.md) provide evidence-linked prompts without supplying an invented personal narrative. No institutional affiliation, external review, publication, or deployment impact is claimed.
+A portfolio or application account should identify the owner's actual decisions, revisions, explanations, and independent work. [Reflection notes](REFLECTION_NOTES.md) provide evidence-linked prompts without supplying an invented personal narrative. No institutional affiliation, external review, publication, or deployment impact is claimed.

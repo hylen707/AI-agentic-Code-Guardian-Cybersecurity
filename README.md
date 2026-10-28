@@ -77,4 +77,4 @@ The next question is how legitimate new versions become authorized and how consu
 | Run or inspect the implementation | [Experiment guide](experiments/README.md) and [source guide](src/README.md) |
 | Find protocols, findings, and project history | [Documentation index](docs/README.md) |
 
-This continuation includes AI-assisted design, implementation, execution, analysis, and editing. Technical artifacts do not establish independent personal authorship or learning; see [attribution and interpretation](docs/RESEARCH_STATEMENT.md#attribution-and-interpretation).
+Technical artifacts do not establish independent personal authorship or learning; see [attribution and interpretation](docs/RESEARCH_STATEMENT.md#attribution-and-interpretation).
