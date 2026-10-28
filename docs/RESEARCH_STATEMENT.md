@@ -1,5 +1,7 @@
 # From pathname approval to object and content continuity
 
+[Documentation index](README.md) · [Claims and artifacts](EVIDENCE.md) · [Threat model and limits](LIMITATIONS.md)
+
 ## Abstract
 
 CodeGuardian studies whether a runtime decision remains valid for the resource and value an executor ultimately uses. Six synthetic filesystem stages separate lexical policy, resolved paths, file identities, held descriptors, and approved content versions. Descriptor binding prevents the selected pathname substitutions from redirecting content I/O, but does not freeze file contents. In the latest eight-case study, hashing and then rereading the same descriptor delivers an unapproved value in three of five mutation schedules. Returning the captured value that passed validation eliminates those unapproved deliveries while producing three approved but stale values. The contribution is a reproducible account of authorization assumptions, counterexamples, and semantic trade-offs, not a general security guarantee.

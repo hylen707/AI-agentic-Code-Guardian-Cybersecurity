@@ -2,6 +2,18 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-10-29 — Make claims traceable without repeating the full argument
+
+**Question.** How should the repository let a new reader understand the contribution, reproduce a result, and audit its limits? The prior README already contained the technical argument but repeated the progression and placed its first execution command late.
+
+**Analysis and decision.** Reviewed official SWE-bench, Inspect, garak, and CyberGym documentation. The [benchmark](DOCUMENTATION_BENCHMARK.md) separates source observations from our application judgments. Adopted early execution/output guidance, purpose-based navigation, explicit result interpretation, and accessible evaluation conditions. Assigned the argument to the research statement, commands to the experiment guide, cross-study artifact lookup to the evidence map, and assumptions to the limits document. Kept open-versus-content-I/O and approval-versus-freshness distinctions beside headline results.
+
+**Provenance correction.** Source inspection confirmed that the runners record caller-supplied commit arguments without checking out or validating those revisions. Current-code examples now record the actual checkout; historical commands and source hashes stay in their original artifacts. Checking out an old starting base alone may omit files added during that study.
+
+**Validation.** All 67 existing tests passed. Executed all nine documented experiment commands and compared their full scientific summaries with the nine historical runs; all matched. Recounted historical raw records, checked 56 source/dataset SHA-256 entries, and verified 68 implementation/test/protocol/input/evidence files against the reviewed main revision. Local Markdown paths and heading fragments passed validation. New run output remained separate from historical evidence; the preserved raw files were not replaced.
+
+**Interpretation and next step.** This improves documentation and checks reproducibility of the existing cases. It does not supply an independent evaluation, larger sample, new security guarantee, or completed version-reauthorization study. The next research question remains legitimate version updates and stale-value handling under a prospective protocol. AI assistance continues as disclosed in the [research statement](RESEARCH_STATEMENT.md#attribution-and-interpretation).
+
 ## 2026-10-27 — Stable identity does not establish an approved content version
 
 **Question and prospective design.** Does a descriptor or a passing digest ensure that the consumer receives the approved bytes? The [content protocol](CONTENT_PROTOCOL.md) and eight-case manifest were committed at `ce3fd6d245a2013090f7bd8c6367d08895132723` before implementation. The study adds a version-specific delivery rule to the unchanged Phase 5 resource gate. It does not reinterpret Phase 5's protected-resource results. Three controls cover ASCII, Unicode, and empty values; five mutation schedules overwrite, truncate, or append through a hardlink without changing the inode.

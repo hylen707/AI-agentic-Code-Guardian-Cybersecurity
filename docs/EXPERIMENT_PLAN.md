@@ -2,6 +2,8 @@
 
 **Status:** living overview through Phase 6, 2026-10-27 (Asia/Seoul). Frozen protocols govern their respective runs.
 
+This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
+
 ## Questions, units, and evidence
 
 | Stage | Unit and comparison | Outcome | Protocol or design | Findings |
