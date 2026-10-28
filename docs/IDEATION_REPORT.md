@@ -8,7 +8,7 @@
 
 Can a lightweight runtime safeguard reduce protected-resource operations while preserving legitimate work, and which execution assumptions determine whether its decisions remain valid?
 
-AI coding agents motivate the question because their proposed actions need an execution boundary. The present experiments isolate the filesystem portion of that boundary. They do not involve an actual model making or adapting proposals.
+Filesystem operations need an execution boundary that preserves the relationship between an authorization decision and the resource ultimately used. The present experiments isolate that boundary using controlled file operations and fixed proposals.
 
 ## Why this question is tractable
 
