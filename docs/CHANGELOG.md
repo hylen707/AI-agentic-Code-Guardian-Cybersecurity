@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-10-29 — Evidence-led documentation structure
+
+- Compared official SWE-bench, Inspect, garak, and CyberGym documentation; recorded observed patterns, application decisions, and source URLs in the [documentation benchmark](DOCUMENTATION_BENCHMARK.md).
+- Replaced repeated README exposition with the research question, contribution, an early runnable example, representative bounded findings, an experimental structure diagram, and reading routes. Added a [docs index](README.md), [cross-study evidence map](EVIDENCE.md), and [threat model and validity limits](LIMITATIONS.md); retained the detailed research argument and findings.
+- Updated current-code reproduction examples to record the checked-out revision, and explained that commit arguments are provenance labels rather than checkout validation. Added expected record grids, summary fields, output behavior, and historical-reproduction guidance.
+- Validation: all 67 existing unit tests passed; all nine experiment commands ran successfully and their complete scientific summaries matched the nine historical summaries. Recomputed those historical summaries from raw records and verified 56 recorded source/dataset SHA-256 entries. Checked local Markdown paths and heading fragments with no failures.
+- Verified 68 implementation, test, frozen-protocol, case, task, and historical-evidence files byte-for-byte against main at `2786dd9`. New run output was kept outside retained historical evidence. This is a documentation revision, with no new mechanism, dataset, or research phase.
+
 ## 2026-10-28 — Research exposition and documentation organization
 
 - Expanded the main README to make the research question, experiment progression, evaluation standards, and supporting evidence easier to follow.
