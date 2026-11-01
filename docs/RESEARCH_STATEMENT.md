@@ -4,7 +4,7 @@
 
 ## Abstract
 
-CodeGuardian studies whether a runtime decision remains valid for the resource and value an executor ultimately uses. Six synthetic filesystem stages separate lexical policy, resolved paths, file identities, held descriptors, and approved content versions. Descriptor binding prevents the selected pathname substitutions from redirecting content I/O, but does not freeze file contents. In the latest eight-case study, hashing and then rereading the same descriptor delivers an unapproved value in three of five mutation schedules. Returning the captured value that passed validation eliminates those unapproved deliveries while producing three approved but stale values. The contribution is a reproducible account of authorization assumptions, counterexamples, and semantic trade-offs, not a general security guarantee.
+CodeGuardian studies whether a runtime decision remains valid for the resource and value an executor ultimately uses. Seven synthetic filesystem stages separate lexical policy, resolved paths, file identities, held descriptors, and approved content versions. Descriptor binding prevents the selected pathname substitutions from redirecting content I/O, but does not freeze file contents. In the latest eight-case study, hashing and then rereading the same descriptor delivers an unapproved value in three of five mutation schedules. Returning the captured value that passed validation eliminates those unapproved deliveries while producing three approved but stale values. The contribution is a reproducible account of authorization assumptions, counterexamples, and semantic trade-offs, not a general security guarantee.
 
 ## The central argument
 
@@ -44,10 +44,14 @@ The security mechanisms themselves are established systems concepts. The project
 
 All cases are curated and visible during development. Related cases are not independent samples. The schedules deterministically arrange check/use ordering; they do not measure concurrent race probability. No confidence interval or population security rate is justified. The arms share controlled fixtures and the earlier descriptor executor; Phase 6 deliberately changes whether the checked value is retained or reread. Its mutations occur before capture or after validation, not during a capture.
 
-The next studies should define legitimate version updates, stale-value handling, and changes during capture before extending the delivery claim. Dynamic protected membership and creation remain separate obligations. Agent integration requires a distinct protocol with model/prompt versions, constrained tools, budgets, repeated task trials, and independent task-correctness assessment.
+Phase 7 now defines legitimate version updates and receipt-time authorization. Recovery after publication failure and changes during capture remain future studies. Dynamic protected membership and creation remain separate obligations. Agent integration requires a distinct protocol with model/prompt versions, constrained tools, budgets, repeated task trials, and independent task-correctness assessment.
 
 ## Attribution and interpretation
 
 The repository owner directs the project. The commits, logs, and artifacts document what was produced and tested; they do not establish which concepts the owner developed independently or what the owner personally learned.
 
 A portfolio or application account should identify the owner's actual decisions, revisions, explanations, and independent work. [Reflection notes](REFLECTION_NOTES.md) provide evidence-linked prompts without supplying an invented personal narrative. No institutional affiliation, external review, publication, or deployment impact is claimed.
+
+## Extension: approval revisions and a receipt boundary
+
+Phase 7 asks whether a validated value remains authorized after a trusted update or revocation. Separate rechecking still permits two invalid receipts in five post-capture transitions; holding the publication lock through trusted receipt yields zero. This orders receipt before two deferred commits rather than promising request-time revocation. Two valid values are obsolete at final observation. The A-to-B-to-A case rejects an old revision despite identical bytes, making the revision-specific policy explicit. [Findings](REVISION_FINDINGS.md) retain the 27 journals and the pre-measurement, post-draft freeze qualification.

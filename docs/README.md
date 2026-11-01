@@ -40,3 +40,7 @@ CodeGuardian studies the continuity between an authorization decision and the fi
 - [Documentation benchmark](DOCUMENTATION_BENCHMARK.md): official reference projects, observed documentation patterns, and application decisions.
 
 The README is the entry point; this index owns navigation. The research statement owns the argument, the experiment guide owns execution instructions, and the evidence map owns cross-study artifact lookup. Frozen protocols, measured manifests, and raw evidence retain their historical contents. A later finding refines a claim through a new record rather than silently changing an earlier result.
+
+## Approval revisions
+
+Phase 7: [analysis plan](REVISION_PROTOCOL.md), [findings](REVISION_FINDINGS.md), and [manifest](../experiments/tasks/revision-eval-v1/tasks.json). Approval updates and trusted consumer receipt are coordinated in one process. The plan was frozen before measurement, after implementation drafts existed.

@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 6, 2026-10-27 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 7, 2026-11-01 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
 
@@ -39,10 +39,12 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-Phase 6 has now varied content while holding identity constant. The next protocol should define how legitimate version changes become authorized and how consumers handle approved but stale values. Changes during capture, dynamic protected membership, and creation remain untested; each needs explicit success criteria before implementation.
-
-Before live-agent evaluation, record model and prompt versions, tool schema, permissions, task budgets, repeated trials, and an independent task-correctness oracle. Evaluate useful work and protection jointly. Current fixture results do not supply those observations.
+Phase 7 evaluates legitimate version updates and receipt-time approval under a cooperating in-process authority. The next protocol should specify recovery when file bytes, approval state, and publication observation diverge after failures. Cross-process coordination, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
 
 ## Documentation and evidence integrity
 
 Living summaries use concise academic English: question, method, result, interpretation, and limitation. Earlier protocol text, the v3 design note, task manifests, and raw outputs are preserved byte-for-byte to maintain their recorded hashes. Dated log entries describe what was known at the time; a later entry supplies corrections or extensions. This distinction allows a readable portfolio without retroactively improving the experimental record.
+
+## Phase 7: current approval at trusted receipt
+
+The [revision analysis plan](REVISION_PROTOCOL.md) defines nine cases, three arms, and the ordered-journal oracle. A receipt is valid only if its bytes and revision match the latest preceding committed nonrevoked approval. Pending publication requests are not yet committed. All nine cases stay in the valid-receipt denominator; five post-capture transitions form the invalid-receipt denominator. The sets overlap. [Findings](REVISION_FINDINGS.md) record 27 rows and distinguish receipt validity from later obsolescence. The freeze occurred before measurement after joint protocol/draft review.

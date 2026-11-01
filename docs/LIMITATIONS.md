@@ -1,6 +1,6 @@
 # Threat model and validity limits
 
-**Scope:** completed studies through Phase 6. These assumptions bound the measured results; they are not a deployable security specification.
+**Scope:** completed studies through Phase 7. These assumptions bound the measured results; they are not a deployable security specification.
 
 ## Assets and authorization contracts
 
@@ -57,3 +57,7 @@ The string gate loses two legitimate replay completions while missing two protec
 ## Open questions
 
 Legitimate version updates and stale-value handling require a prospective protocol before implementation. Mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
+
+## Dynamic approval extension
+
+Phase 7 changes the contract to committed revision and approved bytes at trusted in-process receipt. Publishers and receiver must cooperate with one lock. A busy update or revocation remains pending until retried; two measured attempts are deferred. Valid receipt does not revoke already delivered information or guarantee validity at later use. Publication and observer failures can leave effects already applied: there is no file/approval transaction, rollback, or crash recovery. The [findings](REVISION_FINDINGS.md) report these boundaries alongside the zero-invalid-receipt result.

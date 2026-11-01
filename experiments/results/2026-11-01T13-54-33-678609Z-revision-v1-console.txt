@@ -1,0 +1,67 @@
+{
+  "arms": {
+    "snapshot_only": {
+      "cases": 9,
+      "post_capture_transition_cases": 5,
+      "receipts": 8,
+      "valid_receipts": 3,
+      "invalid_receipts": 5,
+      "valid_then_obsolete": 0,
+      "denials": 1,
+      "controls": 2,
+      "valid_control_receipts": 2,
+      "early_update_valid_receipts": 1,
+      "deferred_publications": 0,
+      "requested_publications": 8,
+      "committed_publications": 8,
+      "identity_continuity_cases": 9,
+      "infrastructure_errors": 0
+    },
+    "recheck_then_release": {
+      "cases": 9,
+      "post_capture_transition_cases": 5,
+      "receipts": 5,
+      "valid_receipts": 3,
+      "invalid_receipts": 2,
+      "valid_then_obsolete": 0,
+      "denials": 4,
+      "controls": 2,
+      "valid_control_receipts": 2,
+      "early_update_valid_receipts": 1,
+      "deferred_publications": 0,
+      "requested_publications": 8,
+      "committed_publications": 8,
+      "identity_continuity_cases": 9,
+      "infrastructure_errors": 0
+    },
+    "coordinated_release": {
+      "cases": 9,
+      "post_capture_transition_cases": 5,
+      "receipts": 5,
+      "valid_receipts": 5,
+      "invalid_receipts": 0,
+      "valid_then_obsolete": 2,
+      "denials": 4,
+      "controls": 2,
+      "valid_control_receipts": 2,
+      "early_update_valid_receipts": 1,
+      "deferred_publications": 2,
+      "requested_publications": 8,
+      "committed_publications": 8,
+      "identity_continuity_cases": 9,
+      "infrastructure_errors": 0
+    }
+  },
+  "criteria": {
+    "snapshot_five_invalid_receipts": true,
+    "recheck_two_invalid_receipts": true,
+    "coordinated_zero_invalid_receipts": true,
+    "coordinated_five_valid_receipts": true,
+    "coordinated_two_deferred_publications": true,
+    "coordinated_two_valid_then_obsolete_receipts": true,
+    "all_controls_and_early_updates_succeed": true,
+    "every_requested_publication_commits": true,
+    "stable_identity_and_no_infrastructure_errors": true
+  }
+}
+Saved 2026-11-01T13-54-33-678609Z-revision-v1

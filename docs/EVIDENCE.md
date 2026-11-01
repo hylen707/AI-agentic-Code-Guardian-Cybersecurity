@@ -90,3 +90,7 @@ Start with the raw filename recorded in its summary. Check the expected case/arm
 The comparison runners store `summary.criteria`; exit 0 indicates clean execution, not that every criterion is true. Source and dataset hashes establish which local files produced a run; commit labels are caller-supplied metadata. Follow the [reproduction guide](../experiments/README.md#reading-and-preserving-artifacts) before interpreting a fresh execution as a historical reproduction.
 
 No cross-study total is meaningful: label matches, protected operations, task completion, original-object completion, and delivered versions have different units.
+
+## Phase 7: approval at receipt
+
+Nine cases × three arms produce 27 records. Invalid receipts among five post-capture transitions are 5/5 snapshot-only, 2/5 separate recheck, and 0/5 coordinated release. Valid receipts across all nine cases are 3/9, 3/9, and 5/9. Coordinated release delays two publications; both commit after receipt, making two prior valid values obsolete. [Findings, raw journals, summary, and verification](REVISION_FINDINGS.md#evidence-and-reproduction). This dynamic revision-specific contract has different units from Phase 6 payload approval. Its freeze precedes measurement, not initial implementation.

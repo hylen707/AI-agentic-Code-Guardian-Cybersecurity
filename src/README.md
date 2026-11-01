@@ -29,3 +29,7 @@ echo '{"operation":"read","path":"workspace/notes.txt"}' | python src/codeguardi
 ```
 
 Use the [experiment guide](../experiments/README.md) for measured comparisons. The current code uses the Python standard library; the descriptor study is evaluated on Linux with hardlinks and symlinks. These modules assume trusted fixture preparation and are not a general sandbox or a live-agent integration. See the [architecture](../docs/ARCHITECTURE.md) for trust boundaries and the [research statement](../docs/RESEARCH_STATEMENT.md) for the argument.
+
+## Revision-aware receipt
+
+`revision_authority.py` adds one-resource approval snapshots, monotonic updates/revocation, separate checking, and coordinated release to a trusted in-process sink. It composes the existing captured-value reader in the experiment harness; it does not change earlier implementations. Busy publications require caller retries. See [Phase 7 findings](../docs/REVISION_FINDINGS.md).

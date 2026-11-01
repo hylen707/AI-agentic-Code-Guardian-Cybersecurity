@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 6. Updated 2026-10-27 (Asia/Seoul).
+**Status:** implemented components through Phase 7. Updated 2026-11-01 (Asia/Seoul).
 
 ## System boundary
 
@@ -73,6 +73,12 @@ Phase 6's `content-eval-v1` manifest contains `case_id`, `fixture`, `timing`, an
 
 ## Validation and remaining obligations
 
-The latest recorded test run passed 67 tests: 11 policy, 12 replay, 13 resolved-gate, 8 identity, 11 descriptor/runner, and 12 verified-content/runner tests. Test success verifies these behaviors and regressions; it is not a completeness proof. See [evidence](CONTENT_FINDINGS.md#evidence-and-reproduction).
+The Phase 6 recorded test run passed 67 tests: 11 policy, 12 replay, 13 resolved-gate, 8 identity, 11 descriptor/runner, and 12 verified-content/runner tests. Test success verifies these behaviors and regressions; it is not a completeness proof. See [evidence](CONTENT_FINDINGS.md#evidence-and-reproduction).
 
 Before production use, the design would need directory confinement, creation semantics, dynamic protected membership, trusted version distribution, stale-value handling, capture-time mutation semantics, resource limits, and hostile-object handling. Selected same-inode changes have now been tested at fixed boundaries; arbitrary concurrent changes have not. Before agent claims, a real adapter and task-level evaluation are required. Each comparison remains tied to its own protocol.
+
+## Phase 7: revision authority and receipt
+
+`src/revision_authority.py` maintains an immutable approval snapshot and a monotonic revision. `try_publish` acquires a non-reentrant lock without blocking; the caller must retry a busy publication. `release` checks revision and digest and invokes a short trusted receiver under that same lock. It must not synchronously call blocking authority methods. Publication callbacks can write bytes before approval commitment; exceptions propagate and do not promise rollback.
+
+`experiments/run_revision_comparison.py` constructs fresh fixtures, captures using the unchanged verified reader, and compares three release mechanisms. An ordered journal distinguishes requested, deferred, and committed publication from receipt. Summaries revalidate saved oracle assessments against journals. All 85 current tests pass, including 18 revision tests. [Findings and limits](REVISION_FINDINGS.md).

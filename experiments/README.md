@@ -12,7 +12,7 @@ Use Python 3.10+ and the standard library on Linux. The full suite exercises har
 python -m unittest discover -s tests -v
 ```
 
-The latest recorded run passed 67 tests. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The Phase 6 recorded run passed 67 tests; the current Phase 7 run passes 85. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
 
@@ -107,3 +107,13 @@ To inspect a historical implementation, use a separate checkout at its implement
 For comparison runners, exit 0 means clean experiment execution, not that every scientific criterion held. Inspect the summary's criteria and raw rows. Per-case infrastructure failures cause a nonzero outcome; setup/schema failures also fail explicitly. The policy runner instead exits nonzero for decision mismatches or monitor errors. Record the runner's actual output rather than assuming a shared exit-code taxonomy.
 
 Keep earlier inputs, protocols, and raw runs unchanged. When a hypothesis or case changes, use a new version. Preserve negative results and error traces. Living findings can add interpretation or follow-up links without changing the original measurements. These artifacts support bounded mechanism claims, not deployed security or live-agent effectiveness.
+
+## Phase 7: approval updates and revocation
+
+```bash
+python experiments/run_revision_comparison.py --dataset experiments/tasks/revision-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 85c6e23898da60b39dc7450da0f4b9a721ac7374
+```
+
+Nine cases run in `snapshot_only`, `recheck_then_release`, and `coordinated_release` arms: 27 raw journal records. Expect invalid receipts 5/5 → 2/5 → 0/5 across five post-capture transitions, valid receipts 3/9 → 3/9 → 5/9, and denials 1 → 4 → 4. Coordinated release defers two publication attempts; all eight requested publications per arm eventually commit. Two valid coordinated receipts become obsolete afterward. Require all nine summary criteria and zero infrastructure errors. The current test suite passes 85 tests.
+
+The [analysis plan](../docs/REVISION_PROTOCOL.md) was frozen before the recorded measurement, after draft implementation existed. [Findings](../docs/REVISION_FINDINGS.md) link raw records, source hashes, and artifact verification. Use `--output-dir` for a separate rerun directory. No distributed coordination, immediate revocation, or crash rollback is claimed.

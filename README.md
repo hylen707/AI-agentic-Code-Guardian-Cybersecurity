@@ -2,7 +2,7 @@
 
 **What must a runtime safeguard authorize: a path, an object, or a content version?**
 
-CodeGuardian is a reproducible systems-security study of the gap between filesystem authorization and execution. Six experimental stages test how filesystem authorization can diverge from the resource or value ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
+CodeGuardian is a reproducible systems-security study of the gap between filesystem authorization and execution. Seven experimental stages test how filesystem authorization can diverge from the resource or value ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
 
 [Documentation](docs/README.md) · [Research statement](docs/RESEARCH_STATEMENT.md) · [Evidence](docs/EVIDENCE.md) · [Reproduction guide](experiments/README.md) · [Threat model and limits](docs/LIMITATIONS.md)
 
@@ -16,7 +16,7 @@ This repository makes those distinctions testable through:
 - **Separate protection and usefulness measures:** resource effects, task goals, content delivery, and freshness have explicit, different denominators.
 - **An auditable evidence trail:** protocols, case manifests, raw records, summaries, and source hashes retain both successful controls and failures.
 
-The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all six stages.
+The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all seven stages.
 
 ## Quick reproduction
 
@@ -26,13 +26,13 @@ Use **Python 3.10+ on Linux**, with hardlink, symlink, FIFO, and `pread` support
 git clone https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity.git
 cd AI-agentic-Code-Guardian-Cybersecurity
 python -m unittest discover -s tests -v
-python experiments/run_content_comparison.py \
-  --dataset experiments/tasks/content-eval-v1/tasks.json \
+python experiments/run_revision_comparison.py \
+  --dataset experiments/tasks/revision-eval-v1/tasks.json \
   --base-commit "$(git rev-parse HEAD)" \
-  --freeze-commit ce3fd6d245a2013090f7bd8c6367d08895132723
+  --freeze-commit 85c6e23898da60b39dc7450da0f4b9a721ac7374
 ```
 
-The latest study produces **24 case/arm records** and a summary under `experiments/results/`, using a new UTC timestamp. Expect unapproved deliveries of **5 → 3 → 0** across the three arms, two version denials in each digest arm, and three approved but stale values in the buffer arm. Exit 0 alone does not establish these outcomes; inspect the summary's `criteria` and raw rows. The [reproduction guide](experiments/README.md) explains provenance, outputs, and commands for every stage.
+The latest study produces **27 case/arm records** and a timestamped summary under `experiments/results/`. Across five post-capture approval-transition cases, expect invalid receipts of **5 → 2 → 0** for snapshot-only, separate-recheck, and coordinated-release arms. Coordinated release yields 5/9 valid receipts, four denials, and two delayed publication attempts; both delayed publications eventually commit. All **85 unit tests** pass in the recorded run. Inspect summary criteria and raw journals, not exit status alone. See the [findings](docs/REVISION_FINDINGS.md) and [experiment guide](experiments/README.md).
 
 ## Representative findings
 
@@ -43,6 +43,8 @@ Each row belongs to a different study. **Do not pool the counts into an overall 
 | Does label agreement imply useful protection? | 45/45 policy-label matches; subsequent replay still has two symlink misses and two legitimate task losses. | Label conformance and safe task completion differ. [Phases 1–2](docs/EVIDENCE.md#phases-1-and-2-labels-versus-resource-effects) |
 | Does pre-open identity approval survive name replacement? | Protected content operations: 6/6 baseline → 4/6 identity-path → **0/6 descriptor-bound**; original-object completion: **8/8** for the descriptor arm. | The descriptor arm still opens two protected objects for metadata checks before denial. [Phase 5](docs/RACE_FINDINGS.md) |
 | Does a content hash authorize a later reread? | Unapproved deliveries: 5/5 identity-only → 3/5 hash/reread → **0/5 verified buffer**. | The buffer delivers approved values in 6/8 cases, denies two, and returns three approved but stale values. [Phase 6](docs/CONTENT_FINDINGS.md) |
+
+| Does a final approval check survive a later revocation? | Invalid receipts: 5/5 snapshot-only → 2/5 separate recheck → **0/5 coordinated release**. | Two publications are delayed until after receipt; two valid receipts subsequently become obsolete. [Phase 7](docs/REVISION_FINDINGS.md) |
 
 Resolved-target and hardlink studies supply the intermediate steps; their separate controls, counts, and raw artifacts are in the [evidence map](docs/EVIDENCE.md).
 
@@ -64,9 +66,9 @@ The runner controls replacement or mutation timing and supplies each arm with a 
 
 ## Scope and next question
 
-These are curated, developer-visible mechanism studies with deterministic schedules. They do not estimate concurrent race probability, provide a production sandbox, or establish live-agent task performance. The latest reader validates small UTF-8 values under static trusted digests; it may inspect rejected bytes and may return an older approved value. See the [threat model and validity limits](docs/LIMITATIONS.md).
+These are curated, developer-visible mechanism studies with deterministic schedules. They do not estimate concurrent race probability, provide a production sandbox, or establish live-agent task performance. The content reader validates small UTF-8 values and may inspect rejected bytes. The revision authority adds a receipt-time contract for cooperating publishers in one process; it can delay updates and does not guarantee freshness after receipt. See the [threat model and validity limits](docs/LIMITATIONS.md).
 
-The next question is how legitimate new versions become authorized and how consumers handle approved but stale values. That study has not been completed.
+The latest study examines legitimate updates, revocation, and approval revision changes. The next question is how to recover when file publication and approval commitment fail partway through; that recovery study has not been completed.
 
 ## Read further
 

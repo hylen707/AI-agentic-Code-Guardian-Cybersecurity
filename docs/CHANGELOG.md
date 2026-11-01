@@ -4,6 +4,10 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-01 — Approval revisions at consumer receipt
+
+Added a revision authority and three-arm comparison of snapshot release, separate recheck, and coordinated receipt. Nine cases produced 27 records: invalid receipts 5/5 → 2/5 → 0/5; coordinated release yielded 5/9 valid receipts, four denials, and two deferred publications, both eventually committed. All 85 tests passed. The analysis plan was frozen before measurement, with draft implementation already present; no pre-implementation freeze is claimed. Earlier implementation, frozen protocols, inputs, and evidence are preserved. See [findings](REVISION_FINDINGS.md).
+
 ## 2026-10-29 — Evidence-led documentation structure
 
 - Compared official SWE-bench, Inspect, garak, and CyberGym documentation; recorded observed patterns, application decisions, and source URLs in the [documentation benchmark](DOCUMENTATION_BENCHMARK.md).

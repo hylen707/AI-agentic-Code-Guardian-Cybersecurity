@@ -1,0 +1,33 @@
+{
+  "raw_rows": 27,
+  "case_arm_grid_complete": true,
+  "independent_journal_recount": {
+    "snapshot_only": {
+      "receipts": 8,
+      "valid_receipts": 3,
+      "invalid_receipts": 5,
+      "valid_then_obsolete": 0,
+      "committed_publications": 8
+    },
+    "recheck_then_release": {
+      "receipts": 5,
+      "valid_receipts": 3,
+      "invalid_receipts": 2,
+      "valid_then_obsolete": 0,
+      "committed_publications": 8
+    },
+    "coordinated_release": {
+      "receipts": 5,
+      "valid_receipts": 5,
+      "invalid_receipts": 0,
+      "valid_then_obsolete": 2,
+      "committed_publications": 8
+    }
+  },
+  "source_hashes_checked": 8,
+  "dataset_hash_matches": true,
+  "all_prespecified_criteria_hold": true,
+  "unit_tests_passed": 85,
+  "earlier_implementation_inputs_protocols_results_preserved": 67,
+  "local_markdown_links_checked": 280
+}

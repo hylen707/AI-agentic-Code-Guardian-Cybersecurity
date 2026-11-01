@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-01 — Approval must remain current through receipt
+
+**Question.** Does rechecking an approval prevent obsolete receipt when publication or revocation can occur afterward?
+
+**Method.** Froze a nine-case analysis plan before the measured run; existing drafts were reviewed jointly, so the freeze does not precede initial implementation. Compared snapshot-only, separate recheck, and shared-lock release, with a journal oracle that checks direct bytes and approval revision at receipt.
+
+**Outcome.** Invalid receipts were 5/5 → 2/5 → 0/5. Coordinated release delivered 5/9 valid values, denied four cases, and delayed two publication attempts until after receipt. All eight requested publications per arm committed. Two coordinated receipts became obsolete afterward. All 85 tests passed; an independent saved-journal recount matched the summary.
+
+**Interpretation.** Receipt-time validity differs from immediate revocation or perpetual freshness. The lock establishes an ordering only among cooperating publishers and the trusted sink. Next: publication/approval failure recovery. [Findings and artifacts](REVISION_FINDINGS.md).
+
 ## 2026-10-29 — Make claims traceable without repeating the full argument
 
 **Question.** How should the repository let a new reader understand the contribution, reproduce a result, and audit its limits? The prior README already contained the technical argument but repeated the progression and placed its first execution command late.
