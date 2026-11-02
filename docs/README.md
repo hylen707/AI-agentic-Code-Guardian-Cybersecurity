@@ -1,6 +1,6 @@
 # Documentation
 
-CodeGuardian studies the continuity between an authorization decision and the filesystem object or content eventually used. Start with the route matching your purpose.
+CodeGuardian studies the continuity between an authorization decision and the object, content, or committed state eventually used or recovered. Start with the route matching your purpose.
 
 | Purpose | Reading route |
 |---|---|
@@ -30,6 +30,8 @@ CodeGuardian studies the continuity between an authorization decision and the fi
 | 4. Hardlink identity | [Identity protocol](IDENTITY_PROTOCOL.md) | [Identity findings](IDENTITY_FINDINGS.md) |
 | 5. Pathname replacement | [Replacement protocol](RACE_PROTOCOL.md) | [Replacement findings](RACE_FINDINGS.md) |
 | 6. Same-inode content mutation | [Content protocol](CONTENT_PROTOCOL.md) | [Content findings](CONTENT_FINDINGS.md) |
+| 7. Approval revisions | [Revision analysis plan](REVISION_PROTOCOL.md); freeze before measurement, after drafts | [Revision findings](REVISION_FINDINGS.md) |
+| 8. Publication recovery | [Recovery protocol](RECOVERY_PROTOCOL.md); freeze before implementation | [Recovery findings](RECOVERY_FINDINGS.md) |
 
 ## Rationale and history
 
@@ -41,6 +43,3 @@ CodeGuardian studies the continuity between an authorization decision and the fi
 
 The README is the entry point; this index owns navigation. The research statement owns the argument, the experiment guide owns execution instructions, and the evidence map owns cross-study artifact lookup. Frozen protocols, measured manifests, and raw evidence retain their historical contents. A later finding refines a claim through a new record rather than silently changing an earlier result.
 
-## Approval revisions
-
-Phase 7: [analysis plan](REVISION_PROTOCOL.md), [findings](REVISION_FINDINGS.md), and [manifest](../experiments/tasks/revision-eval-v1/tasks.json). Approval updates and trusted consumer receipt are coordinated in one process. The plan was frozen before measurement, after implementation drafts existed.

@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 7. Updated 2026-11-01 (Asia/Seoul).
+**Status:** implemented components through Phase 8. Updated 2026-11-02 (Asia/Seoul).
 
 ## System boundary
 
@@ -18,6 +18,12 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/run_identity_comparison.py` | Four-arm hardlink comparison | Fixed-topology identity oracle |
 | `experiments/run_race_comparison.py` | Three-arm deterministic replacement | Descriptor observations and retained original-object witness |
 | `experiments/run_content_comparison.py` | Three-arm same-inode mutation | Version-specific delivery oracle and freshness comparison |
+| `src/revision_authority.py` | Approval revision and trusted receipt | Cooperating in-process publishers; no persistence |
+| `experiments/run_revision_comparison.py` | Three-arm approval-transition comparison | Ordered receipt/publication journal |
+| `src/publication_store.py` | Split-file and SQLite-row publication/recovery | Trusted single writer; process-exit fault model |
+| `experiments/recovery_worker.py` | Publisher child and declared exit checkpoint | Exact exit/event sequence; no host-crash simulation |
+| `experiments/run_recovery_comparison.py` | Three storage/recovery arms | Coherent states, valid delivery, and commit/acknowledgment counts |
+| `experiments/verify_recovery_results.py` | Independent artifact recount | Raw grid, traces, counters, criteria, source/input hashes |
 
 ## Phase 5 ordering
 
@@ -81,4 +87,14 @@ Before production use, the design would need directory confinement, creation sem
 
 `src/revision_authority.py` maintains an immutable approval snapshot and a monotonic revision. `try_publish` acquires a non-reentrant lock without blocking; the caller must retry a busy publication. `release` checks revision and digest and invokes a short trusted receiver under that same lock. It must not synchronously call blocking authority methods. Publication callbacks can write bytes before approval commitment; exceptions propagate and do not promise rollback.
 
-`experiments/run_revision_comparison.py` constructs fresh fixtures, captures using the unchanged verified reader, and compares three release mechanisms. An ordered journal distinguishes requested, deferred, and committed publication from receipt. Summaries revalidate saved oracle assessments against journals. All 85 current tests pass, including 18 revision tests. [Findings and limits](REVISION_FINDINGS.md).
+`experiments/run_revision_comparison.py` constructs fresh fixtures, captures using the unchanged verified reader, and compares three release mechanisms. An ordered journal distinguishes requested, deferred, and committed publication from receipt. Summaries revalidate saved oracle assessments against journals. The Phase 7 run passed 85 tests, including 18 revision tests. [Findings and limits](REVISION_FINDINGS.md).
+
+## Phase 8: the persistence boundary
+
+`SplitPublicationStore` in `src/publication_store.py` individually syncs and atomically replaces the payload and approval JSON, in that order. The pair has no shared transaction. `SQLitePublicationStore` stores payload, digest/revocation, and revision in one row under explicit `BEGIN IMMEDIATE`/`COMMIT`, checking `DELETE` journal mode and `FULL` synchronization. `recover_value` validates and returns the same captured bytes, or denies a mismatch/revocation without returning a payload.
+
+The experiment is a separate trusted-fixture storage prototype. It does not replace the earlier descriptor executor, hold an authorization lock across live actions, or approve a mutable external pathname through the database.
+
+`experiments/recovery_worker.py` publishes fixed fixture values and calls `os._exit(73)` at one declared application checkpoint. `run_recovery_comparison.py` requires the exact process result and flushed event sequence, reopens a fresh store, and compares direct recovered bytes/revision with the declared old/new state. `verify_recovery_results.py` independently recounts observations without importing the runner or stores. It validates the 57-row grid, traces, counters, criteria, and source hashes. The current regression suite passes 111 tests.
+
+The parent, OS, and disk remain available. No interruption occurs inside SQLite commit, fsync, or replacement. Acknowledgments are test events in a parent-captured pipe. A committed but unacknowledged publication can survive; safe request retries and distributed acknowledgment durability are not implemented. [Results and limits](RECOVERY_FINDINGS.md).

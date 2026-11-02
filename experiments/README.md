@@ -6,15 +6,35 @@ The repository separates policy conformance, task replay, and deterministic obje
 
 ## Environment and validation
 
-Use Python 3.10+ and the standard library on Linux. The full suite exercises hardlinks, symlinks, FIFOs, and `pread`; missing capabilities must fail visibly rather than skip an attack case. No model/API credentials, third-party Python packages, or external datasets are needed. Run commands from the repository root after cloning as shown in the [quick start](../README.md#quick-reproduction).
+Use Python 3.10+ and the standard library on Linux, including an available `sqlite3` extension and file/directory fsync support. The full suite exercises hardlinks, symlinks, FIFOs, and `pread`; missing capabilities must fail visibly rather than skip an attack case. No model/API credentials, third-party Python packages, or external datasets are needed. Run commands from the repository root after cloning as shown in the [quick start](../README.md#quick-reproduction).
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-The Phase 6 recorded run passed 67 tests; the current Phase 7 run passes 85. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6 and Phase 7 runs passed 67 and 85 tests; the current Phase 8 run passes 111. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 8: content and approval after publisher termination
+
+```bash
+python experiments/run_recovery_comparison.py --dataset experiments/tasks/recovery-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit b9f4d344f6589a0069b39f02bc9552517b06cacd
+```
+
+Nineteen cases run in `split_unchecked`, `split_verified`, and `sqlite_atomic` arms, producing 57 records. The parent observes 48 declared child-process exits and nine normal controls. It requires both the expected return code and event prefix; a random failure or timeout cannot count as a valid fault injection.
+
+Expect recovered state coherence 17/19 → 17/19 → 19/19; invalid deliveries across two after-stage update gaps 2/2 → 0/2 → 0/2; and valid deliveries across 15 active-approval cases 13/15 → 13/15 → 15/15. All arms must deny four committed revocations, recover four acknowledged publications and four committed-but-unacknowledged publications, and deliver all three unchanged controls. These denominators overlap. Require all 11 criteria and zero infrastructure errors, separately from exit status.
+
+Audit the retained run using the independent verifier:
+
+```bash
+python experiments/verify_recovery_results.py --summary experiments/results/2026-11-02T10-48-45-510158Z-recovery-v1-summary.json --dataset experiments/tasks/recovery-eval-v1/tasks.json
+```
+
+For a fresh run, substitute its printed summary filename. To save a verification report, add `--output /tmp/codeguardian-recovery-verification.json` with a new filename; exclusive creation prevents overwriting a previous report. The verifier reconstructs counters from raw observations and verifies the fixed matrix, event order, source/input hashes, and criteria. It exits nonzero on infrastructure errors or unmet criteria. Full historical source-hash verification requires the implementation matching the six recorded source files, including tests and verifier.
+
+`--output-dir /tmp/codeguardian-recovery` keeps new experiment outputs outside retained evidence. The fixture stores use a single trusted writer, and SQLite stores the payload itself alongside approval. This is not policy for an external mutable file. The child calls `os._exit` at application checkpoints while the OS and parent survive; power loss and faults inside storage operations are untested. [Protocol](../docs/RECOVERY_PROTOCOL.md) · [Findings and raw evidence](../docs/RECOVERY_FINDINGS.md).
 
 ## Phase 6: approved content on a stable inode
 
@@ -95,6 +115,8 @@ Filesystem comparison commands print a JSON summary and the saved run identifier
 | Identity | 24 = 6 tasks × 4 arms | `arms.identity_gate`: 0 risk events, 6 safe completions |
 | Replacement | 30 = 10 cases × 3 arms | `arms.descriptor_bound`: 0 protected content operations, 2 protected opens, 8 original completions |
 | Content | 24 = 8 cases × 3 arms | `arms.verified_buffer`: 0 unapproved deliveries, 6 approved deliveries, 2 content blocks, 3 approved but stale values |
+| Revisions | 27 = 9 cases × 3 arms | `arms.coordinated_release`: 0 invalid receipts, 5 valid receipts, 2 deferred publications |
+| Recovery | 57 = 19 cases × 3 arms | `arms.sqlite_atomic`: 19 coherent states, 15 valid deliveries, 0 invalid deliveries, 4 revocation denials |
 
 For filesystem studies, require zero execution/infrastructure errors and inspect every declared criterion as well as controls and legitimate completion. A zero protection-failure count produced by broken execution is not a successful result. Raw IDs must cover each declared case/arm pair exactly once; the [evidence map](../docs/EVIDENCE.md) gives the historical files for comparison.
 
@@ -114,6 +136,6 @@ Keep earlier inputs, protocols, and raw runs unchanged. When a hypothesis or cas
 python experiments/run_revision_comparison.py --dataset experiments/tasks/revision-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 85c6e23898da60b39dc7450da0f4b9a721ac7374
 ```
 
-Nine cases run in `snapshot_only`, `recheck_then_release`, and `coordinated_release` arms: 27 raw journal records. Expect invalid receipts 5/5 → 2/5 → 0/5 across five post-capture transitions, valid receipts 3/9 → 3/9 → 5/9, and denials 1 → 4 → 4. Coordinated release defers two publication attempts; all eight requested publications per arm eventually commit. Two valid coordinated receipts become obsolete afterward. Require all nine summary criteria and zero infrastructure errors. The current test suite passes 85 tests.
+Nine cases run in `snapshot_only`, `recheck_then_release`, and `coordinated_release` arms: 27 raw journal records. Expect invalid receipts 5/5 → 2/5 → 0/5 across five post-capture transitions, valid receipts 3/9 → 3/9 → 5/9, and denials 1 → 4 → 4. Coordinated release defers two publication attempts; all eight requested publications per arm eventually commit. Two valid coordinated receipts become obsolete afterward. Require all nine summary criteria and zero infrastructure errors. The Phase 7 test run passed 85 tests.
 
 The [analysis plan](../docs/REVISION_PROTOCOL.md) was frozen before the recorded measurement, after draft implementation existed. [Findings](../docs/REVISION_FINDINGS.md) link raw records, source hashes, and artifact verification. Use `--output-dir` for a separate rerun directory. No distributed coordination, immediate revocation, or crash rollback is claimed.

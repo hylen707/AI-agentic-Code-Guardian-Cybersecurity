@@ -4,7 +4,7 @@
 
 ## Abstract
 
-CodeGuardian studies whether a runtime decision remains valid for the resource and value an executor ultimately uses. Seven synthetic filesystem stages separate lexical policy, resolved paths, file identities, held descriptors, and approved content versions. Descriptor binding prevents the selected pathname substitutions from redirecting content I/O, but does not freeze file contents. In the latest eight-case study, hashing and then rereading the same descriptor delivers an unapproved value in three of five mutation schedules. Returning the captured value that passed validation eliminates those unapproved deliveries while producing three approved but stale values. The contribution is a reproducible account of authorization assumptions, counterexamples, and semantic trade-offs, not a general security guarantee.
+CodeGuardian studies whether a runtime decision remains valid for the resource and value an executor ultimately uses. Eight synthetic systems-security stages separate lexical policy, resolved paths, file identities, held descriptors, approved content versions, approval revisions, and recovered state. Descriptor binding prevents the selected pathname substitutions from redirecting content I/O, but does not freeze file contents. In the eight-case Phase 6 study, hashing and then rereading the same descriptor delivers an unapproved value in three of five mutation schedules. Returning the captured value that passed validation eliminates those unapproved deliveries while producing three approved but stale values. A revision authority then orders approval changes and receipt, while the latest study tests recovery after publisher termination: validating a mismatched persisted pair prevents its delivery, whereas a transactional layout also retains usable old-or-new state. The contribution is a reproducible account of authorization assumptions, counterexamples, and semantic trade-offs, not a general security guarantee.
 
 ## The central argument
 
@@ -16,7 +16,7 @@ For an open descriptor `d`, the proposed invariant is narrower: authorization an
 
 Object continuity does not imply content-version continuity. Let `C(d, t)` be a value read through descriptor `d`. A digest check of `C(d, t1)` cannot authorize `C(d, t2)` if a writer changes the bytes between those reads. Phase 6 keeps the inode constant and exposes exactly that failure. A verified buffer instead checks `H(b) = h*` for the captured value `b` and returns that same value. This conditional argument assumes a trustworthy approved digest, collision resistance, and trusted process memory.
 
-Returning `b` does not imply that `b` equals the current file contents. The latest result separates three properties:
+Returning `b` does not imply that `b` equals the current file contents. The Phase 5 and Phase 6 results separate three properties:
 
 | Property | What the experiment establishes within scope | Remaining distinction |
 |---|---|---|
@@ -44,7 +44,7 @@ The security mechanisms themselves are established systems concepts. The project
 
 All cases are curated and visible during development. Related cases are not independent samples. The schedules deterministically arrange check/use ordering; they do not measure concurrent race probability. No confidence interval or population security rate is justified. The arms share controlled fixtures and the earlier descriptor executor; Phase 6 deliberately changes whether the checked value is retained or reread. Its mutations occur before capture or after validation, not during a capture.
 
-Phase 7 now defines legitimate version updates and receipt-time authorization. Recovery after publication failure and changes during capture remain future studies. Dynamic protected membership and creation remain separate obligations. Agent integration requires a distinct protocol with model/prompt versions, constrained tools, budgets, repeated task trials, and independent task-correctness assessment.
+Phase 7 defines legitimate version updates and receipt-time authorization. Phase 8 measures recovery after publisher exits at application checkpoints. Safe retries after lost acknowledgments, power-loss testing, and changes during capture remain future studies. Dynamic protected membership and creation remain separate obligations. Agent integration requires a distinct protocol with model/prompt versions, constrained tools, budgets, repeated task trials, and independent task-correctness assessment.
 
 ## Attribution and interpretation
 
@@ -55,3 +55,9 @@ A portfolio or application account should identify the owner's actual decisions,
 ## Extension: approval revisions and a receipt boundary
 
 Phase 7 asks whether a validated value remains authorized after a trusted update or revocation. Separate rechecking still permits two invalid receipts in five post-capture transitions; holding the publication lock through trusted receipt yields zero. This orders receipt before two deferred commits rather than promising request-time revocation. Two valid values are obsolete at final observation. The A-to-B-to-A case rejects an old revision despite identical bytes, making the revision-specific policy explicit. [Findings](REVISION_FINDINGS.md) retain the 27 journals and the pre-measurement, post-draft freeze qualification.
+
+## Extension: recovery requires a coupled state
+
+Phase 8 separates delivery protection from recovery availability. After a child publisher exits between a payload replacement and approval replacement, both split arms recover an inconsistent pair in two of 19 cases. Digest verification prevents delivery of those mismatches, yet yields only 13/15 valid reads. Storing the approved bytes and revision in one SQLite transaction yields 19/19 coherent states and 15/15 valid reads. Both designs enforce all four committed revocations.
+
+The comparison uses known process-exit boundaries and a parent-side restart observer. Four postcommit cuts recover the new state even without an acknowledgment, exposing a separate retry question. The intervention is an established transaction primitive applied to a different storage layout, not a new crash-safety theorem or a power-loss test. The [findings](RECOVERY_FINDINGS.md) link the pre-implementation protocol, 57 raw observations, and independent artifact recount.

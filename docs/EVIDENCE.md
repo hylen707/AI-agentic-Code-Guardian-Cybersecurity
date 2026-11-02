@@ -94,3 +94,14 @@ No cross-study total is meaningful: label matches, protected operations, task co
 ## Phase 7: approval at receipt
 
 Nine cases × three arms produce 27 records. Invalid receipts among five post-capture transitions are 5/5 snapshot-only, 2/5 separate recheck, and 0/5 coordinated release. Valid receipts across all nine cases are 3/9, 3/9, and 5/9. Coordinated release delays two publications; both commit after receipt, making two prior valid values obsolete. [Findings, raw journals, summary, and verification](REVISION_FINDINGS.md#evidence-and-reproduction). This dynamic revision-specific contract has different units from Phase 6 payload approval. Its freeze precedes measurement, not initial implementation.
+
+## Phase 8: recovered state and authorized availability
+
+Nineteen cases per arm produce 57 records: 48 planned publisher terminations plus nine normal controls. The two split-update gaps expose invalid deliveries of 2/2 → 0/2 → 0/2 for split-unchecked, split-verified, and SQLite-transactional stores. State coherence remains 17/19 → 17/19 → 19/19, while valid deliveries among 15 active-approval cases are 13/15 → 13/15 → 15/15. All arms recover four acknowledged publications, four unacknowledged postcommit publications, and enforce four committed revocations. Sets overlap; do not add denominators.
+
+- [Frozen protocol](RECOVERY_PROTOCOL.md) · [Manifest](../experiments/tasks/recovery-eval-v1/tasks.json) · [Pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/b9f4d344f6589a0069b39f02bc9552517b06cacd)
+- [57 raw records](../experiments/results/2026-11-02T10-48-45-510158Z-recovery-v1.jsonl) · [Summary and hashes](../experiments/results/2026-11-02T10-48-45-510158Z-recovery-v1-summary.json)
+- [Independent recount](../experiments/results/2026-11-02T10-48-45-510158Z-recovery-v1-verification.json) · [111-test transcript](../experiments/results/2026-11-02T10-48-45-510158Z-recovery-v1-unit-tests.txt)
+- [Interpretation, controls, and limits](RECOVERY_FINDINGS.md)
+
+The protocol and cases precede Phase 8 implementation, but are developer-visible. This is process-exit recovery outside storage syscalls, not a host-crash/power-loss measurement. The verifier checks artifact consistency rather than independently establishing OS or SQLite correctness.

@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-02 — Coupled publication and restart recovery
+
+- Froze the recovery protocol and 19-case manifest at `b9f4d344f6589a0069b39f02bc9552517b06cacd` before Phase 8 implementation and measurement.
+- Added split-file and single-row SQLite stores, a child publisher with declared process-exit cuts, a three-arm runner, an independent raw-artifact verifier, and 26 regression tests.
+- Recorded 57 case/arm observations: coherent states 17/19 → 17/19 → 19/19; invalid deliveries in two update gaps 2/2 → 0/2 → 0/2; valid reads 13/15 → 13/15 → 15/15. Every arm recovered four acknowledged and four committed-but-unacknowledged publications and denied all four committed revocations.
+- All 111 tests passed. The independent verifier matched all counters and 11 criteria, checked the manifest and six source hashes, and found zero infrastructure errors. Earlier implementation, protocols, inputs, and measured artifacts are retained unchanged.
+- Updated the README, study map, architecture, evidence index, limits, and reproduction guide. Scope is deterministic process termination while the OS and parent survive; no power-loss or exactly-once retry claim is made. [Findings and evidence](RECOVERY_FINDINGS.md).
+
 ## 2026-11-01 — Approval revisions at consumer receipt
 
 Added a revision authority and three-arm comparison of snapshot release, separate recheck, and coordinated receipt. Nine cases produced 27 records: invalid receipts 5/5 → 2/5 → 0/5; coordinated release yielded 5/9 valid receipts, four denials, and two deferred publications, both eventually committed. All 85 tests passed. The analysis plan was frozen before measurement, with draft implementation already present; no pre-implementation freeze is claimed. Earlier implementation, frozen protocols, inputs, and evidence are preserved. See [findings](REVISION_FINDINGS.md).

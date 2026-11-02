@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-02 — Refusing a bad recovery does not recover the last usable state
+
+**Question and design.** Can a publication be recovered coherently when the child process exits between content and approval updates? Froze the [protocol](RECOVERY_PROTOCOL.md) and 19 cases before implementation, comparing the same split publisher with unchecked/verified recovery against a row transaction containing both payload and approval. Three controls and 16 termination schedules run in each arm. Parent and storage remain running; cuts are outside storage calls.
+
+**Observation.** The split layouts recover mismatched payload/approval in two cases. The unchecked reader delivers both; validation prevents those deliveries but loses two active-approval reads. SQLite recovers coherent old-or-new state in all 19 cases and completes all 15 active-approval reads. Committed revocation is denied in 4/4 cases for every arm. Four commits without an acknowledgment also recover, as do all four acknowledged publications.
+
+**Validation.** All 111 tests passed, including 26 new tests. The independent artifact verifier matched the 57-record grid, every complete child trace, all summary counters and 11 criteria, and seven source/input hashes. There were zero infrastructure errors. [Raw evidence and findings](RECOVERY_FINDINGS.md#evidence-and-reproduction) preserve the measured outputs.
+
+**Interpretation and next decision.** Digest validation and recoverable availability are separate obligations. The transaction intervention changes storage layout and trusts SQLite; it is not a new primitive or proof of external-file policy. The observed commit/acknowledgment ambiguity motivates a future request-identity and retry-deduplication protocol. Host power loss, mid-commit storage faults, multiple writers, and repeated recovery failure remain outside this run.
+
 ## 2026-11-01 — Approval must remain current through receipt
 
 **Question.** Does rechecking an approval prevent obsolete receipt when publication or revocation can occur afterward?
