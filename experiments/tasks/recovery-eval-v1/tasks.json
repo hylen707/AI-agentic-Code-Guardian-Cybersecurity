@@ -1,0 +1,119 @@
+{
+  "schema_version": "recovery-eval-v1",
+  "cases": [
+    {
+      "case_id": "control-ascii",
+      "fixture": "ascii",
+      "transition": "none",
+      "cut": "none"
+    },
+    {
+      "case_id": "control-empty",
+      "fixture": "empty",
+      "transition": "none",
+      "cut": "none"
+    },
+    {
+      "case_id": "control-unicode",
+      "fixture": "unicode",
+      "transition": "none",
+      "cut": "none"
+    },
+    {
+      "case_id": "ascii-update-before_publish",
+      "fixture": "ascii",
+      "transition": "update",
+      "cut": "before_publish"
+    },
+    {
+      "case_id": "ascii-update-after_stage",
+      "fixture": "ascii",
+      "transition": "update",
+      "cut": "after_stage"
+    },
+    {
+      "case_id": "ascii-update-after_commit",
+      "fixture": "ascii",
+      "transition": "update",
+      "cut": "after_commit"
+    },
+    {
+      "case_id": "ascii-update-after_ack",
+      "fixture": "ascii",
+      "transition": "update",
+      "cut": "after_ack"
+    },
+    {
+      "case_id": "ascii-revoke-before_publish",
+      "fixture": "ascii",
+      "transition": "revoke",
+      "cut": "before_publish"
+    },
+    {
+      "case_id": "ascii-revoke-after_stage",
+      "fixture": "ascii",
+      "transition": "revoke",
+      "cut": "after_stage"
+    },
+    {
+      "case_id": "ascii-revoke-after_commit",
+      "fixture": "ascii",
+      "transition": "revoke",
+      "cut": "after_commit"
+    },
+    {
+      "case_id": "ascii-revoke-after_ack",
+      "fixture": "ascii",
+      "transition": "revoke",
+      "cut": "after_ack"
+    },
+    {
+      "case_id": "empty-update-before_publish",
+      "fixture": "empty",
+      "transition": "update",
+      "cut": "before_publish"
+    },
+    {
+      "case_id": "empty-update-after_stage",
+      "fixture": "empty",
+      "transition": "update",
+      "cut": "after_stage"
+    },
+    {
+      "case_id": "empty-update-after_commit",
+      "fixture": "empty",
+      "transition": "update",
+      "cut": "after_commit"
+    },
+    {
+      "case_id": "empty-update-after_ack",
+      "fixture": "empty",
+      "transition": "update",
+      "cut": "after_ack"
+    },
+    {
+      "case_id": "empty-revoke-before_publish",
+      "fixture": "empty",
+      "transition": "revoke",
+      "cut": "before_publish"
+    },
+    {
+      "case_id": "empty-revoke-after_stage",
+      "fixture": "empty",
+      "transition": "revoke",
+      "cut": "after_stage"
+    },
+    {
+      "case_id": "empty-revoke-after_commit",
+      "fixture": "empty",
+      "transition": "revoke",
+      "cut": "after_commit"
+    },
+    {
+      "case_id": "empty-revoke-after_ack",
+      "fixture": "empty",
+      "transition": "revoke",
+      "cut": "after_ack"
+    }
+  ]
+}
