@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-03 — A recovered approval does not identify a repeated intent
+
+**Question and design.** When commitment succeeds but its acknowledgment is absent, can a retry repeat the effect or undo a later decision? Froze the [protocol](RETRY_PROTOCOL.md) and 20-case manifest before implementation. All three arms retain a coherent SQLite publication and transactional effect observer; they omit request receipts, commit them separately, or include them with publication. Each ID binds exact operation and payload. The cases include changed intent, legitimate new IDs, old retries after intervening policy, and four process-exit boundaries.
+
+**Observation.** Successful same-intent retries are 2/12 → 10/12 → 12/12; extra-effect cases are 10/12 → 2/12 → 0/12. A separate receipt has its own two-case commit gap. All 20 final state pairs per arm remain coherent. Unkeyed late retries reinstate a revoked value once and withdraw a newer approval once. Both keyed arms instead return the historical receipt while preserving current state, reject both parameter conflicts, and allow both distinct-ID publications with identical intent.
+
+**Validation.** All 141 tests passed, including 30 new tests. The independent verifier uses fixed expected effect prefixes rather than importing the publisher or measured runner. It matches all 60 records, counters, and ten criteria, verifies the input and seven source hashes, and confirms 24 declared exits plus 36 normal first publications with zero infrastructure errors. [Findings and raw evidence](RETRY_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** The request identity must share the commit unit of its effect. A stored old receipt acknowledges history; it is not a permission to restore that history as current. The result is bounded by retained IDs, a trusted sequential namespace, and database-only effects. Next: define safe receipt retirement and a delayed-retry rule before deleting old identities. Concurrency, host power loss, internal storage faults, and external-service effects remain separate studies.
+
 ## 2026-11-02 — Refusing a bad recovery does not recover the last usable state
 
 **Question and design.** Can a publication be recovered coherently when the child process exits between content and approval updates? Froze the [protocol](RECOVERY_PROTOCOL.md) and 19 cases before implementation, comparing the same split publisher with unchecked/verified recovery against a row transaction containing both payload and approval. Three controls and 16 termination schedules run in each arm. Parent and storage remain running; cuts are outside storage calls.

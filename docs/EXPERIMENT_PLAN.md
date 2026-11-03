@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 8, 2026-11-02 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 9, 2026-11-03 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
 
@@ -16,6 +16,7 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 6. Approved content | Eight same-inode mutation cases, three arms | Unapproved/approved deliveries, content denials, approved but stale values | [Content protocol](CONTENT_PROTOCOL.md) | [Content findings](CONTENT_FINDINGS.md) |
 | 7. Approval revisions | Nine ordered histories, three arms | Current approval at receipt; deferred publication | [Revision plan](REVISION_PROTOCOL.md) | [Revision findings](REVISION_FINDINGS.md) |
 | 8. Restart recovery | Nineteen cases, three arms; 48 child exits and 9 controls | Coherent recovered state, valid delivery, acknowledged commit recovery | [Recovery protocol](RECOVERY_PROTOCOL.md) | [Recovery findings](RECOVERY_FINDINGS.md) |
+| 9. Request retries | Twenty cases, three arms; 24 child exits and 36 normal first requests | Duplicate effects, equivalent receipts, preserved later policy, conflicts and distinct intents | [Retry protocol](RETRY_PROTOCOL.md) | [Retry findings](RETRY_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -41,7 +42,7 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-Phase 8 evaluates restart recovery at selected publisher checkpoints. The next protocol should specify request identities and deduplication when a commit succeeds but its acknowledgment is lost. Mid-storage-operation cuts, failures during recovery, concurrent publishers, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
+Phase 9 evaluates retained request identities and state/receipt atomicity after known process exits. The next protocol should define receipt retirement and delayed retries: forgetting a key must not silently reinstate an obsolete intent. Mid-storage-operation cuts, failures during recovery, concurrent publishers, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
 
 ## Documentation and evidence integrity
 
@@ -56,3 +57,9 @@ The [revision analysis plan](REVISION_PROTOCOL.md) defines nine cases, three arm
 The [recovery protocol](RECOVERY_PROTOCOL.md) specifies the 19-case matrix before implementation. The parent validates each child exit and event prefix, then reopens a fresh store after publication stops. **State coherence** requires the expected old/new revision, approval, and payload together (all 19 cases). **Valid delivery** requires bytes and revision matching the expected active approval (15 cases; four committed revocations excluded). **Invalid gap delivery** concerns the two after-stage update schedules. **Acknowledged recovery** covers four after-ack cases, while another four cuts recover committed state without an acknowledgment. These sets overlap and cannot be pooled.
 
 The verified split arm's two digest denials prevent invalid delivery without repairing the pair or recovering the previous payload. SQLite changes the storage layout and transaction boundary, retaining a usable state in those cases. Counts measure deterministic process-exit recovery, not a power-loss success rate. [Findings](RECOVERY_FINDINGS.md).
+
+## Phase 9: intent across repeated publication
+
+The [retry protocol](RETRY_PROTOCOL.md) freezes 20 schedules before implementation. **Retry success / 12 cases** requires the ideal final state, committed effect sequence, and original semantic receipt, including two before-commit retries that create their first effect. **Duplicate retry cases / 12** count actual extra effect rows for the original ID; a response label alone is insufficient. The two state/receipt gaps are a subset. **Conflict rejection / 2** requires a conflict and no observation change. **Distinct-intent completion / 2** requires a different ID to create revision 3 even with identical payload. **Late-state preservation / 2** requires a historical reply without changing the intervening state. Four single-publication controls and all 20 final state-coherence checks remain separate.
+
+The observed retry success is 2/12 → 10/12 → 12/12; all arms still have 20/20 coherent final pairs. The result concerns retained IDs, one sequential writer, and one database effect domain. It is not a population failure rate or general exactly-once execution claim. [Findings](RETRY_FINDINGS.md).

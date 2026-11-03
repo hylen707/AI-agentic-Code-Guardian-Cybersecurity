@@ -1,6 +1,6 @@
 # Threat model and validity limits
 
-**Scope:** completed studies through Phase 8. These assumptions bound the measured results; they are not a deployable security specification.
+**Scope:** completed studies through Phase 9. These assumptions bound the measured results; they are not a deployable security specification.
 
 ## Assets and authorization contracts
 
@@ -51,12 +51,12 @@ The string gate loses two legitimate replay completions while missing two protec
 | Deterministic check/use schedules | Demonstrates selected orderings; does not measure concurrent race probability |
 | Shared implementation and trusted observation infrastructure | Agreement cannot independently establish correctness of OS semantics, all oracle code, or every execution |
 | Different contracts across stages | Identity-only Phase 6 failures do not invalidate Phase 5's narrower identity result; task completion and payload delivery are different measures |
-| Regression tests versus experiment trials | 111 current passing tests are not 111 independent adversarial samples |
+| Regression tests versus experiment trials | 141 current passing tests are not 141 independent adversarial samples |
 | No live-agent adapter or task trials | No evidence yet about model behavior, agent attack success, task accuracy, cost, latency, or deployment impact |
 
 ## Open questions
 
-Phase 7 evaluates legitimate approval changes at receipt, and Phase 8 evaluates publisher-exit recovery. Safe retries after unacknowledged commits, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
+Phase 7 evaluates legitimate approval changes at receipt, Phase 8 evaluates publisher-exit recovery, and Phase 9 evaluates retries with retained request IDs. Receipt retirement, simultaneous requests, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
 
 ## Dynamic approval extension
 
@@ -67,3 +67,9 @@ Phase 7 changes the contract to committed revision and approved bytes at trusted
 Phase 8 introduces trusted fixture stores and a child-process fault model. Separate file replacements can leave content and approval mismatched. Verification denies the mismatches but does not restore state; a SQLite row transaction preserves old-or-new state in the selected cuts. This changes data placement, with SQLite and its OS integration as trusted dependencies. The recovered database payload is not an authorization rule for arbitrary external files.
 
 `os._exit` skips Python cleanup while the parent, filesystem, and kernel keep running. Checkpoints lie outside storage syscalls and SQLite commit internals. File/directory fsync and checked SQLite settings do not turn these observations into a power-loss experiment. No multiple-writer, hostile-mutation, crash-during-recovery, large-file, or performance claim follows. Committed revocations are enforced; pending revocation requests need not have taken effect. Absence of acknowledgment does not imply absence of commitment. Exactly-once retries remain untested. [Protocol](RECOVERY_PROTOCOL.md) · [Findings](RECOVERY_FINDINGS.md).
+
+## Request-retry extension
+
+Phase 9 adds a trusted caller-supplied ID and exact operation/payload binding in one store namespace. It tests coherent SQLite publication with unkeyed, separately recorded, and atomically recorded receipts. Retrying an old ID may return an old commitment receipt; current delivery must still follow the latest publication. The observer is trusted instrumentation in the same state transaction, not an independently secured audit service.
+
+There is one sequential publisher, no identity authentication or tenant separation, and no external side effect. The caller must reuse its original ID to obtain deduplication. All receipts remain indefinitely; eviction, expiry, capacity, migration, and key reuse after retirement are untested. The checkpoints simulate process exit while the OS and parent survive, not a network protocol or host power loss. Selected at-most-once database effects and equivalent historical replies do not imply general exactly-once execution. [Protocol](RETRY_PROTOCOL.md) · [Findings](RETRY_FINDINGS.md).

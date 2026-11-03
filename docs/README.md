@@ -1,6 +1,6 @@
 # Documentation
 
-CodeGuardian studies the continuity between an authorization decision and the object, content, or committed state eventually used or recovered. Start with the route matching your purpose.
+CodeGuardian studies the continuity between an authorization decision and the object, content, committed state, or request intent eventually used, recovered, or repeated. Start with the route matching your purpose.
 
 | Purpose | Reading route |
 |---|---|
@@ -32,6 +32,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 6. Same-inode content mutation | [Content protocol](CONTENT_PROTOCOL.md) | [Content findings](CONTENT_FINDINGS.md) |
 | 7. Approval revisions | [Revision analysis plan](REVISION_PROTOCOL.md); freeze before measurement, after drafts | [Revision findings](REVISION_FINDINGS.md) |
 | 8. Publication recovery | [Recovery protocol](RECOVERY_PROTOCOL.md); freeze before implementation | [Recovery findings](RECOVERY_FINDINGS.md) |
+| 9. Publication retries | [Retry protocol](RETRY_PROTOCOL.md); freeze before implementation | [Retry findings](RETRY_FINDINGS.md) |
 
 ## Rationale and history
 

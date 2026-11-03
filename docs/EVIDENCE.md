@@ -105,3 +105,15 @@ Nineteen cases per arm produce 57 records: 48 planned publisher terminations plu
 - [Interpretation, controls, and limits](RECOVERY_FINDINGS.md)
 
 The protocol and cases precede Phase 8 implementation, but are developer-visible. This is process-exit recovery outside storage syscalls, not a host-crash/power-loss measurement. The verifier checks artifact consistency rather than independently establishing OS or SQLite correctness.
+
+## Phase 9: request identity and retry effects
+
+**Claim.** Coherent publication recovery does not establish safe retries. In the 20-case, three-arm comparison, all arms retain 20/20 intrinsically coherent final pairs, while extra effects occur in 10/12 unkeyed, 2/12 separate-receipt, and 0/12 atomic-receipt retry cases. Successful retry contracts are 2/12, 10/12, and 12/12. These selected schedules are not population failure rates.
+
+The two separate-receipt failures occur between state/effect commit and request-receipt commit. Both keyed arms reject 2/2 changed-intent requests, accept 2/2 distinct IDs with identical intent, and preserve 2/2 intervening publications on late retry. The unkeyed arm reinstates one revoked value and withdraws one newer approval. Every arm passes four single-publication controls; the overlapping denominator groups remain separate.
+
+- [Protocol](RETRY_PROTOCOL.md), [20-case manifest](../experiments/tasks/retry-eval-v1/tasks.json), and [pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/1b7152561029c22f9bc04ba7568937b01a3fe2e2).
+- [60 raw state/effect/receipt records](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1.jsonl), [summary and provenance](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-summary.json), and [independent effect-prefix recount](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-verification.json).
+- [141 passing tests](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-console.txt), and [interpretation and limits](RETRY_FINDINGS.md).
+
+All ten prespecified criteria hold; 24 planned process exits and 36 normal first publications have verified traces and zero infrastructure errors. The input and seven source hashes match. This is a trusted sequential namespace with retained receipts and one SQLite effect domain. Historical receipts are not current authorization. Receipt retirement, concurrency, external effects, and host power loss remain untested.

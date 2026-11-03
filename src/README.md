@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains resource-authorization mechanisms and a version-specific content reader. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
+The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, and request-retry prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -39,3 +39,9 @@ Use the [experiment guide](../experiments/README.md) for measured comparisons. T
 `publication_store.py` contains split-file and single-row SQLite stores for the Phase 8 fixture experiment. Individual split replacements use file and directory fsync; the SQLite store verifies rollback-journal `DELETE` mode and `synchronous=FULL`. Both capture a recovered state before delivery, and the verified interface returns exactly the captured bytes checked. A diagnostic unchecked arm omits that digest check.
 
 The worker terminates at declared boundaries without normal cleanup. These stores are independent from the earlier execution gate; they do not provide general filesystem confinement, distributed publication, or power-loss validation. See the [recovery findings](../docs/RECOVERY_FINDINGS.md).
+
+## Request identity and retry receipts
+
+`retry_store.py` reuses the SQLite store's checked connection settings and recovered-state reader. Every publication commits state and an observer effect row together. The three arms omit request deduplication, record a receipt in a separate transaction, or include it in that same transaction. Keyed requests bind ID, operation, and exact bytes; changed intent conflicts, a new ID creates a new revision, and a retry returns the original receipt without restoring its old state.
+
+These are trusted sequential fixture stores with indefinite receipt retention. They do not authenticate request IDs or coordinate an external side effect. The current suite has 141 tests. See the [retry findings](../docs/RETRY_FINDINGS.md) and [experiment guide](../experiments/README.md).

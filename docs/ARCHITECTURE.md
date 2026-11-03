@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 8. Updated 2026-11-02 (Asia/Seoul).
+**Status:** implemented components through Phase 9. Updated 2026-11-03 (Asia/Seoul).
 
 ## System boundary
 
@@ -24,6 +24,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/recovery_worker.py` | Publisher child and declared exit checkpoint | Exact exit/event sequence; no host-crash simulation |
 | `experiments/run_recovery_comparison.py` | Three storage/recovery arms | Coherent states, valid delivery, and commit/acknowledgment counts |
 | `experiments/verify_recovery_results.py` | Independent artifact recount | Raw grid, traces, counters, criteria, source/input hashes |
+| `src/retry_store.py` | Request binding and separate/atomic receipt persistence | Exact operation/bytes; historical reply; sequential trusted namespace |
+| `experiments/retry_worker.py` | One request in a child publisher | Exact process-exit and acknowledgment trace |
+| `experiments/run_retry_comparison.py` | Request retry, conflict, distinct-intent, and late-retry schedules | Direct state plus transactional effect observer and response fields |
+| `experiments/verify_retry_results.py` | Independent expected-effect-prefix model | Grid, traces, state/delivery, historical receipts, counters and hashes |
 
 ## Phase 5 ordering
 
@@ -95,6 +99,14 @@ Before production use, the design would need directory confinement, creation sem
 
 The experiment is a separate trusted-fixture storage prototype. It does not replace the earlier descriptor executor, hold an authorization lock across live actions, or approve a mutable external pathname through the database.
 
-`experiments/recovery_worker.py` publishes fixed fixture values and calls `os._exit(73)` at one declared application checkpoint. `run_recovery_comparison.py` requires the exact process result and flushed event sequence, reopens a fresh store, and compares direct recovered bytes/revision with the declared old/new state. `verify_recovery_results.py` independently recounts observations without importing the runner or stores. It validates the 57-row grid, traces, counters, criteria, and source hashes. The current regression suite passes 111 tests.
+`experiments/recovery_worker.py` publishes fixed fixture values and calls `os._exit(73)` at one declared application checkpoint. `run_recovery_comparison.py` requires the exact process result and flushed event sequence, reopens a fresh store, and compares direct recovered bytes/revision with the declared old/new state. `verify_recovery_results.py` independently recounts observations without importing the runner or stores. It validates the 57-row grid, traces, counters, criteria, and source hashes. The recorded Phase 8 regression suite passed 111 tests.
 
 The parent, OS, and disk remain available. No interruption occurs inside SQLite commit, fsync, or replacement. Acknowledgments are test events in a parent-captured pipe. A committed but unacknowledged publication can survive; safe request retries and distributed acknowledgment durability are not implemented. [Results and limits](RECOVERY_FINDINGS.md).
+
+## Phase 9: the request boundary
+
+`RetryPublicationStore` reuses the unchanged Phase 8 SQLite connection settings, row validation, and verified recovery. Initialization creates publication, effect-observer, and request-receipt tables. A new publication changes state and appends its effect row in one transaction. The observer labels committed effects; the publisher never queries it to deduplicate requests.
+
+The unkeyed arm applies every call. Both keyed arms compare an existing ID with its operation and exact bytes, return a conflict on changed intent, or return the original revision/digest receipt on a retry. The split arm records a new receipt in a second transaction; the atomic arm inserts it before the state commit. Receipt replay leaves current state unchanged even after a newer update or revocation. A new ID intentionally represents a new publication.
+
+The child exits at declared commit/receipt/acknowledgment barriers. The parent reopens for every observation and follow-up call. Raw captures include a consistent read of all three tables and actual current delivery. The runner uses an ideal ID model; the independent verifier instead enumerates expected effect prefixes for the frozen schedules. All 141 current tests pass. The implementation has one trusted sequential namespace, retains all receipts, and does not coordinate external effects. [Protocol](RETRY_PROTOCOL.md) · [Findings](RETRY_FINDINGS.md).

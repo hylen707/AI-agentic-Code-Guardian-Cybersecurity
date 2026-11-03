@@ -12,9 +12,29 @@ Use Python 3.10+ and the standard library on Linux, including an available `sqli
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6 and Phase 7 runs passed 67 and 85 tests; the current Phase 8 run passes 111. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6, Phase 7, and Phase 8 runs passed 67, 85, and 111 tests; the current Phase 9 run passes 141. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 9: request retries and historical receipts
+
+```bash
+python experiments/run_retry_comparison.py --dataset experiments/tasks/retry-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 1b7152561029c22f9bc04ba7568937b01a3fe2e2
+```
+
+Twenty cases run in `unkeyed`, `split_receipt`, and `atomic_receipt` arms: 60 records, 24 declared child-process exits, and 36 normally completed first publications. All arms commit a coherent payload/approval row and effect observer together. The intervention changes whether request receipts are absent, separately committed, or included in that transaction.
+
+Expect successful same-intent retries 2/12 → 10/12 → 12/12 and retry cases with extra effects 10/12 → 2/12 → 0/12. The split arm's two failures occur after state commit but before receipt commit. Both keyed arms must reject both changed-intent requests, preserve both intervening publications on late retry, and apply both new IDs with identical intent. All arms must pass four single-publication controls and retain 20/20 coherent final pairs. Require all ten criteria and zero infrastructure errors; coherence alone does not establish correct intent.
+
+Audit the retained run:
+
+```bash
+python experiments/verify_retry_results.py --summary experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-summary.json --dataset experiments/tasks/retry-eval-v1/tasks.json
+```
+
+Substitute a fresh run's printed summary filename to audit it. The independent verifier enumerates expected committed effect prefixes without importing the store or runner, checks actual current delivery and historical response fields, recounts all counters, and verifies the input and seven source hashes. It exits nonzero on infrastructure errors or unmet criteria. Historical verification requires matching source versions. `--output /tmp/codeguardian-retry-verification.json` writes a report only to a new file; `--output-dir /tmp/codeguardian-retry` keeps fresh runner outputs separate from retained evidence.
+
+A replayed receipt is historical and never restores its old approval. A different ID denotes a new intent. One trusted sequential namespace, indefinite receipt retention, one database effect domain, and process-exit checkpoints bound the claim; no general exactly-once execution, receipt eviction, host power loss, or concurrent-request guarantee is established. [Protocol](../docs/RETRY_PROTOCOL.md) · [Findings and raw evidence](../docs/RETRY_FINDINGS.md).
 
 ## Phase 8: content and approval after publisher termination
 
@@ -117,6 +137,7 @@ Filesystem comparison commands print a JSON summary and the saved run identifier
 | Content | 24 = 8 cases × 3 arms | `arms.verified_buffer`: 0 unapproved deliveries, 6 approved deliveries, 2 content blocks, 3 approved but stale values |
 | Revisions | 27 = 9 cases × 3 arms | `arms.coordinated_release`: 0 invalid receipts, 5 valid receipts, 2 deferred publications |
 | Recovery | 57 = 19 cases × 3 arms | `arms.sqlite_atomic`: 19 coherent states, 15 valid deliveries, 0 invalid deliveries, 4 revocation denials |
+| Request retry | 60 = 20 cases × 3 arms | `arms.atomic_receipt`: 12 successful retries, 0 duplicate retry cases, 2 correct conflicts, 2 preserved late states |
 
 For filesystem studies, require zero execution/infrastructure errors and inspect every declared criterion as well as controls and legitimate completion. A zero protection-failure count produced by broken execution is not a successful result. Raw IDs must cover each declared case/arm pair exactly once; the [evidence map](../docs/EVIDENCE.md) gives the historical files for comparison.
 

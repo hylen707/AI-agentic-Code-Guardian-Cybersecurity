@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-03 — Request identity and atomic publication receipts
+
+- Froze the retry protocol and 20-case manifest at `1b7152561029c22f9bc04ba7568937b01a3fe2e2` before Phase 9 implementation and measurement.
+- Added a SQLite request publisher with unkeyed, separate-receipt, and atomic-receipt arms, a terminating child worker, an ideal request-model runner, an independent effect-prefix verifier, and 30 regression tests. Earlier storage code is reused unchanged.
+- Recorded 60 case/arm observations: successful same-intent retries 2/12 → 10/12 → 12/12; retry cases with extra effects 10/12 → 2/12 → 0/12. All final state pairs remain coherent. Both keyed arms reject changed intent, accept new IDs with identical payload, and preserve later updates/revocations when returning old receipts.
+- All 141 tests passed. The independent verifier matched every counter and all ten criteria, checked the manifest and seven source hashes, and found zero infrastructure errors across 24 declared exits and 36 normal first publications.
+- Updated the overview, research argument, study map, architecture, limits, evidence map, and reproduction guide. Claims concern retained IDs and one trusted sequential database namespace; receipt retirement, simultaneous requests, external effects, and host power loss remain outside scope. [Findings and evidence](RETRY_FINDINGS.md).
+
 ## 2026-11-02 — Coupled publication and restart recovery
 
 - Froze the recovery protocol and 19-case manifest at `b9f4d344f6589a0069b39f02bc9552517b06cacd` before Phase 8 implementation and measurement.
