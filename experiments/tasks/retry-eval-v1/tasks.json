@@ -1,0 +1,145 @@
+{
+  "schema_version": "retry-eval-v1",
+  "cases": [
+    {
+      "case_id": "single-update-ascii",
+      "scenario": "single",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "single-update-empty",
+      "scenario": "single",
+      "operation": "update",
+      "value": "empty",
+      "cut": "none"
+    },
+    {
+      "case_id": "single-update-unicode",
+      "scenario": "single",
+      "operation": "update",
+      "value": "unicode",
+      "cut": "none"
+    },
+    {
+      "case_id": "single-revoke",
+      "scenario": "single",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "repeat-update",
+      "scenario": "repeat",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "distinct-update",
+      "scenario": "distinct",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "intervening-update",
+      "scenario": "intervening",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "repeat-revoke",
+      "scenario": "repeat",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "distinct-revoke",
+      "scenario": "distinct",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "intervening-revoke",
+      "scenario": "intervening",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "same-id-changed-bytes",
+      "scenario": "conflict_value",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "same-id-changed-operation",
+      "scenario": "conflict_operation",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "crash-update-before_commit",
+      "scenario": "crash",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "before_commit"
+    },
+    {
+      "case_id": "crash-update-after_state_commit",
+      "scenario": "crash",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "after_state_commit"
+    },
+    {
+      "case_id": "crash-update-after_record_commit",
+      "scenario": "crash",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "after_record_commit"
+    },
+    {
+      "case_id": "crash-update-after_ack",
+      "scenario": "crash",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "after_ack"
+    },
+    {
+      "case_id": "crash-revoke-before_commit",
+      "scenario": "crash",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "before_commit"
+    },
+    {
+      "case_id": "crash-revoke-after_state_commit",
+      "scenario": "crash",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "after_state_commit"
+    },
+    {
+      "case_id": "crash-revoke-after_record_commit",
+      "scenario": "crash",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "after_record_commit"
+    },
+    {
+      "case_id": "crash-revoke-after_ack",
+      "scenario": "crash",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "after_ack"
+    }
+  ]
+}
