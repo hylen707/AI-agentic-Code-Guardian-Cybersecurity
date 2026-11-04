@@ -1,0 +1,145 @@
+{
+  "schema_version": "retirement-eval-v1",
+  "cases": [
+    {
+      "case_id": "late-update-none",
+      "scenario": "late_known",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "late-update-before_retire",
+      "scenario": "late_known",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "before_retire"
+    },
+    {
+      "case_id": "late-update-after_cleanup",
+      "scenario": "late_known",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "after_cleanup"
+    },
+    {
+      "case_id": "late-update-after_commit",
+      "scenario": "late_known",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "after_commit"
+    },
+    {
+      "case_id": "late-update-after_ack",
+      "scenario": "late_known",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "after_ack"
+    },
+    {
+      "case_id": "late-revoke-none",
+      "scenario": "late_known",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "late-revoke-before_retire",
+      "scenario": "late_known",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "before_retire"
+    },
+    {
+      "case_id": "late-revoke-after_cleanup",
+      "scenario": "late_known",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "after_cleanup"
+    },
+    {
+      "case_id": "late-revoke-after_commit",
+      "scenario": "late_known",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "after_commit"
+    },
+    {
+      "case_id": "late-revoke-after_ack",
+      "scenario": "late_known",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "after_ack"
+    },
+    {
+      "case_id": "current-repeat-update",
+      "scenario": "current_repeat",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "current-repeat-revoke",
+      "scenario": "current_repeat",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "current-conflict-bytes",
+      "scenario": "current_conflict_value",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "current-conflict-operation",
+      "scenario": "current_conflict_operation",
+      "operation": "update",
+      "value": "empty",
+      "cut": "none"
+    },
+    {
+      "case_id": "current-single-empty",
+      "scenario": "current_single",
+      "operation": "update",
+      "value": "empty",
+      "cut": "none"
+    },
+    {
+      "case_id": "current-single-unicode",
+      "scenario": "current_single",
+      "operation": "update",
+      "value": "unicode",
+      "cut": "none"
+    },
+    {
+      "case_id": "unseen-old-update",
+      "scenario": "unseen_retired",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "unseen-old-revoke",
+      "scenario": "unseen_retired",
+      "operation": "revoke",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "future-epoch",
+      "scenario": "future",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    },
+    {
+      "case_id": "reuse-id-new-epoch",
+      "scenario": "new_epoch_same_id",
+      "operation": "update",
+      "value": "ascii",
+      "cut": "none"
+    }
+  ]
+}
