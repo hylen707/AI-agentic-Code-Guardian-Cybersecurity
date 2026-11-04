@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-04 — Receipt retirement and epoch boundaries
+
+- Froze the retirement protocol and 20-case manifest at `b6e1c712648f7f0225fe236238badddf30b9e41d` before Phase 10 implementation and measurement.
+- Added four SQLite retention/retirement arms, a child retirement worker, an ideal epoch/intent runner, an independent effect-prefix/layout verifier, and 35 regression tests. Earlier implementations and measured artifacts remain unchanged.
+- Recorded 80 case/arm observations: known late-request duplicate cases 0/10 → 6/10 → 2/10 → 0/10; later policy preserved 10/10 → 4/10 → 8/10 → 10/10. Atomic retirement removes old receipts and rejects closed-epoch requests; six original historical replies become unavailable. The retaining arm preserves both later policy and all ten original replies.
+- All 176 tests passed. The independent verifier matched every counter and twelve criteria, checked the manifest and eight source hashes, and confirmed 32 declared exits plus 48 normal retirements with zero infrastructure errors.
+- Updated the overview, research argument, evidence index, study map, architecture, limits, and reproduction guide. The experiment uses trusted logical epochs and one sequential writer; clock-based expiry, caller authentication, physical reclamation, and simultaneous publication/retirement remain outside scope. [Findings and retained evidence](RETIREMENT_FINDINGS.md).
+
 ## 2026-11-03 — Request identity and atomic publication receipts
 
 - Froze the retry protocol and 20-case manifest at `1b7152561029c22f9bc04ba7568937b01a3fe2e2` before Phase 9 implementation and measurement.

@@ -1,6 +1,6 @@
 # Threat model and validity limits
 
-**Scope:** completed studies through Phase 9. These assumptions bound the measured results; they are not a deployable security specification.
+**Scope:** completed studies through Phase 10. These assumptions bound the measured results; they are not a deployable security specification.
 
 ## Assets and authorization contracts
 
@@ -34,7 +34,7 @@ The controllers are trusted experiment instrumentation. They arrange a counterex
 - Protected membership is configured before the run and remains fixed. A `(st_dev, st_ino)` match is meaningful within the fixture lifetime; dynamic membership and broader identity lifecycle are untested.
 - The executor retains control of each descriptor, performs authorization before content I/O or truncation, and never reopens the name for the approved operation. Holding a descriptor alone does not establish confinement.
 - The content owner supplies the approved digest; the action cannot choose it. Digest provenance, SHA-256 collision resistance, and trusted immutable process values are assumptions, not experimental discoveries.
-- The latest reader handles small existing regular files that decode as UTF-8. Resource exhaustion, large-file limits, streaming release, and hostile-object behavior beyond the implemented checks require separate work.
+- The descriptor-based content reader handles small existing regular files that decode as UTF-8. Resource exhaustion, large-file limits, streaming release, and hostile-object behavior beyond the implemented checks require separate work.
 
 See [architecture](ARCHITECTURE.md) and the technical sources in the [replacement protocol](RACE_PROTOCOL.md#technical-basis) and [content protocol](CONTENT_PROTOCOL.md) for implementation details.
 
@@ -51,12 +51,12 @@ The string gate loses two legitimate replay completions while missing two protec
 | Deterministic check/use schedules | Demonstrates selected orderings; does not measure concurrent race probability |
 | Shared implementation and trusted observation infrastructure | Agreement cannot independently establish correctness of OS semantics, all oracle code, or every execution |
 | Different contracts across stages | Identity-only Phase 6 failures do not invalidate Phase 5's narrower identity result; task completion and payload delivery are different measures |
-| Regression tests versus experiment trials | 141 current passing tests are not 141 independent adversarial samples |
+| Regression tests versus experiment trials | 176 current passing tests are not 176 independent adversarial samples |
 | No live-agent adapter or task trials | No evidence yet about model behavior, agent attack success, task accuracy, cost, latency, or deployment impact |
 
 ## Open questions
 
-Phase 7 evaluates legitimate approval changes at receipt, Phase 8 evaluates publisher-exit recovery, and Phase 9 evaluates retries with retained request IDs. Receipt retirement, simultaneous requests, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
+Phase 7 evaluates approval at receipt, Phase 8 evaluates publisher-exit recovery, Phase 9 evaluates retained request IDs, and Phase 10 evaluates logical-epoch receipt retirement. Simultaneous publication/retirement, authenticated epoch assignment, wall-clock expiry, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
 
 ## Dynamic approval extension
 
@@ -72,4 +72,10 @@ Phase 8 introduces trusted fixture stores and a child-process fault model. Separ
 
 Phase 9 adds a trusted caller-supplied ID and exact operation/payload binding in one store namespace. It tests coherent SQLite publication with unkeyed, separately recorded, and atomically recorded receipts. Retrying an old ID may return an old commitment receipt; current delivery must still follow the latest publication. The observer is trusted instrumentation in the same state transaction, not an independently secured audit service.
 
-There is one sequential publisher, no identity authentication or tenant separation, and no external side effect. The caller must reuse its original ID to obtain deduplication. All receipts remain indefinitely; eviction, expiry, capacity, migration, and key reuse after retirement are untested. The checkpoints simulate process exit while the OS and parent survive, not a network protocol or host power loss. Selected at-most-once database effects and equivalent historical replies do not imply general exactly-once execution. [Protocol](RETRY_PROTOCOL.md) · [Findings](RETRY_FINDINGS.md).
+There is one sequential publisher, no identity authentication or tenant separation, and no external side effect. The caller must reuse its original ID to obtain deduplication. Within Phase 9, all receipts remain indefinitely. Phase 10 tests logical retirement and epoch-scoped reuse; clock-based expiry, capacity, and migration remain untested. The checkpoints simulate process exit while the OS and parent survive, not a network protocol or host power loss. Selected at-most-once database effects and equivalent historical replies do not imply general exactly-once execution. [Protocol](RETRY_PROTOCOL.md) · [Findings](RETRY_FINDINGS.md).
+
+## Receipt-retirement extension
+
+Phase 10 closes a trusted logical epoch and compares retained history, deletion without closure enforcement, deletion before fence commitment, and coupled retirement. Old receipts can acknowledge historical commitment; after compaction, rejecting a closed epoch does not recover that missing receipt. The same rule rejects previously unseen old requests, which is an explicit cost to delayed work. New active-epoch IDs and composite-key reuse are controlled separately.
+
+The epoch and original request identity must be trusted and preserved by cooperating callers. They are not authenticated capabilities, and relabeling old intent with a newly authorized epoch is outside this experiment. The store does not implement a timer, TTL, clock recovery, tenant isolation, or a production retention period. Logical row deletion does not establish physical space reclamation; the retained effect observer grows. Cases use one sequential writer, with no concurrent publication/retirement, external effects, host power loss, or recovery-time failures. [Protocol](RETIREMENT_PROTOCOL.md) · [Findings](RETIREMENT_FINDINGS.md).

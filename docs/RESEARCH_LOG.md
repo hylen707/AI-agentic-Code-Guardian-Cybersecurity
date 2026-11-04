@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-04 — Deleting a reply does not close its old intent
+
+**Question and prospective design.** Phase 9 depends on retaining request receipts. Can those records be removed without an old retry undoing later policy? Froze the [protocol](RETIREMENT_PROTOCOL.md) and 20 cases before implementation. Compared retaining history, forgetting without a retired-epoch check, deleting before committing the epoch fence, and atomic retirement. Every publication still atomically records state, an epoch-tagged effect, and its receipt. Cases include old known and unseen requests, new current-epoch work, composite-ID reuse, repeats/conflicts, and four child-exit boundaries.
+
+**Observation.** Known duplicate cases are 0/10 → 6/10 → 2/10 → 0/10; later policy is preserved 10/10 → 4/10 → 8/10 → 10/10. Deletion alone repeats six committed intents. A separate cleanup/fence transaction has two process-exit gaps. Atomic retirement preserves all ten policies while keeping zero old receipt rows after completed retirement, but rejects six known old requests without returning their original commitment. Retaining history also preserves all ten policies and returns all ten historical replies. Every arm retains coherent final payload/approval pairs.
+
+**Validation.** All 176 tests passed, including 35 new tests. An independent verifier enumerated effect prefixes and receipt layouts without importing the measured store, worker, or runner, matched all 80 records/counters/twelve criteria, and verified the input and eight source hashes. All 32 declared exits and 48 normal retirement completions have exact traces and zero infrastructure errors. The retained run ID and timestamps are explicit UTC values in [findings and raw evidence](RETIREMENT_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** A logical epoch cutoff can replace the need to remember old IDs for mutation prevention, while losing their historical responses and rejecting unseen old work. The epoch must remain trusted and attached to the original intent. Logical row deletion does not demonstrate physical reclamation, and the observer log remains retained. Next: fix an overlap where publication is admitted before retirement but writes afterward, and test where epoch validation must share the effect transaction. Clock-based expiry, caller authentication, external effects, and host power loss need separate protocols.
+
 ## 2026-11-03 — A recovered approval does not identify a repeated intent
 
 **Question and design.** When commitment succeeds but its acknowledgment is absent, can a retry repeat the effect or undo a later decision? Froze the [protocol](RETRY_PROTOCOL.md) and 20-case manifest before implementation. All three arms retain a coherent SQLite publication and transactional effect observer; they omit request receipts, commit them separately, or include them with publication. Each ID binds exact operation and payload. The cases include changed intent, legitimate new IDs, old retries after intervening policy, and four process-exit boundaries.

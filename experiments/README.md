@@ -12,9 +12,31 @@ Use Python 3.10+ and the standard library on Linux, including an available `sqli
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6, Phase 7, and Phase 8 runs passed 67, 85, and 111 tests; the current Phase 9 run passes 141. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6–9 runs passed 67, 85, 111, and 141 tests; the current Phase 10 run passes 176. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 10: receipt retirement and trusted epochs
+
+```bash
+python experiments/run_retirement_comparison.py --dataset experiments/tasks/retirement-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit b6e1c712648f7f0225fe236238badddf30b9e41d
+```
+
+Twenty cases run in `retain_all`, `forget_only`, `split_fence`, and `atomic_fence`: 80 records, 32 declared child exits, and 48 normal retirement completions. Each fixture first commits an epoch-1 publication and an opposing later policy. The child retires to target epoch 2; the parent reopens before each delayed or current request.
+
+Expect extra effects for known epoch-1 IDs 0/10 → 6/10 → 2/10 → 0/10 and preserved later-policy cases 10/10 → 4/10 → 8/10 → 10/10. Original historical replies are returned 10 → 4 → 2 → 4 times. Both compact fenced arms reject six known requests after completed retirement without returning a commitment revision. Sixteen captures per arm recover completed retirement before follow-up requests: the retaining arm has two old receipt rows each, other arms zero. This is a logical row count, not a storage-reclamation measurement.
+
+All arms must complete three new active-epoch intents, handle two current repeats and two conflicts, and reject the future-epoch request. Retaining/fenced designs reject two previously unseen old requests; forgetting applies both. Require all twelve criteria, expected recovery layouts, exact traces, and zero infrastructure errors. All final content/approval pairs remain coherent even in the wrong-intent cases.
+
+Audit the retained run:
+
+```bash
+python experiments/verify_retirement_results.py --summary experiments/results/2026-11-04T15-09-50-473480Z-retirement-v1-summary.json --dataset experiments/tasks/retirement-eval-v1/tasks.json
+```
+
+For a new run, substitute its printed summary filename. The verifier independently reconstructs effect prefixes, receipt layouts, current delivery, historical reply or rejection, counters, and criteria, then checks the input and eight source hashes. Historical verification requires matching those source versions. It exits nonzero on infrastructure errors or unmet criteria. `--output /tmp/codeguardian-retirement-verification.json` creates a new verification report; `--output-dir /tmp/codeguardian-retirement` keeps fresh runner output outside retained evidence.
+
+Epochs are trusted logical namespaces preserved on retries; this is not authentication or a wall-clock TTL. Rejection of unseen old work and loss of historical replies are explicit costs. The observer history grows, so deleting receipt rows does not bound the full database. Simultaneous publication/retirement, physical reclamation, and host power loss remain untested. [Protocol](../docs/RETIREMENT_PROTOCOL.md) · [Findings and raw evidence](../docs/RETIREMENT_FINDINGS.md).
 
 ## Phase 9: request retries and historical receipts
 
@@ -125,7 +147,7 @@ Runners write timestamped raw JSONL and summary JSON under `experiments/results/
 
 ### Expected output and checks
 
-Filesystem comparison commands print a JSON summary and the saved run identifier; the policy runner prints text metrics and output paths. Open the matching `*-summary.json`, then the raw filename specified by its `results_file` field. Expect the following grids; policy versions and related suites remain separate.
+Comparison runners print a JSON summary and the saved run identifier; the policy runner prints text metrics and output paths. Open the matching `*-summary.json`, then the raw filename specified by its `results_file` field. Expect the following grids; policy versions and related suites remain separate.
 
 | Run | Expected raw rows | Headline check in `summary` |
 |---|---:|---|
@@ -138,6 +160,7 @@ Filesystem comparison commands print a JSON summary and the saved run identifier
 | Revisions | 27 = 9 cases × 3 arms | `arms.coordinated_release`: 0 invalid receipts, 5 valid receipts, 2 deferred publications |
 | Recovery | 57 = 19 cases × 3 arms | `arms.sqlite_atomic`: 19 coherent states, 15 valid deliveries, 0 invalid deliveries, 4 revocation denials |
 | Request retry | 60 = 20 cases × 3 arms | `arms.atomic_receipt`: 12 successful retries, 0 duplicate retry cases, 2 correct conflicts, 2 preserved late states |
+| Receipt retirement | 80 = 20 cases × 4 arms | `arms.atomic_fence`: 0 known duplicates, 10 preserved policies, 6 closed-epoch denials, 0 old receipt rows after commit |
 
 For filesystem studies, require zero execution/infrastructure errors and inspect every declared criterion as well as controls and legitimate completion. A zero protection-failure count produced by broken execution is not a successful result. Raw IDs must cover each declared case/arm pair exactly once; the [evidence map](../docs/EVIDENCE.md) gives the historical files for comparison.
 

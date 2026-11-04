@@ -33,6 +33,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 7. Approval revisions | [Revision analysis plan](REVISION_PROTOCOL.md); freeze before measurement, after drafts | [Revision findings](REVISION_FINDINGS.md) |
 | 8. Publication recovery | [Recovery protocol](RECOVERY_PROTOCOL.md); freeze before implementation | [Recovery findings](RECOVERY_FINDINGS.md) |
 | 9. Publication retries | [Retry protocol](RETRY_PROTOCOL.md); freeze before implementation | [Retry findings](RETRY_FINDINGS.md) |
+| 10. Receipt retirement | [Retirement protocol](RETIREMENT_PROTOCOL.md); freeze before implementation | [Retirement findings](RETIREMENT_FINDINGS.md) |
 
 ## Rationale and history
 

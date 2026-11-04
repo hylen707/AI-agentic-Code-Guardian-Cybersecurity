@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 9. Updated 2026-11-03 (Asia/Seoul).
+**Status:** implemented components through Phase 10. Updated 2026-11-04 (Asia/Seoul).
 
 ## System boundary
 
@@ -28,6 +28,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/retry_worker.py` | One request in a child publisher | Exact process-exit and acknowledgment trace |
 | `experiments/run_retry_comparison.py` | Request retry, conflict, distinct-intent, and late-retry schedules | Direct state plus transactional effect observer and response fields |
 | `experiments/verify_retry_results.py` | Independent expected-effect-prefix model | Grid, traces, state/delivery, historical receipts, counters and hashes |
+| `src/retirement_store.py` | Epoch-scoped publication and receipt retirement | Trusted monotonic epoch, composite request key, coupled or split cleanup |
+| `experiments/retirement_worker.py` | Retirement transaction child and exact exit cuts | Target epoch and retirement acknowledgment |
+| `experiments/run_retirement_comparison.py` | Four retention/retirement arms | Current state, epoch-tagged effects, physical receipt rows, response availability |
+| `experiments/verify_retirement_results.py` | Independent retirement/effect-prefix recount | Expected layouts, raw outcomes, counters, source/input hashes |
 
 ## Phase 5 ordering
 
@@ -109,4 +113,12 @@ The parent, OS, and disk remain available. No interruption occurs inside SQLite 
 
 The unkeyed arm applies every call. Both keyed arms compare an existing ID with its operation and exact bytes, return a conflict on changed intent, or return the original revision/digest receipt on a retry. The split arm records a new receipt in a second transaction; the atomic arm inserts it before the state commit. Receipt replay leaves current state unchanged even after a newer update or revocation. A new ID intentionally represents a new publication.
 
-The child exits at declared commit/receipt/acknowledgment barriers. The parent reopens for every observation and follow-up call. Raw captures include a consistent read of all three tables and actual current delivery. The runner uses an ideal ID model; the independent verifier instead enumerates expected effect prefixes for the frozen schedules. All 141 current tests pass. The implementation has one trusted sequential namespace, retains all receipts, and does not coordinate external effects. [Protocol](RETRY_PROTOCOL.md) · [Findings](RETRY_FINDINGS.md).
+The child exits at declared commit/receipt/acknowledgment barriers. The parent reopens for every observation and follow-up call. Raw captures include a consistent read of all three tables and actual current delivery. The runner uses an ideal ID model; the independent verifier instead enumerates expected effect prefixes for the frozen schedules. The recorded Phase 9 suite passed 141 tests. The implementation has one trusted sequential namespace, retains all receipts, and does not coordinate external effects. [Protocol](RETRY_PROTOCOL.md) · [Findings](RETRY_FINDINGS.md).
+
+## Phase 10: the retirement boundary
+
+`RetirementPublicationStore` reuses the unchanged SQLite connection/recovered-state implementation and request validation. A namespace row stores the active epoch. Request receipts use `(epoch, request_id)` as their key; every new publication commits state, an epoch-tagged observer effect, and its receipt in one transaction. Future epochs are rejected. An existing matching receipt can acknowledge history; a missing receipt from an older epoch is rejected by the fenced arms. The forgetting comparator deliberately omits the lower-bound rule.
+
+The retaining arm advances the epoch and keeps old receipts. The forgetting arm advances and deletes together but does not enforce closure on missing old identities. The split arm commits deletion before advancing the epoch; the atomic arm couples both changes. Retrying a completed retirement target does not advance again or delete current receipts. The observer log is never used for deduplication and remains unbounded instrumentation.
+
+The worker retires target epoch 2 at declared process-exit boundaries. The parent captures all four tables consistently before/after retirement, then reopens for each follow-up. An ideal intent model and a separate expected-prefix verifier compare actual state/effects with response semantics and retained rows. All 176 tests pass. This is one trusted sequential namespace and a logical cutoff, with no caller authentication, clock-based TTL, or physical reclamation claim. [Protocol](RETIREMENT_PROTOCOL.md) · [Findings](RETIREMENT_FINDINGS.md).

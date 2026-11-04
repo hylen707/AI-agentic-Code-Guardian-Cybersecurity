@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, and request-retry prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
+The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, and epoch-retirement prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -44,4 +44,10 @@ The worker terminates at declared boundaries without normal cleanup. These store
 
 `retry_store.py` reuses the SQLite store's checked connection settings and recovered-state reader. Every publication commits state and an observer effect row together. The three arms omit request deduplication, record a receipt in a separate transaction, or include it in that same transaction. Keyed requests bind ID, operation, and exact bytes; changed intent conflicts, a new ID creates a new revision, and a retry returns the original receipt without restoring its old state.
 
-These are trusted sequential fixture stores with indefinite receipt retention. They do not authenticate request IDs or coordinate an external side effect. The current suite has 141 tests. See the [retry findings](../docs/RETRY_FINDINGS.md) and [experiment guide](../experiments/README.md).
+These are trusted sequential fixture stores with indefinite receipt retention. They do not authenticate request IDs or coordinate an external side effect. The recorded Phase 9 suite passed 141 tests. See the [retry findings](../docs/RETRY_FINDINGS.md) and [experiment guide](../experiments/README.md).
+
+## Epoch retirement
+
+`retirement_store.py` adds a trusted monotonic active epoch and composite `(epoch, request_id)` receipts. Publication still commits state, effect, and receipt together. Four arms retain history, forget without a lower-epoch check, delete before committing the fence, or couple deletion and fence. A retained old receipt can be replayed; a compacted closed epoch must reject without restoring its old effect. A new epoch intentionally denotes a new request namespace.
+
+This is a sequential logical cutoff with no timer or caller authentication. Old unseen work is also rejected. Logical receipt counts do not measure physical reclamation, and observer history remains retained. The current suite has 176 tests. See the [retirement findings](../docs/RETIREMENT_FINDINGS.md) and [reproduction guide](../experiments/README.md).

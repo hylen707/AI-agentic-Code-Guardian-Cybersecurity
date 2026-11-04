@@ -2,21 +2,21 @@
 
 **What must a runtime safeguard authorize: a path, an object, or a content version?**
 
-CodeGuardian is a reproducible systems-security study of the gap between filesystem authorization and execution. Nine experimental stages test how authorization can diverge from the resource, value, or publication intent ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
+CodeGuardian is a reproducible systems-security study of the gap between filesystem authorization and execution. Ten experimental stages test how authorization can diverge from the resource, value, or publication intent ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
 
 [Documentation](docs/README.md) · [Research statement](docs/RESEARCH_STATEMENT.md) · [Evidence](docs/EVIDENCE.md) · [Reproduction guide](experiments/README.md) · [Threat model and limits](docs/LIMITATIONS.md)
 
 ## Research question and contribution
 
-Approving a pathname does not ensure that a later operation reaches the approved object. Holding that object open does not freeze its contents. Returning an approved version does not ensure that the version is current. Completing one file replacement does not ensure that content and approval can be recovered together. Recovering a coherent approval does not ensure that retrying a publication preserves later decisions.
+Approving a pathname does not ensure that a later operation reaches the approved object. Holding that object open does not freeze its contents. Returning an approved version does not ensure that the version is current. Completing one file replacement does not ensure that content and approval can be recovered together. Recovering a coherent approval does not ensure that retrying a publication preserves later decisions. Removing a retry receipt does not retire the request that produced it.
 
 This repository makes those distinctions testable through:
 
-- **Counterexamples and bounded interventions:** lexical checks → resolved targets → file identity → descriptor binding → verified content → approval revisions → restart recovery → request identity.
-- **Separate protection and usefulness measures:** resource effects, task goals, content delivery, and freshness have explicit, different denominators.
+- **Counterexamples and bounded interventions:** lexical checks → resolved targets → file identity → descriptor binding → verified content → approval revisions → restart recovery → request identity → receipt retirement.
+- **Separate protection and usefulness measures:** resource effects, task goals, content delivery, request effects, and historical replies have explicit, different denominators.
 - **An auditable evidence trail:** protocols, case manifests, raw records, summaries, and source hashes retain both successful controls and failures.
 
-The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all nine stages.
+The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all ten stages.
 
 ## Quick reproduction
 
@@ -26,13 +26,13 @@ Use **Python 3.10+ on Linux**, with hardlink, symlink, FIFO, and `pread` support
 git clone https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity.git
 cd AI-agentic-Code-Guardian-Cybersecurity
 python -m unittest discover -s tests -v
-python experiments/run_retry_comparison.py \
-  --dataset experiments/tasks/retry-eval-v1/tasks.json \
+python experiments/run_retirement_comparison.py \
+  --dataset experiments/tasks/retirement-eval-v1/tasks.json \
   --base-commit "$(git rev-parse HEAD)" \
-  --freeze-commit 1b7152561029c22f9bc04ba7568937b01a3fe2e2
+  --freeze-commit b6e1c712648f7f0225fe236238badddf30b9e41d
 ```
 
-The latest study produces **60 case/arm records**: 20 cases across unkeyed publication, separate request receipts, and receipts committed with publication. Extra effects occur in **10/12 → 2/12 → 0/12** same-intent retry cases. All three arms retain coherent content/approval pairs, yet an unkeyed late retry can undo a later revocation or update. All **141 unit tests** pass in the recorded run. These are sequential requests and process-exit checkpoints with retained request records; power loss and receipt eviction remain untested. See the [findings](docs/RETRY_FINDINGS.md), [raw evidence](docs/EVIDENCE.md#phase-9-request-identity-and-retry-effects), and [reproduction guide](experiments/README.md).
+The latest study produces **80 case/arm records**: 20 cases across receipt retention, forgetting, deletion before an epoch fence, and atomic retirement. Extra effects in ten known late-request schedules are **0 → 6 → 2 → 0**. The atomic fence preserves later policy while removing old receipts, but rejects six known requests after completed retirement without returning their old commitment. All **176 unit tests** pass in the recorded run. Epochs are trusted logical namespaces; wall-clock TTL, physical storage reclamation, and simultaneous writers remain untested. See the [findings](docs/RETIREMENT_FINDINGS.md), [raw evidence](docs/EVIDENCE.md#phase-10-receipt-retirement-and-closed-intent), and [reproduction guide](experiments/README.md).
 
 ## Representative findings
 
@@ -46,6 +46,7 @@ Each row belongs to a different study. **Do not pool the counts into an overall 
 | Does a final approval check survive a later revocation? | Invalid receipts: 5/5 snapshot-only → 2/5 separate recheck → **0/5 coordinated release**. | Two publications are delayed until after receipt; two valid receipts subsequently become obsolete. [Phase 7](docs/REVISION_FINDINGS.md) |
 | Does rejecting a mismatched recovery restore useful state? | Split validation: 0/2 invalid deliveries but 13/15 valid reads. One SQLite transaction: **0/2 invalid deliveries and 15/15 valid reads**. | Persisted state coherence is 17/19 versus 19/19; the fault model excludes host power loss. [Phase 8](docs/RECOVERY_FINDINGS.md) |
 | Does coherent state make a request safe to retry? | Successful retries: 2/12 unkeyed → 10/12 separate receipt → **12/12 atomic receipt**. | Two separate-receipt gaps repeat a committed effect. Old receipts must preserve later policy. [Phase 9](docs/RETRY_FINDINGS.md) |
+| Does deleting receipts retire old intent? | Extra effects in ten known-request schedules: retain **0**, forget **6**, delete/fence separately **2**, atomic retirement **0**. | Compact retirement preserves later policy by rejecting old epochs; six historical commitments are no longer returned. [Phase 10](docs/RETIREMENT_FINDINGS.md) |
 
 Resolved-target and hardlink studies supply the intermediate steps; their separate controls, counts, and raw artifacts are in the [evidence map](docs/EVIDENCE.md).
 
@@ -58,7 +59,7 @@ flowchart TD
     P["Trusted policy configuration"] --> A
     F --> A
     A --> O["Observed I/O, value, or recovered state"]
-    F --> Q["Resource or content oracle"]
+    F --> Q["Resource, value, or intent oracle"]
     O --> Q
     Q --> R["Raw JSONL and summary"]
 ```
@@ -69,7 +70,7 @@ The runner controls replacement, mutation, approval-transition, or process-exit 
 
 These are curated, developer-visible mechanism studies with deterministic schedules. They do not estimate concurrent race probability, provide a production sandbox, or establish live-agent task performance. The content reader validates small UTF-8 values and may inspect rejected bytes. The revision authority adds a receipt-time contract for cooperating publishers in one process; it can delay updates and does not guarantee freshness after receipt. See the [threat model and validity limits](docs/LIMITATIONS.md).
 
-The latest study couples request identity with publication and distinguishes historical commitment receipts from current authorization. The next question is whether retiring old request records permits a delayed retry to reinstate a revoked value. Receipt retention, concurrent requests, and failures inside storage operations remain untested.
+The latest study couples receipt deletion with an epoch boundary and measures the loss of historical replies. The next question is a request admitted before retirement but writing after it. Simultaneous publication/retirement, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
 
 ## Read further
 

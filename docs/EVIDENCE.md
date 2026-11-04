@@ -1,6 +1,6 @@
 # Claims and evidence
 
-This map connects the six completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
+This map connects the ten completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
 
 ## Phases 1 and 2: labels versus resource effects
 
@@ -116,4 +116,18 @@ The two separate-receipt failures occur between state/effect commit and request-
 - [60 raw state/effect/receipt records](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1.jsonl), [summary and provenance](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-summary.json), and [independent effect-prefix recount](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-verification.json).
 - [141 passing tests](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-03T02-27-20-879552Z-retry-v1-console.txt), and [interpretation and limits](RETRY_FINDINGS.md).
 
-All ten prespecified criteria hold; 24 planned process exits and 36 normal first publications have verified traces and zero infrastructure errors. The input and seven source hashes match. This is a trusted sequential namespace with retained receipts and one SQLite effect domain. Historical receipts are not current authorization. Receipt retirement, concurrency, external effects, and host power loss remain untested.
+All ten prespecified criteria hold; 24 planned process exits and 36 normal first publications have verified traces and zero infrastructure errors. The input and seven source hashes match. This is a trusted sequential namespace with retained receipts and one SQLite effect domain. Historical receipts are not current authorization. Phase 9 leaves receipt retirement to the Phase 10 comparison below. Concurrency, external effects, and host power loss remain untested.
+
+## Phase 10: receipt retirement and closed intent
+
+**Claim.** Removing an ID-bound receipt needs an admissibility rule for old intent and a safe retirement boundary. Twenty cases in four arms yield 80 records. Known late-request extra-effect cases are 0/10 retained → 6/10 forgotten → 2/10 deletion before fence → 0/10 atomic retirement. Later policy is preserved 10/10 → 4/10 → 8/10 → 10/10. Every final payload/approval pair remains intrinsically coherent.
+
+Historical replies remain available 10 → 4 → 2 → 4 times across those ten schedules. The compact fenced arms reject all six known closed-epoch requests without a commitment revision. In sixteen postcommit recovery captures per arm, retaining history keeps two old rows each (32 total), while compact arms keep zero. This does not measure physical reclamation or bound the growing observer history.
+
+Every arm completes three new active-epoch intents and handles two current repeats, two conflicts, and one future rejection. Retaining/fenced stores also reject two previously unseen closed-epoch requests, the cutoff cost; forgetting applies both. The denominator sets overlap and are not population failure rates.
+
+- [Protocol](RETIREMENT_PROTOCOL.md), [20-case manifest](../experiments/tasks/retirement-eval-v1/tasks.json), and [pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/b6e1c712648f7f0225fe236238badddf30b9e41d).
+- [80 raw observations](../experiments/results/2026-11-04T15-09-50-473480Z-retirement-v1.jsonl), [summary and provenance](../experiments/results/2026-11-04T15-09-50-473480Z-retirement-v1-summary.json), and [independent prefix/layout recount](../experiments/results/2026-11-04T15-09-50-473480Z-retirement-v1-verification.json).
+- [176 passing tests](../experiments/results/2026-11-04T15-09-50-473480Z-retirement-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-04T15-09-50-473480Z-retirement-v1-console.txt), and [findings and limits](RETIREMENT_FINDINGS.md).
+
+All twelve criteria hold, including expected recovery layouts and 32 declared exits plus 48 normal completions with zero infrastructure errors. The input and eight source hashes match. Epochs are trusted logical namespaces; this does not establish authenticated callers, clock-based expiry, simultaneous-writer safety, or physical reclamation.
