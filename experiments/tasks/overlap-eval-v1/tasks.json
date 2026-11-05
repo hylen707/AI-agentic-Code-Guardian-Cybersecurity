@@ -1,0 +1,101 @@
+{
+  "schema_version": "overlap-eval-v1",
+  "cases": [
+    {
+      "case_id": "update-retire_first",
+      "schedule": "retire_first",
+      "operation": "update",
+      "value": "ascii"
+    },
+    {
+      "case_id": "update-publication_first",
+      "schedule": "publication_first",
+      "operation": "update",
+      "value": "ascii"
+    },
+    {
+      "case_id": "update-after_admission",
+      "schedule": "after_admission",
+      "operation": "update",
+      "value": "ascii"
+    },
+    {
+      "case_id": "update-after_final_check",
+      "schedule": "after_final_check",
+      "operation": "update",
+      "value": "ascii"
+    },
+    {
+      "case_id": "update-before_commit",
+      "schedule": "before_commit",
+      "operation": "update",
+      "value": "ascii"
+    },
+    {
+      "case_id": "update-after_commit",
+      "schedule": "after_commit",
+      "operation": "update",
+      "value": "ascii"
+    },
+    {
+      "case_id": "revoke-retire_first",
+      "schedule": "retire_first",
+      "operation": "revoke",
+      "value": "ascii"
+    },
+    {
+      "case_id": "revoke-publication_first",
+      "schedule": "publication_first",
+      "operation": "revoke",
+      "value": "ascii"
+    },
+    {
+      "case_id": "revoke-after_admission",
+      "schedule": "after_admission",
+      "operation": "revoke",
+      "value": "ascii"
+    },
+    {
+      "case_id": "revoke-after_final_check",
+      "schedule": "after_final_check",
+      "operation": "revoke",
+      "value": "ascii"
+    },
+    {
+      "case_id": "revoke-before_commit",
+      "schedule": "before_commit",
+      "operation": "revoke",
+      "value": "ascii"
+    },
+    {
+      "case_id": "revoke-after_commit",
+      "schedule": "after_commit",
+      "operation": "revoke",
+      "value": "ascii"
+    },
+    {
+      "case_id": "current-update-ascii",
+      "schedule": "current_epoch",
+      "operation": "update",
+      "value": "ascii"
+    },
+    {
+      "case_id": "current-update-empty",
+      "schedule": "current_epoch",
+      "operation": "update",
+      "value": "empty"
+    },
+    {
+      "case_id": "current-update-unicode",
+      "schedule": "current_epoch",
+      "operation": "update",
+      "value": "unicode"
+    },
+    {
+      "case_id": "current-revoke",
+      "schedule": "current_epoch",
+      "operation": "revoke",
+      "value": "ascii"
+    }
+  ]
+}
