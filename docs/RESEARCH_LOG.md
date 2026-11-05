@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-05 — One committed effect can still yield the wrong reply
+
+**Question and prospective design.** Phase 11 orders epoch admission with publication. Can two simultaneous same-ID callers both receive the required outcome? Froze the [protocol](CALLER_PROTOCOL.md) and sixteen cases before implementation. Compared an exposed receipt collision, unconditional conflict, post-rollback original-receipt resolution, and lookup held through commit. Epoch 2 and retained receipts stay fixed. Empty updates, revocation and Unicode byte differences make operation/byte equality explicit.
+
+**Observation.** Every mode has one shared effect in 15/15 shared-key cases, with explicit whole-transaction rollback after collisions. Correct response pairs in twelve overlaps are 0/12 → 6/12 → 12/12 → 12/12. An exposed collision returns twelve modeled storage errors; unconditional conflict falsely rejects six identical retries. Both receipt resolution and transactional lookup return the original result or proper parameter conflict. The actual winner is second in precheck races and first under transactional lookup.
+
+**Validation.** All 244 tests passed, including 35 new tests. Independent stdlib reconstruction matches 64 records, all counters and ten criteria, and the input/eleven source hashes. All 157 child invocations complete normally across 52 forced overlaps and twelve serial records, with zero unexpected infrastructure errors. Both successful modes return original revision 4 in the two identical-later cases while preserving current revision 5. [Findings and raw evidence](CALLER_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** One durable effect and both callers' correct outcomes are different properties. Original-receipt resolution retains twelve collision rollbacks; transactional lookup requires thirteen busy retries, including one independent-ID control. These counts do not rank latency or throughput. Next: place retirement between duplicate rollback and receipt resolution and define what response is justified after receipt loss. Arbitrary caller populations, fairness, external effects, authentication and crash recovery need separate protocols.
+
 ## 2026-11-05 — The last read still precedes the write
 
 **Question and prospective design.** Phase 10 used a sequential epoch-retirement boundary. Can a request admitted before retirement write after its epoch closes? Froze the [protocol](OVERLAP_PROTOCOL.md) and 16 cases before implementation. Compared cached admission, a separate final read, and a write transaction held from admission through commit. A live publisher pauses at fixed pipe barriers while a separate retirement child attempts target epoch 2. Every new effect stores a same-transaction epoch witness.

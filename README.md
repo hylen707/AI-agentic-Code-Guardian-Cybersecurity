@@ -2,21 +2,21 @@
 
 **What must a runtime safeguard authorize: a path, an object, or a content version?**
 
-CodeGuardian is a reproducible systems-security study of the gap between filesystem authorization and execution. Eleven experimental stages test how authorization can diverge from the resource, value, or publication intent ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
+CodeGuardian is a reproducible systems-security study of the gap between filesystem authorization and execution. Twelve experimental stages test how authorization can diverge from the resource, value, or publication intent ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
 
 [Documentation](docs/README.md) · [Research statement](docs/RESEARCH_STATEMENT.md) · [Evidence](docs/EVIDENCE.md) · [Reproduction guide](experiments/README.md) · [Threat model and limits](docs/LIMITATIONS.md)
 
 ## Research question and contribution
 
-Approving a pathname does not ensure that a later operation reaches the approved object. Holding that object open does not freeze its contents. Returning an approved version does not ensure that the version is current. Completing one file replacement does not ensure that content and approval can be recovered together. Recovering a coherent approval does not ensure that retrying a publication preserves later decisions. Removing a retry receipt does not retire the request that produced it. A separate final admission check can still become obsolete before the write commits.
+Approving a pathname does not ensure that a later operation reaches the approved object. Holding that object open does not freeze its contents. Returning an approved version does not ensure that the version is current. Completing one file replacement does not ensure that content and approval can be recovered together. Recovering a coherent approval does not ensure that retrying a publication preserves later decisions. Removing a retry receipt does not retire the request that produced it. A separate final admission check can still become obsolete before the write commits. Preventing a duplicate effect still leaves the obligation to return the correct result to both callers.
 
 This repository makes those distinctions testable through:
 
-- **Counterexamples and bounded interventions:** lexical checks → resolved targets → file identity → descriptor binding → verified content → approval revisions → restart recovery → request identity → receipt retirement → overlapping admission.
+- **Counterexamples and bounded interventions:** lexical checks → resolved targets → file identity → descriptor binding → verified content → approval revisions → restart recovery → request identity → receipt retirement → overlapping admission → concurrent caller outcomes.
 - **Separate protection and usefulness measures:** resource effects, task goals, content delivery, request effects, and historical replies have explicit, different denominators.
 - **An auditable evidence trail:** protocols, case manifests, raw records, summaries, and source hashes retain both successful controls and failures.
 
-The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all eleven stages.
+The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all twelve stages.
 
 ## Quick reproduction
 
@@ -26,13 +26,13 @@ Use **Python 3.11+ on Linux**, with hardlink, symlink, FIFO, and `pread` support
 git clone https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity.git
 cd AI-agentic-Code-Guardian-Cybersecurity
 python -m unittest discover -s tests -v
-python experiments/run_overlap_comparison.py \
-  --dataset experiments/tasks/overlap-eval-v1/tasks.json \
+python experiments/run_caller_comparison.py \
+  --dataset experiments/tasks/caller-eval-v1/tasks.json \
   --base-commit "$(git rev-parse HEAD)" \
-  --freeze-commit db733eef02c79176e2fbd2e241c3bce20410ae19
+  --freeze-commit 628df4caa665e0724eba498769bf754bc1725522
 ```
 
-The latest study produces **48 case/mode records** with actual publisher and retirement processes. Invalid old-epoch effects in four admission-gap opportunities are **4/4 cached → 2/4 separate recheck → 0/4 transactional admission**. The transactional mode defers six retirement probes, then completes every scheduled retry. A witness stored with each effect distinguishes a late write from a valid earlier commit whose response arrives after retirement. All **209 unit tests** pass. The fixed two-role schedules do not measure fairness, latency, or arbitrary many-writer histories. See the [findings](docs/OVERLAP_FINDINGS.md), [raw evidence](docs/EVIDENCE.md#phase-11-epoch-admission-through-commit), and [reproduction guide](experiments/README.md).
+The latest study produces **64 case/mode records** with real caller processes. All four modes retain one shared request effect in **15/15** shared-key cases, but correct response pairs in twelve overlapping cases are **0/12 → 6/12 → 12/12 → 12/12**. Resolving the original receipt after rollback and holding a transaction from lookup both satisfy this caller contract; they incur twelve collision rollbacks and thirteen busy retries respectively. All **244 unit tests** pass. The fixed schedules retain receipts at epoch 2 and do not measure fairness, latency, or retirement during resolution. See the [findings](docs/CALLER_FINDINGS.md), [raw evidence](docs/EVIDENCE.md#phase-12-one-effect-and-two-caller-outcomes), and [reproduction guide](experiments/README.md).
 
 ## Representative findings
 
@@ -48,6 +48,7 @@ Each row belongs to a different study. **Do not pool the counts into an overall 
 | Does coherent state make a request safe to retry? | Successful retries: 2/12 unkeyed → 10/12 separate receipt → **12/12 atomic receipt**. | Two separate-receipt gaps repeat a committed effect. Old receipts must preserve later policy. [Phase 9](docs/RETRY_FINDINGS.md) |
 | Does deleting receipts retire old intent? | Extra effects in ten known-request schedules: retain **0**, forget **6**, delete/fence separately **2**, atomic retirement **0**. | Compact retirement preserves later policy by rejecting old epochs; six historical commitments are no longer returned. [Phase 10](docs/RETIREMENT_FINDINGS.md) |
 | Does a final epoch check survive overlapping retirement? | Invalid old effects: 4/4 cached → 2/4 separate recheck → **0/4 transactional admission**. | Holding the writer defers six retirements; all complete on scheduled retry. A late reply can describe a valid earlier effect. [Phase 11](docs/OVERLAP_FINDINGS.md) |
+| Does one committed effect imply correct caller responses? | One shared effect: **15/15 each**; correct overlapping caller pairs: **0/12 → 6/12 → 12/12 → 12/12**. | Errors and false conflicts remain failures. Receipt resolution and transactional lookup both work under retained receipts. [Phase 12](docs/CALLER_FINDINGS.md) |
 
 Resolved-target and hardlink studies supply the intermediate steps; their separate controls, counts, and raw artifacts are in the [evidence map](docs/EVIDENCE.md).
 
@@ -71,7 +72,7 @@ The runner controls replacement, mutation, approval-transition, process-exit, or
 
 These are curated, developer-visible mechanism studies with deterministic schedules. They do not estimate concurrent race probability, provide a production sandbox, or establish live-agent task performance. The content reader validates small UTF-8 values and may inspect rejected bytes. The revision authority adds a receipt-time contract for cooperating publishers in one process; it can delay updates and does not guarantee freshness after receipt. See the [threat model and validity limits](docs/LIMITATIONS.md).
 
-The latest study fixes publication/retirement overlaps and measures epoch validity at commit, alongside retirement deferral. The next question is simultaneous callers with the same request ID: both need a consistent replay or conflict outcome. Many-publisher histories, fairness, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
+The latest study distinguishes one state effect from correct outcomes for both same-ID callers. The next question is receipt retirement between collision rollback and receipt resolution: what response remains justified if the original receipt disappears? Many-caller histories, fairness, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
 
 ## Read further
 

@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, and overlapping-admission prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
+The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, and concurrent-caller prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -56,4 +56,10 @@ This is a sequential logical cutoff with no timer or caller authentication. Old 
 
 `overlap_store.py` compares a cached check, a separate final read, and admission held inside `BEGIN IMMEDIATE` through publication. The state, effect, receipt, and commit witness share the write transaction. The witness records the epoch actually observed there; it lets the oracle distinguish a late write from a valid earlier commit even if the response comes after retirement.
 
-The separate retirement child uses a checked zero busy timeout and exact numeric SQLite code 5 for deferral. The pipe controller retries after the publisher releases its transaction. This is a fixed two-role research harness, with no many-writer fairness or latency claim. The current full suite passes 209 tests and requires Python 3.11+ on Linux. See the [overlap findings](../docs/OVERLAP_FINDINGS.md) and [experiment guide](../experiments/README.md).
+The separate retirement child uses a checked zero busy timeout and exact numeric SQLite code 5 for deferral. The pipe controller retries after the publisher releases its transaction. This is a fixed two-role research harness, with no many-writer fairness or latency claim. The recorded Phase 11 suite passed 209 tests and requires Python 3.11+ on Linux. See the [overlap findings](../docs/OVERLAP_FINDINGS.md) and [experiment guide](../experiments/README.md).
+
+## Concurrent caller outcomes
+
+`caller_store.py` reuses the unchanged publication/retirement schema and the checked zero-timeout writer connection. Four modes compare a short receipt precheck with raw collision errors, unconditional conflict labels, post-rollback receipt resolution, and lookup held inside the write transaction. A known receipt primary-key collision explicitly rolls back every tentative write. The observer `call_commits` identifies the actual committing caller in that same transaction.
+
+Exact operation and bytes define equal intent; empty update and revocation differ, and Unicode normalization is not applied. A historical replay reads the request receipt rather than the current publication. `caller_worker.py` binds each pipe resume to its caller; `run_caller_comparison.py` retains all attempts, snapshots and the actor journal. `verify_caller_results.py` independently reconstructs them with only the standard library. The current full suite passes 244 tests, including 35 new tests. Claims concern fixed schedules at epoch 2 with retained receipts. [Findings](../docs/CALLER_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-12-simultaneous-same-id-callers).

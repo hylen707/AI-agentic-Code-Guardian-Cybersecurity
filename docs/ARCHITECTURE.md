@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 11. Updated 2026-11-05 (Asia/Seoul).
+**Status:** implemented components through Phase 12. Updated 2026-11-05 (Asia/Seoul).
 
 ## System boundary
 
@@ -36,6 +36,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/overlap_worker.py` | Publisher and retirer child roles | Strict pause/resume messages; exact child result traces |
 | `experiments/run_overlap_comparison.py` | Pipe-barrier controller and snapshot oracle | Fixed actor ordering; current state, receipts, witnesses and contention |
 | `experiments/verify_overlap_results.py` | Independent actor/witness recount | Raw captures, process/controller order, counters, source/input hashes |
+| `src/caller_store.py` | Same-ID precheck, collision handling, receipt resolution, transactional lookup | Whole-transaction rollback; atomic committing-caller witness |
+| `experiments/caller_worker.py` | One identified logical caller attempt | Caller-bound resume; exact lookup, numeric error and result events |
+| `experiments/run_caller_comparison.py` | Two-caller overlap with optional later independent work | Actual winner, both caller responses, causal snapshot prefixes, effect counts |
+| `experiments/verify_caller_results.py` | Independent caller/effect reconstruction | Pure stdlib; grid, actor journal, durable history, counters and eleven source hashes |
 
 ## Phase 5 ordering
 
@@ -133,4 +137,12 @@ The worker retires target epoch 2 at declared process-exit boundaries. The paren
 
 Retirement stays atomic in all modes. Its separate child verifies a zero busy timeout and reports only numeric `SQLITE_BUSY` at BEGIN as a deferred attempt. The parent pauses a live publisher using pipes, runs that child, captures all five tables in a read transaction, then resumes. If the writer held the scope, the parent retries retirement after publication completes. This controlled retry establishes eventual target closure in the selected schedules, without a fairness or latency claim.
 
-The controller verifies complete stdout/stderr/result traces and an ordered actor journal. The independent verifier rebuilds the snapshots and commit-time epoch relation without importing the stores or measured controller. The full suite passes 209 tests and requires Python 3.11+ on Linux for numeric SQLite error metadata and pipe selectors. Older standalone runners retain their recorded requirements. [Protocol](OVERLAP_PROTOCOL.md) · [Findings](OVERLAP_FINDINGS.md).
+The controller verifies complete stdout/stderr/result traces and an ordered actor journal. The independent verifier rebuilds the snapshots and commit-time epoch relation without importing the stores or measured controller. The recorded Phase 11 suite passed 209 tests and requires Python 3.11+ on Linux for numeric SQLite error metadata and pipe selectors. Older standalone runners retain their recorded requirements. [Protocol](OVERLAP_PROTOCOL.md) · [Findings](OVERLAP_FINDINGS.md).
+
+## Phase 12: one effect and two responses
+
+The fixture closes epoch 1 before challenged calls begin and retains all epoch-2 receipts. The three precheck modes close their read transaction before the first caller pauses. The second caller commits first; a subsequent primary-key collision at the first caller's receipt insert rolls back its preceding publication and effect writes. Only numeric code 1555 at that specific INSERT enters the modeled collision path. A trigger error or another storage failure remains an infrastructure error.
+
+`resolve_duplicate` then opens a fresh read transaction and compares the original receipt's operation and exact bytes. `transactional_lookup` instead holds `BEGIN IMMEDIATE` from receipt lookup through commit, causing the rival's first attempt to return numeric code 5. The controller retries with unchanged caller/epoch/key/bytes after release. The transactional first caller wins; in precheck races, the second wins. The oracle derives ownership from the atomically stored caller witness.
+
+All captures reconstruct publication, effects, receipts, delivery and causal prefixes. The independent verifier also reconstructs actor/controller traces and counts both responses against the earliest actual commit. An optional later publication advances current state to revision 5, while an identical old request must receive revision 4. Both correct designs preserve that distinction. Full tests: 244 passing; measured coverage: 64 records, 52 forced overlaps, twelve serial records and 157 normal child invocations. Receipt retirement during resolution, general caller populations and latency remain untested. [Protocol](CALLER_PROTOCOL.md) · [Findings](CALLER_FINDINGS.md).

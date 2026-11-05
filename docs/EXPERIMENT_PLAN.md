@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 11, 2026-11-05 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 12, 2026-11-05 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
 
@@ -19,6 +19,7 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 9. Request retries | Twenty cases, three arms; 24 child exits and 36 normal first requests | Duplicate effects, equivalent receipts, preserved later policy, conflicts and distinct intents | [Retry protocol](RETRY_PROTOCOL.md) | [Retry findings](RETRY_FINDINGS.md) |
 | 10. Receipt retirement | Twenty cases, four arms; 32 child exits and 48 normal retirements | Old-epoch effects, historical replies, retained rows, current-intent controls | [Retirement protocol](RETIREMENT_PROTOCOL.md) | [Retirement findings](RETIREMENT_FINDINGS.md) |
 | 11. Epoch admission overlap | Sixteen cases, three modes; 24 forced overlaps and 24 controls | Epoch at effect commit, writer contention, retry completion, historical responses | [Overlap protocol](OVERLAP_PROTOCOL.md) | [Overlap findings](OVERLAP_FINDINGS.md) |
+| 12. Same-ID callers | Sixteen cases, four modes; 52 forced overlaps and twelve serial records | Both caller responses, exact request effects, rollback and busy retries | [Caller protocol](CALLER_PROTOCOL.md) | [Caller findings](CALLER_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -44,7 +45,7 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-Phase 11 evaluates a fixed publisher/retirer overlap with commit witnesses and explicit contention retries. The next protocol should define simultaneous same-ID callers and changed parameters, counting each caller response and the one committed request effect. A duplicate-key abort must not be relabeled as correct replay or conflict. Mid-storage-operation cuts, failures during recovery, concurrent publishers, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
+Phase 12 evaluates both same-ID caller responses with retained receipts at a fixed epoch. The next protocol should place receipt retirement between duplicate rollback and the fresh resolution read, defining a justified outcome when the original reply is unavailable. A missing receipt must not become fabricated success or authority to restore an old effect. Mid-storage-operation cuts, failures during recovery, many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
 
 ## Documentation and evidence integrity
 
@@ -79,3 +80,11 @@ Observed known duplicates are 0/10 → 6/10 → 2/10 → 0/10; every arm still h
 The [overlap protocol](OVERLAP_PROTOCOL.md) freezes 16 cases across three publisher modes. **Invalid old effects / four admission-gap opportunities** compare the request epoch with the active epoch captured in its write transaction, yielding 4/4 → 2/4 → 0/4. **Valid old commits / twelve old cases** are 6 → 6 → 10, while old denials are 2 → 4 → 2. The transaction changes the order by deferring retirement, rather than imposing immediate request-time closure.
 
 **Contention / 2, 2, and 6 cases** requires exact numeric SQLite code 5 at the retirement BEGIN; all controlled retries commit after publisher completion. Four current-epoch controls and two postcommit historical-response cases stay separate. A response after the fence may acknowledge a valid effect before it. Eight verified pause/resume barriers per mode, full child traces, and a controller journal establish these deterministic orders; no timing-based race probability is estimated. [Findings](OVERLAP_FINDINGS.md).
+
+## Phase 12: response correctness beyond duplicate prevention
+
+The [caller protocol](CALLER_PROTOCOL.md) freezes sixteen cases across four modes before implementation. **Correct shared-overlap caller pairs / twelve** require one commitment plus an equivalent original replay for identical intent, or a parameter conflict for changed intent. Counts are 0/12 → 6/12 → 12/12 → 12/12. The six identical and six changed opportunities stay separate: an unconditional conflict is wrong for an identical retry. Recognized collision `storage_error` responses are negative application outcomes, with zero unexpected infrastructure errors in the retained run.
+
+**One shared effect / fifteen** includes twelve overlap cases and three serial controls; all modes satisfy 15/15 because collision paths explicitly roll back the whole transaction. The distinct-key overlap requires two effects despite identical bytes. **Historical replay / two identical-later cases** requires the original revision 4 while current revision 5 remains unchanged. Four later contexts, three serial cases and one distinct case per mode are separate, overlapping denominator groups.
+
+Count code-1555 receipt aborts (12 → 12 → 12 → 0), code-5 busy attempts/completed retries (0 → 0 → 0 → 13), actual committing caller, every child attempt and causal snapshot prefix. Require all ten criteria, 64 records, 52 verified barriers, 157 normal child invocations and zero unexpected errors. The independent verifier reconstructs every counter and checks the input plus eleven source hashes. The protocol fixes epoch 2 and retains receipts during challenged calls; it does not compose retirement with duplicate resolution. [Findings](CALLER_FINDINGS.md).

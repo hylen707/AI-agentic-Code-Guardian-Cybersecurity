@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-05 — Correct outcomes for both same-ID callers
+
+- Froze the caller protocol and sixteen-case manifest at `628df4caa665e0724eba498769bf754bc1725522` before Phase 12 implementation and measurement.
+- Added four collision/lookup modes, an atomic committing-caller observer, a caller-bound pipe worker, a real-process controller, a pure-stdlib independent verifier and 35 regression tests. Previous implementation, frozen design and raw evidence bytes are preserved.
+- Recorded 64 case/mode observations: one shared effect 15/15 in every mode, but correct shared-overlap caller pairs 0/12 → 6/12 → 12/12 → 12/12. Twelve final storage errors and six false identical conflicts remain negative outcomes. Post-rollback receipt resolution and transactional lookup both preserve original historical replies and all later state.
+- All 244 tests passed. Independent reconstruction matched every counter and all ten criteria, checked the input and eleven source hashes, and confirmed 52 forced overlaps, twelve serial records, 157 normal child invocations and zero unexpected infrastructure errors.
+- Updated the research argument, overview, evidence index, study map, architecture, limits and reproduction guide. Epoch 2 and retained receipts bound the claim; retirement during resolution, many-caller fairness, latency and crash behavior remain open. [Findings and evidence](CALLER_FINDINGS.md).
+
 ## 2026-11-05 — Epoch admission under overlapping retirement
 
 - Froze the overlap protocol and 16-case manifest at `db733eef02c79176e2fbd2e241c3bce20410ae19` before Phase 11 implementation and measurement.

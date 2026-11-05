@@ -1,6 +1,6 @@
 # Claims and evidence
 
-This map connects the eleven completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
+This map connects the twelve completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
 
 ## Phases 1 and 2: labels versus resource effects
 
@@ -143,3 +143,15 @@ Valid old commits across twelve old cases are 6 → 6 → 10, while correct old 
 - [209 passing tests](../experiments/results/2026-11-05T00-16-36-716146Z-overlap-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-05T00-16-36-716146Z-overlap-v1-console.txt), and [interpretation and limits](OVERLAP_FINDINGS.md).
 
 All ten criteria hold. Twenty-four live pipe-barrier overlaps and 24 ordering/current controls contain 48 normal publisher completions and 58 retirement completions, 106 child invocations with zero infrastructure errors. The input and nine source hashes match. This is one publisher role and one retiring role under fixed schedules, without a fairness, latency, arbitrary many-writer, or crash-safety claim.
+
+## Phase 12: one effect and two caller outcomes
+
+Sixteen cases run in `precheck_insert`, `constraint_conflict`, `resolve_duplicate` and `transactional_lookup`: 64 records. All modes have one shared effect in 15/15 shared-key cases and two legitimate effects in the distinct-key control. Correct caller pairs in twelve shared overlaps are **0/12 → 6/12 → 12/12 → 12/12**. Identical replays across six opportunities are 0/6 → 0/6 → 6/6 → 6/6; changed-intent conflicts are 0/6 → 6/6 → 6/6 → 6/6.
+
+Twelve recognized final storage errors in the first mode and six false identical conflicts in the second remain negative application outcomes. The first three modes explicitly roll back twelve receipt-key collisions each; transactional lookup uses thirteen code-5 retries, including distinct-key contention. All three serial pairs per mode succeed. All four later states remain current; the successful modes return both original revision-4 historical replies while current revision 5 remains unchanged.
+
+- [Protocol](CALLER_PROTOCOL.md), [16-case manifest](../experiments/tasks/caller-eval-v1/tasks.json), and [pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/628df4caa665e0724eba498769bf754bc1725522).
+- [64 raw caller/controller records](../experiments/results/2026-11-05T01-18-48-550840Z-caller-v1.jsonl), [summary and provenance](../experiments/results/2026-11-05T01-18-48-550840Z-caller-v1-summary.json), and [independent reconstruction](../experiments/results/2026-11-05T01-18-48-550840Z-caller-v1-verification.json).
+- [244 passing tests](../experiments/results/2026-11-05T01-18-48-550840Z-caller-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-05T01-18-48-550840Z-caller-v1-console.txt), and [interpretation and limits](CALLER_FINDINGS.md).
+
+All ten criteria hold, including 52 verified overlaps, twelve serial records and 157 normal child invocations with zero unexpected infrastructure errors. The input and eleven source hashes match. The actual committing caller defines the winner. Epoch 2 and retained receipts are fixed; retirement during duplicate resolution, arbitrary caller populations, performance and crash safety remain untested.

@@ -12,9 +12,31 @@ Use Python 3.11+ and the standard library on Linux for the current full suite an
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6–10 runs passed 67, 85, 111, 141, and 176 tests; the current Phase 11 run passes 209. The latest controller uses pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6–11 runs passed 67, 85, 111, 141, 176 and 209 tests; the current Phase 12 run passes 244. The latest controller uses pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 12: simultaneous same-ID callers
+
+```bash
+python experiments/run_caller_comparison.py --dataset experiments/tasks/caller-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 628df4caa665e0724eba498769bf754bc1725522
+```
+
+Sixteen cases run in `precheck_insert`, `constraint_conflict`, `resolve_duplicate` and `transactional_lookup`: 64 records. There are 52 forced overlaps with a live first caller paused after receipt lookup and twelve serial records. In precheck races the second caller commits first; transactional lookup holds the writer and defers that second caller. Every busy retry preserves caller/epoch/key/bytes. Optional independent later work commits before the losing caller's final result. No sleep arranges the schedule.
+
+Expect correct caller pairs in twelve shared overlaps **0/12 → 6/12 → 12/12 → 12/12**. Identical replay across six cases is 0/6 → 0/6 → 6/6 → 6/6; changed-intent conflict is 0/6 → 6/6 → 6/6 → 6/6. Modeled final storage errors (12 → 0 → 0 → 0) and false identical conflicts (0 → 6 → 0 → 0) remain negative outcomes, separate from unexpected infrastructure errors.
+
+All modes must retain one shared effect in 15/15 shared cases, both distinct-key effects, all three serial response pairs, and all four later states. Successful historical replays in two identical-later cases return revision 4 while current revision 5 remains intact. Receipt-key code-1555 aborts and explicit whole rollbacks are 12 → 12 → 12 → 0. Numeric code-5 busy attempts and completed retries are 0 → 0 → 0 → 13, including the distinct-ID overlap. Require all ten criteria, exact actor/controller traces and 157 normal child invocations with zero unexpected errors.
+
+Audit the retained run:
+
+```bash
+python experiments/verify_caller_results.py --summary experiments/results/2026-11-05T01-18-48-550840Z-caller-v1-summary.json --dataset experiments/tasks/caller-eval-v1/tasks.json
+```
+
+For a fresh run, substitute its printed summary filename. The independent verifier uses only the standard library to reconstruct the actual committing caller, causal snapshots, original receipts, delivery, both final responses and every counter; it also checks the input and eleven source hashes. Historical verification requires matching source versions. It exits nonzero on infrastructure errors or unmet scientific criteria. `--output /tmp/codeguardian-caller-verification.json` exclusively creates a report; `--output-dir /tmp/codeguardian-caller` keeps new controller output separate from retained evidence.
+
+Python 3.11+ on Linux is required. This study fixes epoch 2 and retains receipts during challenged calls. It does not compose retirement with duplicate resolution, inject crashes, measure latency/fairness, or establish many-caller or network semantics. A clean controller exit alone does not establish correct caller outcomes. [Protocol](../docs/CALLER_PROTOCOL.md) · [Findings and raw evidence](../docs/CALLER_FINDINGS.md).
 
 ## Phase 11: publication and retirement overlap
 
