@@ -1,0 +1,85 @@
+{
+  "schema_version": "resolution-eval-v1",
+  "cases": [
+    {
+      "case_id": "retire_gap-same_ascii",
+      "schedule": "retire_gap",
+      "pattern": "same_ascii"
+    },
+    {
+      "case_id": "retire_gap-same_empty",
+      "schedule": "retire_gap",
+      "pattern": "same_empty"
+    },
+    {
+      "case_id": "retire_gap-same_unicode",
+      "schedule": "retire_gap",
+      "pattern": "same_unicode"
+    },
+    {
+      "case_id": "retire_gap-same_revoke",
+      "schedule": "retire_gap",
+      "pattern": "same_revoke"
+    },
+    {
+      "case_id": "retire_gap-changed_bytes",
+      "schedule": "retire_gap",
+      "pattern": "changed_bytes"
+    },
+    {
+      "case_id": "retire_gap-update_to_revoke",
+      "schedule": "retire_gap",
+      "pattern": "update_to_revoke"
+    },
+    {
+      "case_id": "retire_gap-revoke_to_update",
+      "schedule": "retire_gap",
+      "pattern": "revoke_to_update"
+    },
+    {
+      "case_id": "retire_gap-changed_unicode_bytes",
+      "schedule": "retire_gap",
+      "pattern": "changed_unicode_bytes"
+    },
+    {
+      "case_id": "retire_gap_later-same_ascii",
+      "schedule": "retire_gap_later",
+      "pattern": "same_ascii"
+    },
+    {
+      "case_id": "retire_gap_later-same_revoke",
+      "schedule": "retire_gap_later",
+      "pattern": "same_revoke"
+    },
+    {
+      "case_id": "retire_gap_later-changed_bytes",
+      "schedule": "retire_gap_later",
+      "pattern": "changed_bytes"
+    },
+    {
+      "case_id": "retire_gap_later-update_to_revoke",
+      "schedule": "retire_gap_later",
+      "pattern": "update_to_revoke"
+    },
+    {
+      "case_id": "resolution_first-same_ascii",
+      "schedule": "resolution_first",
+      "pattern": "same_ascii"
+    },
+    {
+      "case_id": "resolution_first-changed_bytes",
+      "schedule": "resolution_first",
+      "pattern": "changed_bytes"
+    },
+    {
+      "case_id": "retained-same_empty",
+      "schedule": "retained",
+      "pattern": "same_empty"
+    },
+    {
+      "case_id": "retained-changed_unicode_bytes",
+      "schedule": "retained",
+      "pattern": "changed_unicode_bytes"
+    }
+  ]
+}
