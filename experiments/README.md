@@ -6,15 +6,37 @@ The repository separates policy conformance, task replay, and deterministic obje
 
 ## Environment and validation
 
-Use Python 3.10+ and the standard library on Linux, including an available `sqlite3` extension and file/directory fsync support. The full suite exercises hardlinks, symlinks, FIFOs, and `pread`; missing capabilities must fail visibly rather than skip an attack case. No model/API credentials, third-party Python packages, or external datasets are needed. Run commands from the repository root after cloning as shown in the [quick start](../README.md#quick-reproduction).
+Use Python 3.11+ and the standard library on Linux for the current full suite and latest experiment, including an available `sqlite3` extension and file/directory fsync support. The full suite exercises hardlinks, symlinks, FIFOs, and `pread`; missing capabilities must fail visibly rather than skip an attack case. No model/API credentials, third-party Python packages, or external datasets are needed. Run commands from the repository root after cloning as shown in the [quick start](../README.md#quick-reproduction).
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6–9 runs passed 67, 85, 111, and 141 tests; the current Phase 10 run passes 176. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6–10 runs passed 67, 85, 111, 141, and 176 tests; the current Phase 11 run passes 209. The latest controller uses pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 11: publication and retirement overlap
+
+```bash
+python experiments/run_overlap_comparison.py --dataset experiments/tasks/overlap-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit db733eef02c79176e2fbd2e241c3bce20410ae19
+```
+
+Sixteen cases run in `cached_admission`, `separate_recheck`, and `transactional_admission` modes: 48 records, including 24 forced overlaps with a live publisher paused while a retirement child runs, and 24 ordering/current controls. Pipe messages fix the schedule; no sleep is used to arrange it. All 48 publisher and 58 retirement invocations complete normally, 106 child invocations total. No crash injection is used.
+
+Expect invalid old effects 4/4 → 2/4 → 0/4 across four admission-gap opportunities; valid old commits 6 → 6 → 10 across twelve old cases; and old denials 2 → 4 → 2. Retirement deferrals are 2 → 2 → 6, each exact numeric SQLite code 5 at BEGIN with checked zero busy timeout. Every deferred attempt is retried after publisher completion and commits. This changes ordering; it does not promise immediate retirement or fairness.
+
+All modes must complete four current-epoch value/revocation controls, return two valid historical commitments after retirement, retain 16/16 coherent final states, and close every final epoch to 2. A commit witness validates the epoch at the effect, independently of the later response. Require all ten criteria, complete actor/controller traces, and zero infrastructure errors.
+
+Audit the retained run:
+
+```bash
+python experiments/verify_overlap_results.py --summary experiments/results/2026-11-05T00-16-36-716146Z-overlap-v1-summary.json --dataset experiments/tasks/overlap-eval-v1/tasks.json
+```
+
+For a fresh run, substitute its printed summary filename. The independent verifier rebuilds actor traces, barrier/controller ordering, current state, receipts, witnesses, and counters, then checks the input and nine source hashes. Historical verification requires those matching source versions. It exits nonzero on infrastructure errors or unmet criteria. `--output /tmp/codeguardian-overlap-verification.json` creates a new report; `--output-dir /tmp/codeguardian-overlap` keeps new controller output outside retained evidence.
+
+Use Python 3.11+ on Linux. The study fixes two trusted roles in rollback-journal mode; it does not estimate random race probability, latency, starvation, many-writer histories, WAL behavior, authentication, or crash recovery. The controller's deadlines detect broken execution, not service latency. [Protocol](../docs/OVERLAP_PROTOCOL.md) · [Findings and raw evidence](../docs/OVERLAP_FINDINGS.md).
 
 ## Phase 10: receipt retirement and trusted epochs
 
@@ -36,7 +58,7 @@ python experiments/verify_retirement_results.py --summary experiments/results/20
 
 For a new run, substitute its printed summary filename. The verifier independently reconstructs effect prefixes, receipt layouts, current delivery, historical reply or rejection, counters, and criteria, then checks the input and eight source hashes. Historical verification requires matching those source versions. It exits nonzero on infrastructure errors or unmet criteria. `--output /tmp/codeguardian-retirement-verification.json` creates a new verification report; `--output-dir /tmp/codeguardian-retirement` keeps fresh runner output outside retained evidence.
 
-Epochs are trusted logical namespaces preserved on retries; this is not authentication or a wall-clock TTL. Rejection of unseen old work and loss of historical replies are explicit costs. The observer history grows, so deleting receipt rows does not bound the full database. Simultaneous publication/retirement, physical reclamation, and host power loss remain untested. [Protocol](../docs/RETIREMENT_PROTOCOL.md) · [Findings and raw evidence](../docs/RETIREMENT_FINDINGS.md).
+Epochs are trusted logical namespaces preserved on retries; this is not authentication or a wall-clock TTL. Rejection of unseen old work and loss of historical replies are explicit costs. The observer history grows, so deleting receipt rows does not bound the full database. Phase 10 leaves overlapping publication/retirement to the Phase 11 comparison above. Physical reclamation and host power loss remain untested. [Protocol](../docs/RETIREMENT_PROTOCOL.md) · [Findings and raw evidence](../docs/RETIREMENT_FINDINGS.md).
 
 ## Phase 9: request retries and historical receipts
 
@@ -161,6 +183,7 @@ Comparison runners print a JSON summary and the saved run identifier; the policy
 | Recovery | 57 = 19 cases × 3 arms | `arms.sqlite_atomic`: 19 coherent states, 15 valid deliveries, 0 invalid deliveries, 4 revocation denials |
 | Request retry | 60 = 20 cases × 3 arms | `arms.atomic_receipt`: 12 successful retries, 0 duplicate retry cases, 2 correct conflicts, 2 preserved late states |
 | Receipt retirement | 80 = 20 cases × 4 arms | `arms.atomic_fence`: 0 known duplicates, 10 preserved policies, 6 closed-epoch denials, 0 old receipt rows after commit |
+| Admission overlap | 48 = 16 cases × 3 modes | `arms.transactional_admission`: 0 invalid old effects, 10 valid old commits, 6 deferrals/retries, 4 current successes |
 
 For filesystem studies, require zero execution/infrastructure errors and inspect every declared criterion as well as controls and legitimate completion. A zero protection-failure count produced by broken execution is not a successful result. Raw IDs must cover each declared case/arm pair exactly once; the [evidence map](../docs/EVIDENCE.md) gives the historical files for comparison.
 

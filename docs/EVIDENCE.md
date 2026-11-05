@@ -1,6 +1,6 @@
 # Claims and evidence
 
-This map connects the ten completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
+This map connects the eleven completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
 
 ## Phases 1 and 2: labels versus resource effects
 
@@ -131,3 +131,15 @@ Every arm completes three new active-epoch intents and handles two current repea
 - [176 passing tests](../experiments/results/2026-11-04T15-09-50-473480Z-retirement-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-04T15-09-50-473480Z-retirement-v1-console.txt), and [findings and limits](RETIREMENT_FINDINGS.md).
 
 All twelve criteria hold, including expected recovery layouts and 32 declared exits plus 48 normal completions with zero infrastructure errors. The input and eight source hashes match. Epochs are trusted logical namespaces; this does not establish authenticated callers, clock-based expiry, simultaneous-writer safety, or physical reclamation.
+
+## Phase 11: epoch admission through commit
+
+**Claim.** A separate final epoch recheck leaves a later write gap. Sixteen cases across three modes yield 48 records. Invalid old effects across four admission-gap opportunities are 4/4 cached → 2/4 separate recheck → 0/4 transactional admission. All final content/approval pairs remain coherent. A witness in the write transaction establishes the epoch at the effect, rather than treating the final epoch or returned label as sufficient evidence.
+
+Valid old commits across twelve old cases are 6 → 6 → 10, while correct old denials are 2 → 4 → 2. Holding the transaction defers six retirement probes; all complete on a scheduled retry after publication. The weaker modes defer two each at the before-commit control. Every mode completes four current-epoch controls and returns both valid prior commitments after retirement. The sets overlap and are not production success rates.
+
+- [Protocol](OVERLAP_PROTOCOL.md), [16-case manifest](../experiments/tasks/overlap-eval-v1/tasks.json), and [pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/db733eef02c79176e2fbd2e241c3bce20410ae19).
+- [48 raw actor/controller/witness records](../experiments/results/2026-11-05T00-16-36-716146Z-overlap-v1.jsonl), [summary and provenance](../experiments/results/2026-11-05T00-16-36-716146Z-overlap-v1-summary.json), and [independent actor/witness recount](../experiments/results/2026-11-05T00-16-36-716146Z-overlap-v1-verification.json).
+- [209 passing tests](../experiments/results/2026-11-05T00-16-36-716146Z-overlap-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-05T00-16-36-716146Z-overlap-v1-console.txt), and [interpretation and limits](OVERLAP_FINDINGS.md).
+
+All ten criteria hold. Twenty-four live pipe-barrier overlaps and 24 ordering/current controls contain 48 normal publisher completions and 58 retirement completions, 106 child invocations with zero infrastructure errors. The input and nine source hashes match. This is one publisher role and one retiring role under fixed schedules, without a fairness, latency, arbitrary many-writer, or crash-safety claim.

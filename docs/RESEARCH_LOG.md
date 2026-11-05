@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-05 — The last read still precedes the write
+
+**Question and prospective design.** Phase 10 used a sequential epoch-retirement boundary. Can a request admitted before retirement write after its epoch closes? Froze the [protocol](OVERLAP_PROTOCOL.md) and 16 cases before implementation. Compared cached admission, a separate final read, and a write transaction held from admission through commit. A live publisher pauses at fixed pipe barriers while a separate retirement child attempts target epoch 2. Every new effect stores a same-transaction epoch witness.
+
+**Observation.** Invalid old effects are 4/4 → 2/4 → 0/4 across the selected admission gaps. A separate recheck catches retirement after initial admission but not retirement after its final read. Transactional admission defers six retirement probes; controlled retries after publication all commit. Valid old commits are 6 → 6 → 10, and old denials 2 → 4 → 2. Every mode retains coherent final state pairs, completes four current controls, and returns both postcommit historical responses correctly.
+
+**Validation.** All 209 tests passed, including 33 new tests. The independent verifier reconstructs actor traces, controller journals, snapshots, receipts and witnesses without importing the measured store, worker, or controller. It matches 48 records, every counter and ten criteria, and the input/nine source hashes. There are 24 forced overlaps and 24 controls, with 48 publisher and 58 retirement invocations completing normally and zero infrastructure errors. [Findings and raw evidence](OVERLAP_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** Keeping admission authority valid through the effect changes the order: retirement may follow a publication it initially contended with. An acknowledgment after closure can still describe a valid earlier commit; the witness prevents that misclassification. This is a fixed two-role schedule, not a fairness or general concurrent-safety result. Next: specify simultaneous same-ID caller outcomes, including parameter conflicts, and distinguish a consistent replay/conflict response from an accidental duplicate-key abort. Many-writer progress, latency, external effects, and crash recovery require separate studies.
+
 ## 2026-11-04 — Deleting a reply does not close its old intent
 
 **Question and prospective design.** Phase 9 depends on retaining request receipts. Can those records be removed without an old retry undoing later policy? Froze the [protocol](RETIREMENT_PROTOCOL.md) and 20 cases before implementation. Compared retaining history, forgetting without a retired-epoch check, deleting before committing the epoch fence, and atomic retirement. Every publication still atomically records state, an epoch-tagged effect, and its receipt. Cases include old known and unseen requests, new current-epoch work, composite-ID reuse, repeats/conflicts, and four child-exit boundaries.

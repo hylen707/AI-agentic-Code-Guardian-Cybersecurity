@@ -1,6 +1,6 @@
 # Threat model and validity limits
 
-**Scope:** completed studies through Phase 10. These assumptions bound the measured results; they are not a deployable security specification.
+**Scope:** completed studies through Phase 11. These assumptions bound the measured results; they are not a deployable security specification.
 
 ## Assets and authorization contracts
 
@@ -51,12 +51,12 @@ The string gate loses two legitimate replay completions while missing two protec
 | Deterministic check/use schedules | Demonstrates selected orderings; does not measure concurrent race probability |
 | Shared implementation and trusted observation infrastructure | Agreement cannot independently establish correctness of OS semantics, all oracle code, or every execution |
 | Different contracts across stages | Identity-only Phase 6 failures do not invalidate Phase 5's narrower identity result; task completion and payload delivery are different measures |
-| Regression tests versus experiment trials | 176 current passing tests are not 176 independent adversarial samples |
+| Regression tests versus experiment trials | 209 current passing tests are not 209 independent adversarial samples |
 | No live-agent adapter or task trials | No evidence yet about model behavior, agent attack success, task accuracy, cost, latency, or deployment impact |
 
 ## Open questions
 
-Phase 7 evaluates approval at receipt, Phase 8 evaluates publisher-exit recovery, Phase 9 evaluates retained request IDs, and Phase 10 evaluates logical-epoch receipt retirement. Simultaneous publication/retirement, authenticated epoch assignment, wall-clock expiry, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
+Phase 7 evaluates approval at receipt, Phase 8 evaluates publisher-exit recovery, Phase 9 evaluates retained request IDs, Phase 10 evaluates logical retirement, and Phase 11 fixes one publisher/retirer overlap. Many-publisher histories, simultaneous same-ID callers, fairness, authenticated epochs, wall-clock expiry, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
 
 ## Dynamic approval extension
 
@@ -79,3 +79,9 @@ There is one sequential publisher, no identity authentication or tenant separati
 Phase 10 closes a trusted logical epoch and compares retained history, deletion without closure enforcement, deletion before fence commitment, and coupled retirement. Old receipts can acknowledge historical commitment; after compaction, rejecting a closed epoch does not recover that missing receipt. The same rule rejects previously unseen old requests, which is an explicit cost to delayed work. New active-epoch IDs and composite-key reuse are controlled separately.
 
 The epoch and original request identity must be trusted and preserved by cooperating callers. They are not authenticated capabilities, and relabeling old intent with a newly authorized epoch is outside this experiment. The store does not implement a timer, TTL, clock recovery, tenant isolation, or a production retention period. Logical row deletion does not establish physical space reclamation; the retained effect observer grows. Cases use one sequential writer, with no concurrent publication/retirement, external effects, host power loss, or recovery-time failures. [Protocol](RETIREMENT_PROTOCOL.md) · [Findings](RETIREMENT_FINDINGS.md).
+
+## Controlled-overlap extension
+
+Phase 11 uses a live publisher and a separate retirement child on one SQLite fixture, with fixed pipe barriers. Commit witnesses distinguish an invalid new effect below a closed epoch from a valid older effect whose response arrives later. Closing the namespace does not undo its already committed value. The writer lock defers six retirement probes in the transactional mode; controlled retries complete after publication, with no general latency or fairness guarantee.
+
+There are two roles, small trusted fixtures, rollback-journal mode, and trusted instrumentation. This does not establish arbitrary concurrent histories, many-writer progress, simultaneous duplicate-request semantics, conditional-write equivalence, WAL behavior, caller authentication, network-failure recovery, or crash safety. Numeric contention classification requires Python 3.11+; unknown errors are infrastructure failures. The selected weak arms release their admission scope and do not change Phase 10's original implementation. [Protocol](OVERLAP_PROTOCOL.md) · [Findings](OVERLAP_FINDINGS.md).

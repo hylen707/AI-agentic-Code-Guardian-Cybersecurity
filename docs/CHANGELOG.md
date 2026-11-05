@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-05 — Epoch admission under overlapping retirement
+
+- Froze the overlap protocol and 16-case manifest at `db733eef02c79176e2fbd2e241c3bce20410ae19` before Phase 11 implementation and measurement.
+- Added cached, separate-recheck, and transactional admission scopes, an atomic commit witness, publisher/retirer child roles, a strict pipe-barrier controller, an independent actor/witness verifier, and 33 regression tests. Earlier implementations and retained evidence remain unchanged.
+- Recorded 48 case/mode observations: invalid old effects 4/4 → 2/4 → 0/4; valid old commits 6 → 6 → 10; old denials 2 → 4 → 2. The transactional mode defers six retirements and completes all scheduled retries. Every mode completes four current controls and both postcommit historical-response cases.
+- All 209 tests passed. The independent verifier matched all counters and ten criteria, checked the input and nine source hashes, and confirmed 24 forced overlaps plus 24 controls, 106 normal child invocations, and zero infrastructure errors.
+- Updated the overview, research argument, evidence index, study map, architecture, limits, and reproduction guide. The current full suite/latest study requires Python 3.11+ on Linux for numeric SQLite error metadata and pipe selectors. Fixed two-role schedules do not establish fairness, latency, many-writer histories, or crash safety. [Findings and evidence](OVERLAP_FINDINGS.md).
+
 ## 2026-11-04 — Receipt retirement and epoch boundaries
 
 - Froze the retirement protocol and 20-case manifest at `b6e1c712648f7f0225fe236238badddf30b9e41d` before Phase 10 implementation and measurement.

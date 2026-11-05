@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 10. Updated 2026-11-04 (Asia/Seoul).
+**Status:** implemented components through Phase 11. Updated 2026-11-05 (Asia/Seoul).
 
 ## System boundary
 
@@ -32,6 +32,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/retirement_worker.py` | Retirement transaction child and exact exit cuts | Target epoch and retirement acknowledgment |
 | `experiments/run_retirement_comparison.py` | Four retention/retirement arms | Current state, epoch-tagged effects, physical receipt rows, response availability |
 | `experiments/verify_retirement_results.py` | Independent retirement/effect-prefix recount | Expected layouts, raw outcomes, counters, source/input hashes |
+| `src/overlap_store.py` | Cached, separate, or transactional epoch admission | Same-transaction effect witness; nonblocking retirement probe |
+| `experiments/overlap_worker.py` | Publisher and retirer child roles | Strict pause/resume messages; exact child result traces |
+| `experiments/run_overlap_comparison.py` | Pipe-barrier controller and snapshot oracle | Fixed actor ordering; current state, receipts, witnesses and contention |
+| `experiments/verify_overlap_results.py` | Independent actor/witness recount | Raw captures, process/controller order, counters, source/input hashes |
 
 ## Phase 5 ordering
 
@@ -121,4 +125,12 @@ The child exits at declared commit/receipt/acknowledgment barriers. The parent r
 
 The retaining arm advances the epoch and keeps old receipts. The forgetting arm advances and deletes together but does not enforce closure on missing old identities. The split arm commits deletion before advancing the epoch; the atomic arm couples both changes. Retrying a completed retirement target does not advance again or delete current receipts. The observer log is never used for deduplication and remains unbounded instrumentation.
 
-The worker retires target epoch 2 at declared process-exit boundaries. The parent captures all four tables consistently before/after retirement, then reopens for each follow-up. An ideal intent model and a separate expected-prefix verifier compare actual state/effects with response semantics and retained rows. All 176 tests pass. This is one trusted sequential namespace and a logical cutoff, with no caller authentication, clock-based TTL, or physical reclamation claim. [Protocol](RETIREMENT_PROTOCOL.md) · [Findings](RETIREMENT_FINDINGS.md).
+The worker retires target epoch 2 at declared process-exit boundaries. The parent captures all four tables consistently before/after retirement, then reopens for each follow-up. An ideal intent model and a separate expected-prefix verifier compare actual state/effects with response semantics and retained rows. The recorded Phase 10 suite passed 176 tests. This is one trusted sequential namespace and a logical cutoff, with no caller authentication, clock-based TTL, or physical reclamation claim. [Protocol](RETIREMENT_PROTOCOL.md) · [Findings](RETIREMENT_FINDINGS.md).
+
+## Phase 11: admission through a write transaction
+
+`OverlapPublicationStore` extends the unchanged epoch store for the controlled comparison. Cached admission ends its read scope before writing. Separate recheck ends a second read scope before writing. Transactional admission starts `BEGIN IMMEDIATE` before checking and holds it through the publication commit. Every new effect also inserts an observer witness with the active epoch read in that same write transaction. The weak modes observe that epoch for instrumentation without using it as another gate.
+
+Retirement stays atomic in all modes. Its separate child verifies a zero busy timeout and reports only numeric `SQLITE_BUSY` at BEGIN as a deferred attempt. The parent pauses a live publisher using pipes, runs that child, captures all five tables in a read transaction, then resumes. If the writer held the scope, the parent retries retirement after publication completes. This controlled retry establishes eventual target closure in the selected schedules, without a fairness or latency claim.
+
+The controller verifies complete stdout/stderr/result traces and an ordered actor journal. The independent verifier rebuilds the snapshots and commit-time epoch relation without importing the stores or measured controller. The full suite passes 209 tests and requires Python 3.11+ on Linux for numeric SQLite error metadata and pipe selectors. Older standalone runners retain their recorded requirements. [Protocol](OVERLAP_PROTOCOL.md) · [Findings](OVERLAP_FINDINGS.md).

@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 10, 2026-11-04 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 11, 2026-11-05 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
 
@@ -18,6 +18,7 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 8. Restart recovery | Nineteen cases, three arms; 48 child exits and 9 controls | Coherent recovered state, valid delivery, acknowledged commit recovery | [Recovery protocol](RECOVERY_PROTOCOL.md) | [Recovery findings](RECOVERY_FINDINGS.md) |
 | 9. Request retries | Twenty cases, three arms; 24 child exits and 36 normal first requests | Duplicate effects, equivalent receipts, preserved later policy, conflicts and distinct intents | [Retry protocol](RETRY_PROTOCOL.md) | [Retry findings](RETRY_FINDINGS.md) |
 | 10. Receipt retirement | Twenty cases, four arms; 32 child exits and 48 normal retirements | Old-epoch effects, historical replies, retained rows, current-intent controls | [Retirement protocol](RETIREMENT_PROTOCOL.md) | [Retirement findings](RETIREMENT_FINDINGS.md) |
+| 11. Epoch admission overlap | Sixteen cases, three modes; 24 forced overlaps and 24 controls | Epoch at effect commit, writer contention, retry completion, historical responses | [Overlap protocol](OVERLAP_PROTOCOL.md) | [Overlap findings](OVERLAP_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -43,7 +44,7 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-Phase 10 evaluates logical-epoch receipt retirement and delayed requests. The next protocol should fix an overlap where a request is admitted before retirement but attempts its write after the epoch closes, and compare where epoch validation and publication commit occur. Mid-storage-operation cuts, failures during recovery, concurrent publishers, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
+Phase 11 evaluates a fixed publisher/retirer overlap with commit witnesses and explicit contention retries. The next protocol should define simultaneous same-ID callers and changed parameters, counting each caller response and the one committed request effect. A duplicate-key abort must not be relabeled as correct replay or conflict. Mid-storage-operation cuts, failures during recovery, concurrent publishers, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
 
 ## Documentation and evidence integrity
 
@@ -72,3 +73,9 @@ The [retirement protocol](RETIREMENT_PROTOCOL.md) freezes 20 cases across four a
 Sixteen captures recover completed retirement. **Old logical receipt rows** are two per retaining-store capture and zero per compact-store capture, not a byte or physical reclamation measure. Three new current intents include empty/Unicode values and the same literal ID in a different epoch. Two current repeats, two conflicts, two previously unseen old requests, and one future request retain their own denominators. Rejecting unseen closed-epoch work is the defined cutoff cost.
 
 Observed known duplicates are 0/10 → 6/10 → 2/10 → 0/10; every arm still has 20/20 intrinsically coherent final pairs. A logical epoch is a trusted input for cooperating publishers. Wall-clock expiry, malicious relabeling, and simultaneous writers need separate protocols. [Findings](RETIREMENT_FINDINGS.md).
+
+## Phase 11: effect-time admission and forced overlap
+
+The [overlap protocol](OVERLAP_PROTOCOL.md) freezes 16 cases across three publisher modes. **Invalid old effects / four admission-gap opportunities** compare the request epoch with the active epoch captured in its write transaction, yielding 4/4 → 2/4 → 0/4. **Valid old commits / twelve old cases** are 6 → 6 → 10, while old denials are 2 → 4 → 2. The transaction changes the order by deferring retirement, rather than imposing immediate request-time closure.
+
+**Contention / 2, 2, and 6 cases** requires exact numeric SQLite code 5 at the retirement BEGIN; all controlled retries commit after publisher completion. Four current-epoch controls and two postcommit historical-response cases stay separate. A response after the fence may acknowledge a valid effect before it. Eight verified pause/resume barriers per mode, full child traces, and a controller journal establish these deterministic orders; no timing-based race probability is estimated. [Findings](OVERLAP_FINDINGS.md).

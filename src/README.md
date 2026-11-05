@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, and epoch-retirement prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
+The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, and overlapping-admission prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -50,4 +50,10 @@ These are trusted sequential fixture stores with indefinite receipt retention. T
 
 `retirement_store.py` adds a trusted monotonic active epoch and composite `(epoch, request_id)` receipts. Publication still commits state, effect, and receipt together. Four arms retain history, forget without a lower-epoch check, delete before committing the fence, or couple deletion and fence. A retained old receipt can be replayed; a compacted closed epoch must reject without restoring its old effect. A new epoch intentionally denotes a new request namespace.
 
-This is a sequential logical cutoff with no timer or caller authentication. Old unseen work is also rejected. Logical receipt counts do not measure physical reclamation, and observer history remains retained. The current suite has 176 tests. See the [retirement findings](../docs/RETIREMENT_FINDINGS.md) and [reproduction guide](../experiments/README.md).
+This is a sequential logical cutoff with no timer or caller authentication. Old unseen work is also rejected. Logical receipt counts do not measure physical reclamation, and observer history remains retained. The recorded Phase 10 suite passed 176 tests. See the [retirement findings](../docs/RETIREMENT_FINDINGS.md) and [reproduction guide](../experiments/README.md).
+
+## Overlapping epoch admission
+
+`overlap_store.py` compares a cached check, a separate final read, and admission held inside `BEGIN IMMEDIATE` through publication. The state, effect, receipt, and commit witness share the write transaction. The witness records the epoch actually observed there; it lets the oracle distinguish a late write from a valid earlier commit even if the response comes after retirement.
+
+The separate retirement child uses a checked zero busy timeout and exact numeric SQLite code 5 for deferral. The pipe controller retries after the publisher releases its transaction. This is a fixed two-role research harness, with no many-writer fairness or latency claim. The current full suite passes 209 tests and requires Python 3.11+ on Linux. See the [overlap findings](../docs/OVERLAP_FINDINGS.md) and [experiment guide](../experiments/README.md).
