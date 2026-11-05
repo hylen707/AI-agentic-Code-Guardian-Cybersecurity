@@ -1,0 +1,85 @@
+{
+  "schema_version": "caller-eval-v1",
+  "cases": [
+    {
+      "case_id": "overlap-same_ascii",
+      "schedule": "overlap",
+      "pattern": "same_ascii"
+    },
+    {
+      "case_id": "overlap-same_empty",
+      "schedule": "overlap",
+      "pattern": "same_empty"
+    },
+    {
+      "case_id": "overlap-same_unicode",
+      "schedule": "overlap",
+      "pattern": "same_unicode"
+    },
+    {
+      "case_id": "overlap-same_revoke",
+      "schedule": "overlap",
+      "pattern": "same_revoke"
+    },
+    {
+      "case_id": "overlap-changed_bytes",
+      "schedule": "overlap",
+      "pattern": "changed_bytes"
+    },
+    {
+      "case_id": "overlap-update_to_revoke",
+      "schedule": "overlap",
+      "pattern": "update_to_revoke"
+    },
+    {
+      "case_id": "overlap-revoke_to_update",
+      "schedule": "overlap",
+      "pattern": "revoke_to_update"
+    },
+    {
+      "case_id": "overlap-changed_unicode_bytes",
+      "schedule": "overlap",
+      "pattern": "changed_unicode_bytes"
+    },
+    {
+      "case_id": "later-same_ascii",
+      "schedule": "overlap_with_later",
+      "pattern": "same_ascii"
+    },
+    {
+      "case_id": "later-same_revoke",
+      "schedule": "overlap_with_later",
+      "pattern": "same_revoke"
+    },
+    {
+      "case_id": "later-changed_bytes",
+      "schedule": "overlap_with_later",
+      "pattern": "changed_bytes"
+    },
+    {
+      "case_id": "later-update_to_revoke",
+      "schedule": "overlap_with_later",
+      "pattern": "update_to_revoke"
+    },
+    {
+      "case_id": "serial-same_ascii",
+      "schedule": "serial",
+      "pattern": "same_ascii"
+    },
+    {
+      "case_id": "serial-same_empty",
+      "schedule": "serial",
+      "pattern": "same_empty"
+    },
+    {
+      "case_id": "serial-changed_bytes",
+      "schedule": "serial",
+      "pattern": "changed_bytes"
+    },
+    {
+      "case_id": "distinct-ids",
+      "schedule": "distinct_overlap",
+      "pattern": "same_ascii"
+    }
+  ]
+}
