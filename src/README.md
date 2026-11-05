@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, and concurrent-caller prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
+The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, concurrent-caller, and retirement-during-resolution prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -62,4 +62,12 @@ The separate retirement child uses a checked zero busy timeout and exact numeric
 
 `caller_store.py` reuses the unchanged publication/retirement schema and the checked zero-timeout writer connection. Four modes compare a short receipt precheck with raw collision errors, unconditional conflict labels, post-rollback receipt resolution, and lookup held inside the write transaction. A known receipt primary-key collision explicitly rolls back every tentative write. The observer `call_commits` identifies the actual committing caller in that same transaction.
 
-Exact operation and bytes define equal intent; empty update and revocation differ, and Unicode normalization is not applied. A historical replay reads the request receipt rather than the current publication. `caller_worker.py` binds each pipe resume to its caller; `run_caller_comparison.py` retains all attempts, snapshots and the actor journal. `verify_caller_results.py` independently reconstructs them with only the standard library. The current full suite passes 244 tests, including 35 new tests. Claims concern fixed schedules at epoch 2 with retained receipts. [Findings](../docs/CALLER_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-12-simultaneous-same-id-callers).
+Exact operation and bytes define equal intent; empty update and revocation differ, and Unicode normalization is not applied. A historical replay reads the request receipt rather than the current publication. `caller_worker.py` binds each pipe resume to its caller; `run_caller_comparison.py` retains all attempts, snapshots and the actor journal. `verify_caller_results.py` independently reconstructs them with only the standard library. The recorded Phase 12 suite passed 244 tests, including 35 new tests. Claims concern fixed schedules at epoch 2 with retained receipts. [Findings](../docs/CALLER_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-12-simultaneous-same-id-callers).
+
+## Resolution during receipt retirement
+
+`resolution_store.py` preserves the original epoch/ID when a real duplicate receipt insertion fails. It rolls back the whole tentative transaction before resolution. The diagnostic `retry_missing` fallback writes again if retirement has removed the receipt, even though its fresh snapshot observes the closed epoch. `fenced_resolution` instead returns `outcome_unavailable` without a commitment or another effect. `guarded_resolution` reserves the writer before the resolution pause, resolves the retained receipt, then releases retirement to retry.
+
+The guard is acquired after collision rollback; if retirement has already won, the guarded mode also returns unavailable. It does not consult the effect observer to invent a historical result. State, effect, receipt and `resolution_commits` caller/epoch witness remain atomic. Exact operation and bytes define intent; empty update, revocation and Unicode encodings remain distinct.
+
+`resolution_worker.py` supports two caller-bound pauses and a numeric retirement probe. The controller saves both barriers, every child trace, retirement snapshots and current delivery. A pure-stdlib verifier independently reconstructs them. The full suite passes 283 tests, including 39 new tests; the measured comparison has 48 records, 96 barriers and 162 normal child invocations. See [findings](../docs/RESOLUTION_FINDINGS.md) and the [experiment guide](../experiments/README.md#phase-13-retirement-during-duplicate-resolution).

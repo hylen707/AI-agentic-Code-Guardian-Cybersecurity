@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-05 — Receipt retirement during duplicate resolution
+
+- Froze the resolution protocol and sixteen-case manifest at `48a87f6b3103339d67906253c4486fcf660a84c2` before Phase 13 implementation and measurement.
+- Added diagnostic missing-receipt retry, fenced unavailable response and guarded original-receipt resolution; an atomic caller/epoch observer; a two-barrier caller/retirement worker; a controller; an independent stdlib verifier; and 39 regression tests. Earlier implementation and evidence bytes remain unchanged.
+- Recorded 48 case/mode observations. Across twelve gaps, extra shared effects are 12/12 → 0/12 → 0/12; safe terminal results are 0/12 → 12/12 → 12/12; original outcomes remain available 0/12 → 0/12 → 12/12. Fenced lookup loses twelve original replies; guarded lookup defers twelve retirements and completes every retry. Both safe modes preserve all four later policies under their declared orderings.
+- All 283 tests passed. Independent reconstruction matched every counter and all ten criteria, checked the input/eleven source hashes, and confirmed 96 barriers, 162 normal child invocations and zero unexpected infrastructure errors. Tests also cover closure winning before guard acquisition and fabricated historical responses after evidence loss.
+- Updated the research argument, overview, evidence index, study map, architecture, limits and reproduction guide. The guard's earlier acquisition gap, compact historical summaries, arbitrary caller populations, performance and crash behavior remain explicit boundaries. [Findings and evidence](RESOLUTION_FINDINGS.md).
+
 ## 2026-11-05 — Correct outcomes for both same-ID callers
 
 - Froze the caller protocol and sixteen-case manifest at `628df4caa665e0724eba498769bf754bc1725522` before Phase 12 implementation and measurement.

@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 12, 2026-11-05 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 13, 2026-11-05 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
 
@@ -20,6 +20,7 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 10. Receipt retirement | Twenty cases, four arms; 32 child exits and 48 normal retirements | Old-epoch effects, historical replies, retained rows, current-intent controls | [Retirement protocol](RETIREMENT_PROTOCOL.md) | [Retirement findings](RETIREMENT_FINDINGS.md) |
 | 11. Epoch admission overlap | Sixteen cases, three modes; 24 forced overlaps and 24 controls | Epoch at effect commit, writer contention, retry completion, historical responses | [Overlap protocol](OVERLAP_PROTOCOL.md) | [Overlap findings](OVERLAP_FINDINGS.md) |
 | 12. Same-ID callers | Sixteen cases, four modes; 52 forced overlaps and twelve serial records | Both caller responses, exact request effects, rollback and busy retries | [Caller protocol](CALLER_PROTOCOL.md) | [Caller findings](CALLER_FINDINGS.md) |
+| 13. Retirement during resolution | Sixteen cases, three modes; 96 verified barriers | One effect, justified unavailable/original response, closed-epoch writes and retirement deferral | [Resolution protocol](RESOLUTION_PROTOCOL.md) | [Resolution findings](RESOLUTION_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -45,7 +46,7 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-Phase 12 evaluates both same-ID caller responses with retained receipts at a fixed epoch. The next protocol should place receipt retirement between duplicate rollback and the fresh resolution read, defining a justified outcome when the original reply is unavailable. A missing receipt must not become fabricated success or authority to restore an old effect. Mid-storage-operation cuts, failures during recovery, many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
+Phase 13 separates mutation safety from original-response availability when retirement overlaps resolution. The next protocol should compare complete deletion with compact retained receipt summaries after old payload removal, defining exactly which replay/conflict claims remain supported. The application must not recover answers from trusted measurement observers. Mid-storage-operation cuts, failures during recovery, many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
 
 ## Documentation and evidence integrity
 
@@ -88,3 +89,11 @@ The [caller protocol](CALLER_PROTOCOL.md) freezes sixteen cases across four mode
 **One shared effect / fifteen** includes twelve overlap cases and three serial controls; all modes satisfy 15/15 because collision paths explicitly roll back the whole transaction. The distinct-key overlap requires two effects despite identical bytes. **Historical replay / two identical-later cases** requires the original revision 4 while current revision 5 remains unchanged. Four later contexts, three serial cases and one distinct case per mode are separate, overlapping denominator groups.
 
 Count code-1555 receipt aborts (12 → 12 → 12 → 0), code-5 busy attempts/completed retries (0 → 0 → 0 → 13), actual committing caller, every child attempt and causal snapshot prefix. Require all ten criteria, 64 records, 52 verified barriers, 157 normal child invocations and zero unexpected errors. The independent verifier reconstructs every counter and checks the input plus eleven source hashes. The protocol fixes epoch 2 and retains receipts during challenged calls; it does not compose retirement with duplicate resolution. [Findings](CALLER_FINDINGS.md).
+
+## Phase 13: safe refusal versus original-response availability
+
+The [resolution protocol](RESOLUTION_PROTOCOL.md) prospectively freezes sixteen cases across three modes: eight retirement gaps, four gaps with later current-epoch work, two resolution-first controls and two retained controls. All first callers encounter an actual duplicate, whole rollback and two strict pauses. **Safe terminal resolution / twelve gaps** requires one shared effect plus either a receipt-supported original replay/conflict or a justified unavailable response with no commitment fields. Counts are 0/12 → 12/12 → 12/12.
+
+**Original replay/conflict availability / twelve gaps** remains separate: 0/12 → 0/12 → 12/12. The fenced mode safely returns unavailable in all twelve; it cannot reconstruct the removed operation/bytes through the retained receipt interface. Even coincidentally matching historical fields cannot count as a supported original outcome when the resolution snapshot lacks that receipt. Guarded lookup retains the receipt until decision by ordering retirement later; twelve busy probes complete on scheduled retry.
+
+The weak missing-receipt fallback creates an extra shared effect and below-fence write in every gap, while retaining intrinsically coherent state. All four independent later states are lost in that mode and preserved in the two safe modes, under explicitly different ordering. All four controls per mode resolve the original result correctly. Require all ten criteria, complete causal snapshots/traces, 96 verified barriers, 162 normal child invocations, input/eleven source hashes and zero unexpected infrastructure errors. An unavailable outcome is safe refusal, not evidence of noncommitment or an equivalent original reply. [Findings](RESOLUTION_FINDINGS.md).

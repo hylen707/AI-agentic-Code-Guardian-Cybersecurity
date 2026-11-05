@@ -12,9 +12,31 @@ Use Python 3.11+ and the standard library on Linux for the current full suite an
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6–11 runs passed 67, 85, 111, 141, 176 and 209 tests; the current Phase 12 run passes 244. The latest controller uses pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6–12 runs passed 67, 85, 111, 141, 176, 209 and 244 tests; the current Phase 13 run passes 283. The latest controller uses pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 13: retirement during duplicate resolution
+
+```bash
+python experiments/run_resolution_comparison.py --dataset experiments/tasks/resolution-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 48a87f6b3103339d67906253c4486fcf660a84c2
+```
+
+Sixteen cases run in `retry_missing`, `fenced_resolution` and `guarded_resolution`: 48 records. Eight patterns place retirement in the duplicate-rollback/resolution gap; four also publish independent current-epoch work. Two resolution-first and two retained-receipt histories are controls. Each first caller pauses after closing its initial precheck, lets the second commit revision 4, encounters a real receipt collision, rolls back, then pauses before resolution. The comparison verifies 96 caller-bound pause/resume barriers without sleep-based scheduling.
+
+Expect extra shared effects across twelve gaps **12/12 → 0/12 → 0/12**, safe terminal outcomes **0/12 → 12/12 → 12/12**, and receipt-supported original outcomes **0/12 → 0/12 → 12/12**. Fenced resolution returns twelve unavailable results with no commitment fields; it neither repeats the effect nor proves the request never committed. Guarded resolution reserves the writer before the retirement probe, deferring twelve probes, then completes every scheduled retirement retry. The reservation follows rollback; closure winning earlier still requires an unavailable fallback.
+
+All four original-resolution controls per mode must pass. Independent later states are preserved **0/4 → 4/4 → 4/4**; guarded resolution occurs before that later work, unlike the two unguarded paths. Every mode records sixteen exact code-1555 receipt collisions and full rollback events. Busy retirement attempts are numeric code 5 at BEGIN with zero timeout. Fourteen final epochs per mode close to 3; two retained controls remain at 2. All final state pairs stay coherent, including the weak fallback's twelve below-fence writes and recreated old receipts.
+
+Audit the retained run:
+
+```bash
+python experiments/verify_resolution_results.py --summary experiments/results/2026-11-05T14-19-51-567114Z-resolution-v1-summary.json --dataset experiments/tasks/resolution-eval-v1/tasks.json
+```
+
+For new measurements, substitute their printed summary filename. Independent stdlib reconstruction checks actual committing actors/epochs, every caller and retirement trace, causal snapshot prefixes, receipt-supported responses, current delivery and all counters, plus input/eleven source hashes. Require all ten criteria, 162 normal child invocations and zero unexpected infrastructure errors. A clean controller exit alone does not imply safe caller outcomes. The verifier additionally fails on unmet scientific criteria and requires matching source versions for historical verification.
+
+`--output /tmp/codeguardian-resolution-verification.json` exclusively creates a verification report. `--output-dir /tmp/codeguardian-resolution` keeps fresh controller output separate from retained artifacts. Python 3.11+ on Linux is required. These are fixed trusted-role schedules, not a general concurrency, fairness, latency, network, WAL or crash result. [Protocol](../docs/RESOLUTION_PROTOCOL.md) · [Findings and raw evidence](../docs/RESOLUTION_FINDINGS.md).
 
 ## Phase 12: simultaneous same-ID callers
 

@@ -1,6 +1,6 @@
 # Claims and evidence
 
-This map connects the twelve completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
+This map connects the thirteen completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
 
 ## Phases 1 and 2: labels versus resource effects
 
@@ -155,3 +155,15 @@ Twelve recognized final storage errors in the first mode and six false identical
 - [244 passing tests](../experiments/results/2026-11-05T01-18-48-550840Z-caller-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-05T01-18-48-550840Z-caller-v1-console.txt), and [interpretation and limits](CALLER_FINDINGS.md).
 
 All ten criteria hold, including 52 verified overlaps, twelve serial records and 157 normal child invocations with zero unexpected infrastructure errors. The input and eleven source hashes match. The actual committing caller defines the winner. Epoch 2 and retained receipts are fixed; retirement during duplicate resolution, arbitrary caller populations, performance and crash safety remain untested.
+
+## Phase 13: retirement during duplicate resolution
+
+Sixteen cases run in `retry_missing`, `fenced_resolution` and `guarded_resolution`: 48 records. Across twelve retirement gaps, extra shared effects are **12/12 → 0/12 → 0/12**. Safe terminal outcomes are **0/12 → 12/12 → 12/12**, while receipt-supported original replay/conflict outcomes are **0/12 → 0/12 → 12/12**. The fenced mode returns twelve justified unavailable responses; those are safe refusals, not original replies or claims that no commitment occurred.
+
+Guarded lookup defers twelve retirements and every retry completes. All modes encounter sixteen exact receipt-key collisions with whole rollback; the weak arm's later fallback effect is separate. Four later policies are lost in the weak mode and preserved in both safe modes, with guarded resolution explicitly preceding retirement/later work. Four original-resolution controls per mode succeed. All final content/approval pairs remain coherent, including the twelve invalid below-fence writes.
+
+- [Protocol](RESOLUTION_PROTOCOL.md), [16-case manifest](../experiments/tasks/resolution-eval-v1/tasks.json), and [pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/48a87f6b3103339d67906253c4486fcf660a84c2).
+- [48 raw caller/retirement/capture records](../experiments/results/2026-11-05T14-19-51-567114Z-resolution-v1.jsonl), [summary and provenance](../experiments/results/2026-11-05T14-19-51-567114Z-resolution-v1-summary.json), and [independent reconstruction](../experiments/results/2026-11-05T14-19-51-567114Z-resolution-v1-verification.json).
+- [283 passing tests](../experiments/results/2026-11-05T14-19-51-567114Z-resolution-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-05T14-19-51-567114Z-resolution-v1-console.txt), and [interpretation and limits](RESOLUTION_FINDINGS.md).
+
+All ten criteria hold. The comparison retains 96 verified pauses, 162 normal child invocations, input/eleven source hashes and zero unexpected infrastructure errors. Guard acquisition precedes the measured retirement probe; if retirement already won, the implementation's unavailable fallback is regression-tested separately. No fairness, latency, arbitrary many-caller, network or crash claim follows.

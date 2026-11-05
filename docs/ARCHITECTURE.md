@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 12. Updated 2026-11-05 (Asia/Seoul).
+**Status:** implemented components through Phase 13. Updated 2026-11-05 (Asia/Seoul).
 
 ## System boundary
 
@@ -40,6 +40,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/caller_worker.py` | One identified logical caller attempt | Caller-bound resume; exact lookup, numeric error and result events |
 | `experiments/run_caller_comparison.py` | Two-caller overlap with optional later independent work | Actual winner, both caller responses, causal snapshot prefixes, effect counts |
 | `experiments/verify_caller_results.py` | Independent caller/effect reconstruction | Pure stdlib; grid, actor journal, durable history, counters and eleven source hashes |
+| `src/resolution_store.py` | Duplicate rollback followed by missing-receipt handling | Old-epoch write, safe unavailable result, or guarded original lookup |
+| `experiments/resolution_worker.py` | Caller and retirement roles | Two caller-bound pauses; numeric primary-key/busy traces |
+| `experiments/run_resolution_comparison.py` | Retirement around post-rollback resolution | Historical evidence, current delivery, below-fence effects and retirement retries |
+| `experiments/verify_resolution_results.py` | Independent resolution/retirement reconstruction | Snapshot prefixes, actor inputs, receipt availability, all counters and source hashes |
 
 ## Phase 5 ordering
 
@@ -145,4 +149,12 @@ The fixture closes epoch 1 before challenged calls begin and retains all epoch-2
 
 `resolve_duplicate` then opens a fresh read transaction and compares the original receipt's operation and exact bytes. `transactional_lookup` instead holds `BEGIN IMMEDIATE` from receipt lookup through commit, causing the rival's first attempt to return numeric code 5. The controller retries with unchanged caller/epoch/key/bytes after release. The transactional first caller wins; in precheck races, the second wins. The oracle derives ownership from the atomically stored caller witness.
 
-All captures reconstruct publication, effects, receipts, delivery and causal prefixes. The independent verifier also reconstructs actor/controller traces and counts both responses against the earliest actual commit. An optional later publication advances current state to revision 5, while an identical old request must receive revision 4. Both correct designs preserve that distinction. Full tests: 244 passing; measured coverage: 64 records, 52 forced overlaps, twelve serial records and 157 normal child invocations. Receipt retirement during resolution, general caller populations and latency remain untested. [Protocol](CALLER_PROTOCOL.md) · [Findings](CALLER_FINDINGS.md).
+All captures reconstruct publication, effects, receipts, delivery and causal prefixes. The independent verifier also reconstructs actor/controller traces and counts both responses against the earliest actual commit. An optional later publication advances current state to revision 5, while an identical old request must receive revision 4. Both correct designs preserve that distinction. Recorded Phase 12 tests: 244 passing; measured coverage: 64 records, 52 forced overlaps, twelve serial records and 157 normal child invocations. Receipt retirement during resolution is tested separately in Phase 13 below; general caller populations and latency remain untested. [Protocol](CALLER_PROTOCOL.md) · [Findings](CALLER_FINDINGS.md).
+
+## Phase 13: the original receipt can disappear before resolution
+
+The first caller releases its precheck, the second commits revision 4, and the first then encounters an actual receipt primary-key collision. Whole-transaction rollback precedes the second caller-bound pause. Retirement to epoch 3 runs at that boundary in twelve gap histories per mode. The unguarded resolution snapshot sees a closed epoch with no original receipt. Weak retry appends another epoch-2 effect; fenced lookup returns unavailable with no commitment fields.
+
+Guarded resolution acquires `BEGIN IMMEDIATE` after rollback and before the second pause. The retirement probe receives code 5 at BEGIN; after the caller resolves the original receipt and releases its reservation, the controller retries retirement to completion. If closure wins before guard acquisition, the store's fallback also returns unavailable. The measured ordering is conditional on reservation acquisition; it does not protect the entire earlier gap.
+
+Every actual effect stores caller, requested epoch and observed active epoch together with publication and receipt. The controller uses these rows only as measurement evidence; the application resolver uses the original receipt and namespace. Ninety-six verified pauses and 162 complete child invocations cover 48 records. All ten criteria and 283 tests pass. No many-caller fairness, latency, WAL, network or crash claim follows. [Protocol](RESOLUTION_PROTOCOL.md) · [Findings](RESOLUTION_FINDINGS.md).

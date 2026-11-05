@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-05 — Losing the receipt changes what can be answered
+
+**Question and prospective design.** Phase 12's post-rollback resolver depends on retaining the original receipt. What remains justified if retirement removes it before resolution? Froze the [protocol](RESOLUTION_PROTOCOL.md) and sixteen cases before implementation. Compared a diagnostic fallback that writes again, a fresh epoch/receipt lookup returning unavailable, and a writer reservation held through original resolution. Every first caller encounters a real duplicate, whole rollback and two caller-bound pauses.
+
+**Observation.** Across twelve gap opportunities, extra shared effects are 12/12 → 0/12 → 0/12. Safe terminal outcomes are 0/12 → 12/12 → 12/12, while original replay/conflict outcomes are available 0/12 → 0/12 → 12/12. The fenced mode preserves mutation safety by returning unavailable twelve times. Guarded resolution obtains the retained original receipt by deferring twelve retirement probes; every scheduled retry completes. All modes retain coherent final state, including the weak mode's invalid old-epoch writes. Four later policies survive in both safe modes, with the guarded mode's later work explicitly occurring after resolution and retirement.
+
+**Validation.** All 283 tests passed, including 39 new tests. Independent stdlib reconstruction matches 48 records, all counters and ten criteria, plus input/eleven source hashes. All 162 child invocations complete normally across 96 verified barriers, with zero unexpected infrastructure errors. Regression tests include guard acquisition after closure, failed receipt/effect/observer writes, unavailable responses carrying invented commitment fields, and matching historical guesses without receipt support. [Findings and raw evidence](RESOLUTION_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** Safe refusal and equivalent historical acknowledgment are different outcomes. Closed intent can remain protected after its reply becomes unavailable; withholding another write does not reconstruct the original result. A guard orders the measured retirement later rather than recovering evidence after deletion. Next: define which historical semantics compact retained summaries could preserve after payload removal. Many-caller progress, authentication, external effects, network recovery and crash testing remain separate obligations.
+
 ## 2026-11-05 — One committed effect can still yield the wrong reply
 
 **Question and prospective design.** Phase 11 orders epoch admission with publication. Can two simultaneous same-ID callers both receive the required outcome? Froze the [protocol](CALLER_PROTOCOL.md) and sixteen cases before implementation. Compared an exposed receipt collision, unconditional conflict, post-rollback original-receipt resolution, and lookup held through commit. Epoch 2 and retained receipts stay fixed. Empty updates, revocation and Unicode byte differences make operation/byte equality explicit.
