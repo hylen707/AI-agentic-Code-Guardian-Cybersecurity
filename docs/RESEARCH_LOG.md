@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-06 — The replacement receipt has its own commit boundary
+
+**Question and prospective design.** Phase 13 can refuse safely when the original receipt disappears, but loses its response. Can a typed fingerprint/revision summary retain the needed authority after payload removal, and what happens if migration stops halfway? Froze the [protocol](COMPACTION_PROTOCOL.md) and 26 cases before implementation. Compared full retention, deletion, split-summary migration and a single transaction containing fence, deletion and replacement summaries.
+
+**Observation.** Supported original replays are 20/20 → 12/20 → 12/20 → 20/20; changed-intent conflicts are 4/4 → 0/4 → 4/4 → 4/4. Drop and split share an aggregate replay count but differ at eight cleanup/summary cuts: 8/8 → 8/8 → 0/8 → 8/8 original replies remain available. Split migration recovers closure without either receipt representation. Atomic migration recovers full receipts at those cuts and compact receipts after completion. Every mode prevents another known effect and preserves current policy.
+
+**Validation.** All 316 tests passed, including 33 new tests. Independent stdlib reconstruction matches 104 records, every counter and ten criteria, plus input/nine source hashes. All 64 declared exit prefixes and 40 normal child completions match exactly, with zero unexpected errors. Tests cover typed empty-update/revocation distinctions, Unicode bytes, interrupted migration, failed summary writes, unrepairable split gaps, invented historical replies and a deliberately colliding substituted fingerprint. [Findings and raw evidence](COMPACTION_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** Historical-response authority can be represented without the original request BLOB in this fixture, under the digest assumption. It still needs an atomic migration boundary. Per-record digest fields do not bound total records or erase surviving publication bytes; input/response digest reuse is fixture-specific. Next: overlap publication with migration source selection and test where the source read must share the fence/deletion transaction. Performance, arbitrary caller populations, authentication, external effects and host power loss remain separate studies.
+
 ## 2026-11-05 — Losing the receipt changes what can be answered
 
 **Question and prospective design.** Phase 12's post-rollback resolver depends on retaining the original receipt. What remains justified if retirement removes it before resolution? Froze the [protocol](RESOLUTION_PROTOCOL.md) and sixteen cases before implementation. Compared a diagnostic fallback that writes again, a fresh epoch/receipt lookup returning unavailable, and a writer reservation held through original resolution. Every first caller encounters a real duplicate, whole rollback and two caller-bound pauses.

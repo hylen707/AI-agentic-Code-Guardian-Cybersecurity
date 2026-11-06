@@ -1,6 +1,6 @@
 # Claims and evidence
 
-This map connects the thirteen completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
+This map connects the fourteen completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
 
 ## Phases 1 and 2: labels versus resource effects
 
@@ -167,3 +167,15 @@ Guarded lookup defers twelve retirements and every retry completes. All modes en
 - [283 passing tests](../experiments/results/2026-11-05T14-19-51-567114Z-resolution-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-05T14-19-51-567114Z-resolution-v1-console.txt), and [interpretation and limits](RESOLUTION_FINDINGS.md).
 
 All ten criteria hold. The comparison retains 96 verified pauses, 162 normal child invocations, input/eleven source hashes and zero unexpected infrastructure errors. Guard acquisition precedes the measured retirement probe; if retirement already won, the implementation's unavailable fallback is regression-tested separately. No fairness, latency, arbitrary many-caller, network or crash claim follows.
+
+## Phase 14: compact receipts and migration recovery
+
+Twenty-six cases run in `retain_full`, `drop_receipts`, `split_summary` and `atomic_summary`: 104 records. Supported original replays across twenty repeated requests are **20/20 → 12/20 → 12/20 → 20/20**; original changed-intent conflicts across four controls are **4/4 → 0/4 → 4/4 → 4/4**. Unavailable known-request results are 0 → 12 → 8 → 0 and remain negative availability evidence.
+
+The same aggregate replay count masks different loss windows. In eight cleanup/summary-gap repeats, supported originals are **8/8 → 8/8 → 0/8 → 8/8**. Split cleanup is already committed; the other interrupted transactions recover full records. After completed retirement, twelve known outcomes are supported 12/12 → 0/12 → 12/12 → 12/12. In fourteen completed captures per mode, retained full has two old full rows each, drop has neither representation, and both summary modes have two compact rows each with no old full receipt payload BLOB rows.
+
+- [Protocol](COMPACTION_PROTOCOL.md), [26-case manifest](../experiments/tasks/compaction-eval-v1/tasks.json), and [pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/89902786509e97cfe8d4f24f02cde0457acda0e8).
+- [104 raw child/recovery/follow-up records](../experiments/results/2026-11-06T00-57-33-721168Z-compaction-v1.jsonl), [summary and provenance](../experiments/results/2026-11-06T00-57-33-721168Z-compaction-v1-summary.json), and [independent reconstruction](../experiments/results/2026-11-06T00-57-33-721168Z-compaction-v1-verification.json).
+- [316 passing tests](../experiments/results/2026-11-06T00-57-33-721168Z-compaction-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-06T00-57-33-721168Z-compaction-v1-console.txt), and [interpretation and limits](COMPACTION_FINDINGS.md).
+
+All ten criteria hold. Every mode prevents another effect in 24 known-original cases, preserves later policy in 25 cases, accepts the new-epoch control and refuses unseen old work. The verifier checks 64 declared child exits, 40 normal completions, input/nine source hashes and zero unexpected infrastructure errors. Typed SHA-256 comparison is conditional; payload-row removal is not physical erasure, bounded total storage or a concurrency result.

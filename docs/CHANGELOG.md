@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-06 — Compact receipts and interrupted migration
+
+- Froze the compaction protocol and 26-case manifest at `89902786509e97cfe8d4f24f02cde0457acda0e8` before Phase 14 implementation and measurement.
+- Added retained, dropped, split-summary and atomic-summary modes; typed compact authority; a checkpoint-exit worker; a recovery/follow-up controller; an independent stdlib verifier; and 33 regression tests. Earlier implementation and retained evidence bytes remain unchanged.
+- Recorded 104 observations. Original replays are 20/20 → 12/20 → 12/20 → 20/20; changed-intent conflicts 4/4 → 0/4 → 4/4 → 4/4. Equal drop/split totals hide cleanup/summary-gap availability 8/8 → 8/8 → 0/8 → 8/8. Atomic migration preserves original outcomes and removes old full receipt payload rows after completion under a stated typed-hash assumption.
+- All 316 tests passed. Independent reconstruction matched every counter and ten criteria, checked input/nine source hashes, and confirmed 64 declared exits plus 40 normal child completions with zero unexpected errors. All modes prevent another known-request effect and preserve current policy.
+- Updated the research argument, overview, evidence index, study map, architecture, limits and reproduction guide. Digest comparison, growing retained record counts, surviving publication bytes and application-level fault boundaries remain explicit. [Findings and evidence](COMPACTION_FINDINGS.md).
+
 ## 2026-11-05 — Receipt retirement during duplicate resolution
 
 - Froze the resolution protocol and sixteen-case manifest at `48a87f6b3103339d67906253c4486fcf660a84c2` before Phase 13 implementation and measurement.

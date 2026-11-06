@@ -37,6 +37,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 11. Admission/retirement overlap | [Overlap protocol](OVERLAP_PROTOCOL.md); freeze before implementation | [Overlap findings](OVERLAP_FINDINGS.md) |
 | 12. Same-ID caller outcomes | [Caller protocol](CALLER_PROTOCOL.md); freeze before implementation | [Caller findings](CALLER_FINDINGS.md) |
 | 13. Resolution/retirement overlap | [Resolution protocol](RESOLUTION_PROTOCOL.md); freeze before implementation | [Resolution findings](RESOLUTION_FINDINGS.md) |
+| 14. Compact receipt recovery | [Compaction protocol](COMPACTION_PROTOCOL.md); freeze before implementation | [Compaction findings](COMPACTION_FINDINGS.md) |
 
 ## Rationale and history
 

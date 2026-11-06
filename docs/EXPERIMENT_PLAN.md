@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 13, 2026-11-05 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 14, 2026-11-06 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
 
@@ -21,6 +21,7 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 11. Epoch admission overlap | Sixteen cases, three modes; 24 forced overlaps and 24 controls | Epoch at effect commit, writer contention, retry completion, historical responses | [Overlap protocol](OVERLAP_PROTOCOL.md) | [Overlap findings](OVERLAP_FINDINGS.md) |
 | 12. Same-ID callers | Sixteen cases, four modes; 52 forced overlaps and twelve serial records | Both caller responses, exact request effects, rollback and busy retries | [Caller protocol](CALLER_PROTOCOL.md) | [Caller findings](CALLER_FINDINGS.md) |
 | 13. Retirement during resolution | Sixteen cases, three modes; 96 verified barriers | One effect, justified unavailable/original response, closed-epoch writes and retirement deferral | [Resolution protocol](RESOLUTION_PROTOCOL.md) | [Resolution findings](RESOLUTION_FINDINGS.md) |
+| 14. Compact receipt migration | Twenty-six cases, four modes; 64 declared exits and 40 normal completions | Supported historical replay/conflict, source representation, current policy and migration gaps | [Compaction protocol](COMPACTION_PROTOCOL.md) | [Compaction findings](COMPACTION_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -46,7 +47,7 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-Phase 13 separates mutation safety from original-response availability when retirement overlaps resolution. The next protocol should compare complete deletion with compact retained receipt summaries after old payload removal, defining exactly which replay/conflict claims remain supported. The application must not recover answers from trusted measurement observers. Mid-storage-operation cuts, failures during recovery, many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
+Phase 14 compares full, dropped and compact historical authority under process-exit cuts. The next protocol should overlap publication with migration source selection, distinguishing a source set captured before a later commit from selection held inside the fence/deletion transaction. An atomic final write does not establish completeness of an earlier source read. Mid-storage-operation cuts, failures during recovery, many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
 
 ## Documentation and evidence integrity
 
@@ -97,3 +98,11 @@ The [resolution protocol](RESOLUTION_PROTOCOL.md) prospectively freezes sixteen 
 **Original replay/conflict availability / twelve gaps** remains separate: 0/12 → 0/12 → 12/12. The fenced mode safely returns unavailable in all twelve; it cannot reconstruct the removed operation/bytes through the retained receipt interface. Even coincidentally matching historical fields cannot count as a supported original outcome when the resolution snapshot lacks that receipt. Guarded lookup retains the receipt until decision by ordering retirement later; twelve busy probes complete on scheduled retry.
 
 The weak missing-receipt fallback creates an extra shared effect and below-fence write in every gap, while retaining intrinsically coherent state. All four independent later states are lost in that mode and preserved in the two safe modes, under explicitly different ordering. All four controls per mode resolve the original result correctly. Require all ten criteria, complete causal snapshots/traces, 96 verified barriers, 162 normal child invocations, input/eleven source hashes and zero unexpected infrastructure errors. An unavailable outcome is safe refusal, not evidence of noncommitment or an equivalent original reply. [Findings](RESOLUTION_FINDINGS.md).
+
+## Phase 14: representation and migration loss windows
+
+The [compaction protocol](COMPACTION_PROTOCOL.md) freezes 26 cases across four modes. Twenty repeats cover four value/operation forms and five migration cuts. Six normal controls cover four changed intents, a new epoch reusing the ID and an unseen closed-epoch ID. **Supported original replay / twenty** requires no new effect, correct original fields and an available full or compact authoritative record. Counts are 20/20 → 12/20 → 12/20 → 20/20. **Changed-intent classification / four** is 4/4 → 0/4 → 4/4 → 4/4; unavailable responses remain separate.
+
+**Cleanup/summary-gap availability / eight repeats** is 8/8 → 8/8 → 0/8 → 8/8. Drop and split have the same aggregate replay count but lose evidence at different cuts. **Completed known outcomes / twelve** is 12/12 → 0/12 → 12/12 → 12/12. Fourteen completed-migration captures per mode separately test full/summary row layouts and absence of old receipt payload BLOBs. These groups overlap.
+
+All modes must prevent another effect in 24 known-original follow-ups, preserve current policy in 25 non-new-epoch cases, complete the new-epoch intent and refuse unseen old work. Require all ten criteria, exact child prefixes/codes, 64 marked exits plus 40 normal completions, input/nine source hashes and zero unexpected errors. Compact matching is conditional on typed SHA-256 comparison; logical receipt payload removal is not secure erasure or bounded total database storage. [Findings](COMPACTION_FINDINGS.md).

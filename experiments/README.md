@@ -12,9 +12,31 @@ Use Python 3.11+ and the standard library on Linux for the current full suite an
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6–12 runs passed 67, 85, 111, 141, 176, 209 and 244 tests; the current Phase 13 run passes 283. The latest controller uses pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6–13 runs passed 67, 85, 111, 141, 176, 209, 244 and 283 tests; the current Phase 14 run passes 316. Retained overlap controllers use pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 14: compact receipts and migration recovery
+
+```bash
+python experiments/run_compaction_comparison.py --dataset experiments/tasks/compaction-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 89902786509e97cfe8d4f24f02cde0457acda0e8
+```
+
+Twenty-six cases run in `retain_full`, `drop_receipts`, `split_summary` and `atomic_summary`: 104 records. Twenty repeats cross ASCII, empty update, Unicode and revocation with five migration cuts. Six normal controls cover four parameter changes, a new epoch reusing the ID and an unseen old ID. One child migrates each fixture; the parent reopens and follows up only after it stops. Four selected application checkpoints produce sixteen marked exits per mode; ten other cases complete normally.
+
+Expect supported original replays **20/20 → 12/20 → 12/20 → 20/20**, changed-intent conflicts **4/4 → 0/4 → 4/4 → 4/4**, and unavailable known outcomes **0 → 12 → 8 → 0**. Eight cleanup/summary-gap repeats yield original replies **8/8 → 8/8 → 0/8 → 8/8**. Equal replay totals for drop and split therefore do not identify the same failure boundary. Twelve completed known outcomes yield **12/12 → 0/12 → 12/12 → 12/12**.
+
+All modes must prevent another effect in 24 known-original follow-ups, preserve current policy in 25 non-new-epoch cases, complete the legitimate new-epoch intent and refuse unseen old work. Fourteen completed-migration captures check two retained full rows, no representation, or two typed compact rows according to mode. Compact rows contain no request payload column. Require all ten criteria, 64 exact marked exits plus 40 normal child completions, consistent initial/recovered/final snapshots and zero unexpected errors.
+
+Audit the retained run:
+
+```bash
+python experiments/verify_compaction_results.py --summary experiments/results/2026-11-06T00-57-33-721168Z-compaction-v1-summary.json --dataset experiments/tasks/compaction-eval-v1/tasks.json
+```
+
+For a new run, substitute its printed summary filename. The independent verifier uses only the stdlib to reconstruct child exit prefixes, durable state/effects, full/compact authority, original-response support, recovery layouts and all counters. It checks input/nine source hashes and fails on unexpected infrastructure errors or unmet criteria. Historical verification needs matching source versions. `--output /tmp/codeguardian-compaction-verification.json` exclusively creates a report; `--output-dir /tmp/codeguardian-compaction` keeps new measurements outside retained evidence.
+
+The current full suite uses Python 3.11+ on Linux. The cuts call `os._exit(73)` outside storage calls while parent, filesystem and kernel survive. Typed digest comparison assumes SHA-256 collision/second-preimage resistance and trusted metadata. Removing old receipt BLOB rows does not erase current publication, reclaim physical space or bound retained record count. No concurrent migration/publisher, network, external-effect, performance or power-loss claim follows. [Protocol](../docs/COMPACTION_PROTOCOL.md) · [Findings and raw evidence](../docs/COMPACTION_FINDINGS.md).
 
 ## Phase 13: retirement during duplicate resolution
 

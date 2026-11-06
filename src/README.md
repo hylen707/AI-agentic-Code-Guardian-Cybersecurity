@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, concurrent-caller, and retirement-during-resolution prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
+The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, concurrent-caller, retirement-during-resolution, and receipt-compaction prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -70,4 +70,12 @@ Exact operation and bytes define equal intent; empty update and revocation diffe
 
 The guard is acquired after collision rollback; if retirement has already won, the guarded mode also returns unavailable. It does not consult the effect observer to invent a historical result. State, effect, receipt and `resolution_commits` caller/epoch witness remain atomic. Exact operation and bytes define intent; empty update, revocation and Unicode encodings remain distinct.
 
-`resolution_worker.py` supports two caller-bound pauses and a numeric retirement probe. The controller saves both barriers, every child trace, retirement snapshots and current delivery. A pure-stdlib verifier independently reconstructs them. The full suite passes 283 tests, including 39 new tests; the measured comparison has 48 records, 96 barriers and 162 normal child invocations. See [findings](../docs/RESOLUTION_FINDINGS.md) and the [experiment guide](../experiments/README.md#phase-13-retirement-during-duplicate-resolution).
+`resolution_worker.py` supports two caller-bound pauses and a numeric retirement probe. The controller saves both barriers, every child trace, retirement snapshots and current delivery. A pure-stdlib verifier independently reconstructs them. The recorded Phase 13 suite passed 283 tests, including 39 new tests; the measured comparison has 48 records, 96 barriers and 162 normal child invocations. See [findings](../docs/RESOLUTION_FINDINGS.md) and the [experiment guide](../experiments/README.md#phase-13-retirement-during-duplicate-resolution).
+
+## Compact historical receipts
+
+`compaction_store.py` compares retained full receipts, deletion without replacement, split migration and atomic migration. Compact authority retains epoch, ID, operation, payload SHA-256 and original revision, with no payload column. In this fixture the input digest also supplies an update's original approval digest; revocation remains explicitly typed. This is conditional fingerprint comparison rather than exact retained-byte comparison, and it is not a minimum-schema theorem for other APIs.
+
+Publication still commits state, effect and full receipt together. Atomic compaction prepares source receipts under its writer transaction, advances the epoch, removes old full receipts and inserts summaries before committing. The split mode commits cleanup first, leaving a gap that a process exit can make permanent. Retrying that completed target cannot recreate missing summaries from the effect observer.
+
+`compaction_worker.py` exits at one declared application checkpoint. The controller reopens after the child stops and checks historical responses separately from current delivery. The independent stdlib verifier reconstructs all 104 records and ten criteria. All 316 tests pass, including 33 new tests and a deliberately substituted collision diagnostic that exposes the hash assumption. Receipt payload removal is not secure erasure, physical reclamation or bounded total storage. [Findings](../docs/COMPACTION_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-14-compact-receipts-and-migration-recovery).

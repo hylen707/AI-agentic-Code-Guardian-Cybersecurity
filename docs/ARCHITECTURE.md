@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 13. Updated 2026-11-05 (Asia/Seoul).
+**Status:** implemented components through Phase 14. Updated 2026-11-06 (Asia/Seoul).
 
 ## System boundary
 
@@ -44,6 +44,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/resolution_worker.py` | Caller and retirement roles | Two caller-bound pauses; numeric primary-key/busy traces |
 | `experiments/run_resolution_comparison.py` | Retirement around post-rollback resolution | Historical evidence, current delivery, below-fence effects and retirement retries |
 | `experiments/verify_resolution_results.py` | Independent resolution/retirement reconstruction | Snapshot prefixes, actor inputs, receipt availability, all counters and source hashes |
+| `src/compaction_store.py` | Full versus typed compact receipt authority | Request fingerprint/revision binding; split versus atomic migration |
+| `experiments/compaction_worker.py` | One migration child and declared exit cut | Exact checkpoint prefix and return code; parent/OS survive |
+| `experiments/run_compaction_comparison.py` | Migration recovery and parent-side follow-up | Current policy, original-response support, representation and loss windows |
+| `experiments/verify_compaction_results.py` | Independent migration reconstruction | Grid, child traces, full/compact authority, counters and nine source hashes |
 
 ## Phase 5 ordering
 
@@ -157,4 +161,12 @@ The first caller releases its precheck, the second commits revision 4, and the f
 
 Guarded resolution acquires `BEGIN IMMEDIATE` after rollback and before the second pause. The retirement probe receives code 5 at BEGIN; after the caller resolves the original receipt and releases its reservation, the controller retries retirement to completion. If closure wins before guard acquisition, the store's fallback also returns unavailable. The measured ordering is conditional on reservation acquisition; it does not protect the entire earlier gap.
 
-Every actual effect stores caller, requested epoch and observed active epoch together with publication and receipt. The controller uses these rows only as measurement evidence; the application resolver uses the original receipt and namespace. Ninety-six verified pauses and 162 complete child invocations cover 48 records. All ten criteria and 283 tests pass. No many-caller fairness, latency, WAL, network or crash claim follows. [Protocol](RESOLUTION_PROTOCOL.md) · [Findings](RESOLUTION_FINDINGS.md).
+Every actual effect stores caller, requested epoch and observed active epoch together with publication and receipt. The controller uses these rows only as measurement evidence; the application resolver uses the original receipt and namespace. Ninety-six verified pauses and 162 complete child invocations cover 48 records. All ten criteria and the recorded 283 Phase 13 tests pass. No many-caller fairness, latency, WAL, network or crash claim follows. [Protocol](RESOLUTION_PROTOCOL.md) · [Findings](RESOLUTION_FINDINGS.md).
+
+## Phase 14: migrating the authority for a historical reply
+
+The new summary table contains `(epoch, request_id, operation, payload_sha256, revision)`. A full receipt compares exact operation and bytes; a summary compares operation and SHA-256. The update's original approval digest is derived from that stored input digest in this fixture. A missing closed-epoch record yields unavailable, and neither current publication nor the effect observer reconstructs the answer. Conflicting full and compact authority is rejected.
+
+The migration selects source receipts while holding its write transaction. Atomic mode advances the fence, deletes full records and inserts compact replacements before one commit. Split mode commits the fence/deletion before inserting its process-memory summary copy in a second transaction. Application exits after cleanup or uncommitted summary insertion recover a closed namespace without either representation in the split mode. The atomic mode instead recovers old full records at those cuts.
+
+The controller validates exact marked exits, reopens consistent initial/recovered/final captures and issues one parent-side follow-up. It checks that the follow-up cannot rewrite historical authority without migration. The independent verifier separately reconstructs authoritative records, expected layouts and response support. Measured coverage: 104 records, 64 declared exits, 40 normal child completions and ten criteria; full tests: 316 passing. SHA-256 assumptions, retained record growth and surviving publication bytes bound the result. Concurrent source selection and host power loss remain untested. [Protocol](COMPACTION_PROTOCOL.md) · [Findings](COMPACTION_FINDINGS.md).
