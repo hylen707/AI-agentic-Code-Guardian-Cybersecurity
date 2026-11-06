@@ -1,0 +1,161 @@
+{
+  "schema_version": "compaction-eval-v1",
+  "cases": [
+    {
+      "case_id": "before_change-ascii",
+      "cut": "before_change",
+      "scenario": "repeat",
+      "value": "ascii"
+    },
+    {
+      "case_id": "before_change-empty",
+      "cut": "before_change",
+      "scenario": "repeat",
+      "value": "empty"
+    },
+    {
+      "case_id": "before_change-unicode",
+      "cut": "before_change",
+      "scenario": "repeat",
+      "value": "unicode"
+    },
+    {
+      "case_id": "before_change-revoke",
+      "cut": "before_change",
+      "scenario": "repeat",
+      "value": "revoke"
+    },
+    {
+      "case_id": "after_fence_cleanup-ascii",
+      "cut": "after_fence_cleanup",
+      "scenario": "repeat",
+      "value": "ascii"
+    },
+    {
+      "case_id": "after_fence_cleanup-empty",
+      "cut": "after_fence_cleanup",
+      "scenario": "repeat",
+      "value": "empty"
+    },
+    {
+      "case_id": "after_fence_cleanup-unicode",
+      "cut": "after_fence_cleanup",
+      "scenario": "repeat",
+      "value": "unicode"
+    },
+    {
+      "case_id": "after_fence_cleanup-revoke",
+      "cut": "after_fence_cleanup",
+      "scenario": "repeat",
+      "value": "revoke"
+    },
+    {
+      "case_id": "after_summary-ascii",
+      "cut": "after_summary",
+      "scenario": "repeat",
+      "value": "ascii"
+    },
+    {
+      "case_id": "after_summary-empty",
+      "cut": "after_summary",
+      "scenario": "repeat",
+      "value": "empty"
+    },
+    {
+      "case_id": "after_summary-unicode",
+      "cut": "after_summary",
+      "scenario": "repeat",
+      "value": "unicode"
+    },
+    {
+      "case_id": "after_summary-revoke",
+      "cut": "after_summary",
+      "scenario": "repeat",
+      "value": "revoke"
+    },
+    {
+      "case_id": "after_commit-ascii",
+      "cut": "after_commit",
+      "scenario": "repeat",
+      "value": "ascii"
+    },
+    {
+      "case_id": "after_commit-empty",
+      "cut": "after_commit",
+      "scenario": "repeat",
+      "value": "empty"
+    },
+    {
+      "case_id": "after_commit-unicode",
+      "cut": "after_commit",
+      "scenario": "repeat",
+      "value": "unicode"
+    },
+    {
+      "case_id": "after_commit-revoke",
+      "cut": "after_commit",
+      "scenario": "repeat",
+      "value": "revoke"
+    },
+    {
+      "case_id": "normal-ascii",
+      "cut": "normal",
+      "scenario": "repeat",
+      "value": "ascii"
+    },
+    {
+      "case_id": "normal-empty",
+      "cut": "normal",
+      "scenario": "repeat",
+      "value": "empty"
+    },
+    {
+      "case_id": "normal-unicode",
+      "cut": "normal",
+      "scenario": "repeat",
+      "value": "unicode"
+    },
+    {
+      "case_id": "normal-revoke",
+      "cut": "normal",
+      "scenario": "repeat",
+      "value": "revoke"
+    },
+    {
+      "case_id": "normal-changed_bytes",
+      "cut": "normal",
+      "scenario": "changed_bytes",
+      "value": "ascii"
+    },
+    {
+      "case_id": "normal-update_to_revoke",
+      "cut": "normal",
+      "scenario": "update_to_revoke",
+      "value": "empty"
+    },
+    {
+      "case_id": "normal-revoke_to_update",
+      "cut": "normal",
+      "scenario": "revoke_to_update",
+      "value": "revoke"
+    },
+    {
+      "case_id": "normal-unicode_bytes",
+      "cut": "normal",
+      "scenario": "unicode_bytes",
+      "value": "nfc"
+    },
+    {
+      "case_id": "normal-new_epoch",
+      "cut": "normal",
+      "scenario": "new_epoch",
+      "value": "ascii"
+    },
+    {
+      "case_id": "normal-unseen_old",
+      "cut": "normal",
+      "scenario": "unseen_old",
+      "value": "ascii"
+    }
+  ]
+}
