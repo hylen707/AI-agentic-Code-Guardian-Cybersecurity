@@ -12,9 +12,31 @@ Use Python 3.11+ and the standard library on Linux for the current full suite an
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6–13 runs passed 67, 85, 111, 141, 176, 209, 244 and 283 tests; the current Phase 14 run passes 316. Retained overlap controllers use pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6–14 runs passed 67, 85, 111, 141, 176, 209, 244, 283 and 316 tests; the current Phase 15 run passes 353. Retained overlap controllers use pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 15: complete source selection under publication
+
+```bash
+python experiments/run_selection_comparison.py --dataset experiments/tasks/selection-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 07f99a5c57bb06984d683db99e92128d7605187c
+```
+
+Twenty-four cases run in `cached_selection`, `separate_refresh`, `transactional_selection` and `validated_selection`: 96 records. Four values run at each early/late source pause. ASCII/revocation controls run before and after migration commit. Additional publisher-first, migration-first, current-epoch and publisher-first/later-policy orders remain separate. Twelve live role/stage-bound pipe barriers per mode fix the selected order without scheduling sleeps.
+
+Expect missing committed request receipts across eight source gaps **8 → 4 → 0 → 0**. Actual old commitments in those gaps are **8 → 8 → 0 → 8**, so the transactional arm's zero history loss includes refusal of all eight pending old requests. Across twenty old-intent cases, useful publication completion is **14/20 → 14/20 → 6/20 → 14/20**. Supported original replays among actual old commitments are **6/14 → 10/14 → 6/6 → 14/14**. Report both denominators together.
+
+Publisher busy attempts/completed retries are **2 → 2 → 10 → 2**, each exact numeric code 5 at BEGIN and checked zero timeout. Retries retain epoch/ID/operation/bytes. Validated migration has eight literal source mismatches; each rolls back with epoch 1, three full receipts and no migration witness, then succeeds on a fresh attempt. All final epochs are 2 with no old full rows. Summary coverage is 16/24 → 20/24 → 24/24 → 24/24 even though every final publication pair stays coherent.
+
+Audit the retained run:
+
+```bash
+python experiments/verify_selection_results.py --summary experiments/results/2026-11-07T00-20-27-259668Z-selection-v1-summary.json --dataset experiments/tasks/selection-eval-v1/tasks.json
+```
+
+For fresh measurements, substitute the printed summary filename. The independent verifier imports no measured modules. It reconstructs every source set, validation result, actor/controller trace, causal snapshot, effect/receipt/witness history, original replay and counter. It checks input/twelve source hashes and all ten criteria. Require 48 live barriers, 224 normal child completions and zero unexpected infrastructure errors; busy and stale results are modeled normal attempts. Historical verification requires matching source versions. A clean controller exit alone does not prove complete history.
+
+`--output /tmp/codeguardian-selection-verification.json` exclusively creates a report. `--output-dir /tmp/codeguardian-selection` keeps fresh measurements outside retained evidence. Python 3.11+ on Linux is required for numeric SQLite metadata and pipe selectors. The study fixes one main publisher and one migration with at most two live children. It does not test repeated-interference progress, general fairness, latency, arbitrary many-writer histories, network/external effects or crash composition. [Protocol](../docs/SELECTION_PROTOCOL.md) · [Findings and raw evidence](../docs/SELECTION_FINDINGS.md).
 
 ## Phase 14: compact receipts and migration recovery
 

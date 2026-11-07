@@ -1,6 +1,6 @@
 # Threat model and validity limits
 
-**Scope:** completed studies through Phase 14. These assumptions bound the measured results; they are not a deployable security specification.
+**Scope:** completed studies through Phase 15. These assumptions bound the measured results; they are not a deployable security specification.
 
 ## Assets and authorization contracts
 
@@ -51,12 +51,12 @@ The string gate loses two legitimate replay completions while missing two protec
 | Deterministic check/use schedules | Demonstrates selected orderings; does not measure concurrent race probability |
 | Shared implementation and trusted observation infrastructure | Agreement cannot independently establish correctness of OS semantics, all oracle code, or every execution |
 | Different contracts across stages | Identity-only Phase 6 failures do not invalidate Phase 5's narrower identity result; task completion and payload delivery are different measures |
-| Regression tests versus experiment trials | 316 current passing tests are not 316 independent adversarial samples |
+| Regression tests versus experiment trials | 353 current passing tests are not 353 independent adversarial samples |
 | No live-agent adapter or task trials | No evidence yet about model behavior, agent attack success, task accuracy, cost, latency, or deployment impact |
 
 ## Open questions
 
-Phase 7 evaluates approval at receipt, Phase 8 evaluates publisher-exit recovery, Phase 9 evaluates retained request IDs, Phase 10 evaluates logical retirement, Phase 11 fixes one publisher/retirer overlap, Phase 12 fixes two same-ID callers with retained receipts, Phase 13 places retirement around post-rollback resolution, and Phase 14 tests compact summaries and migration interruption. Concurrent publication during migration source selection, many-caller histories, fairness, authenticated epochs, wall-clock expiry, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
+Phase 7 evaluates approval at receipt, Phase 8 evaluates publisher-exit recovery, Phase 9 evaluates retained request IDs, Phase 10 evaluates logical retirement, Phase 11 fixes one publisher/retirer overlap, Phase 12 fixes two same-ID callers with retained receipts, Phase 13 places retirement around post-rollback resolution, Phase 14 tests compact summaries and migration interruption, and Phase 15 overlaps publication with source selection. Repeated-interference progress, many-caller histories, fairness, authenticated epochs, wall-clock expiry, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
 
 ## Dynamic approval extension
 
@@ -109,3 +109,11 @@ Phase 14 replaces exact retained-byte comparison with an explicit operation and 
 This fixture can reuse an update's input digest as its original approval digest. APIs with a different response/input relationship may require additional metadata. Hashes do not authenticate the caller, encrypt content or grant a new epoch. Summaries are application authority; retained effect observers are measurement evidence and cannot repair a vanished summary.
 
 Completed compaction removes old full receipt payload BLOB rows, while current publication and other evidence may retain the same bytes. Per-record digest size is bounded, but record count and observer history still grow. Logical row layouts do not measure physical reclamation, secure erasure, privacy, memory use or performance. The cuts terminate one child at application boundaries while parent, filesystem and kernel survive. Concurrent publishers/compactors, repeated recovery faults, WAL, external effects, network failures, failures inside storage calls and host power loss remain outside scope. [Protocol](COMPACTION_PROTOCOL.md) · [Findings](COMPACTION_FINDINGS.md).
+
+## Concurrent-source-selection extension
+
+Phase 15 fixes one migration, one main publisher role and optional independent later work. A writer held before selection orders old work after closure: refused requests never committed, and their refusal is a useful-completion cost. Exact inside-writer validation instead aborts stale migration preparation and retries after the publisher completes. This single scheduled retry establishes neither starvation freedom nor a bounded retry/latency guarantee under repeated interference.
+
+The migration's actual source read and witnesses are trusted instrumentation. Weak modes observe source changes but deliberately do not gate on them. The literal source comparison includes full receipt tuples and introduces no additional hash-based manifest assumption; compact replay retains Phase 14's typed SHA-256 assumption. Application responses never consult the observer to recover a missing summary.
+
+The study reports actual committed-history denominators alongside old-work completion. It does not pool missing committed replies with never-committed refusals, infer fairness from barrier completion, benchmark performance or establish arbitrary many-writer behavior. Other correct interventions, such as using a fresh source read directly inside the short write transaction, are not ruled out. Crash/interference composition, multiple migrating actors, network and external effects, authenticated epochs, WAL and host power loss remain untested. [Protocol](SELECTION_PROTOCOL.md) · [Findings](SELECTION_FINDINGS.md).

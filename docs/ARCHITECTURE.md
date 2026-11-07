@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 14. Updated 2026-11-06 (Asia/Seoul).
+**Status:** implemented components through Phase 15. Updated 2026-11-07 (Asia/Seoul).
 
 ## System boundary
 
@@ -48,6 +48,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/compaction_worker.py` | One migration child and declared exit cut | Exact checkpoint prefix and return code; parent/OS survive |
 | `experiments/run_compaction_comparison.py` | Migration recovery and parent-side follow-up | Current policy, original-response support, representation and loss windows |
 | `experiments/verify_compaction_results.py` | Independent migration reconstruction | Grid, child traces, full/compact authority, counters and nine source hashes |
+| `src/selection_store.py` | Cached, refreshed, transactional or validated migration source | Complete source versus atomic output; publication/migration witnesses |
+| `experiments/selection_worker.py` | Live migrator and publisher attempts | Role/stage-bound resume; exact busy and stale-selection results |
+| `experiments/run_selection_comparison.py` | Publication around source reads and commit | Source membership, causal captures, actual committed-history denominators |
+| `experiments/verify_selection_results.py` | Independent source/history reconstruction | Actor traces, literal validation, durable witnesses, replay support and twelve source hashes |
 
 ## Phase 5 ordering
 
@@ -169,4 +173,12 @@ The new summary table contains `(epoch, request_id, operation, payload_sha256, r
 
 The migration selects source receipts while holding its write transaction. Atomic mode advances the fence, deletes full records and inserts compact replacements before one commit. Split mode commits the fence/deletion before inserting its process-memory summary copy in a second transaction. Application exits after cleanup or uncommitted summary insertion recover a closed namespace without either representation in the split mode. The atomic mode instead recovers old full records at those cuts.
 
-The controller validates exact marked exits, reopens consistent initial/recovered/final captures and issues one parent-side follow-up. It checks that the follow-up cannot rewrite historical authority without migration. The independent verifier separately reconstructs authoritative records, expected layouts and response support. Measured coverage: 104 records, 64 declared exits, 40 normal child completions and ten criteria; full tests: 316 passing. SHA-256 assumptions, retained record growth and surviving publication bytes bound the result. Concurrent source selection and host power loss remain untested. [Protocol](COMPACTION_PROTOCOL.md) · [Findings](COMPACTION_FINDINGS.md).
+The controller validates exact marked exits, reopens consistent initial/recovered/final captures and issues one parent-side follow-up. It checks that the follow-up cannot rewrite historical authority without migration. The independent verifier separately reconstructs authoritative records, expected layouts and response support. Measured coverage: 104 records, 64 declared exits, 40 normal child completions and ten criteria; recorded Phase 14 tests: 316 passing. SHA-256 assumptions, retained record growth and surviving publication bytes bound the result. Concurrent source selection is tested separately in Phase 15 below; host power loss remains untested. [Protocol](COMPACTION_PROTOCOL.md) · [Findings](COMPACTION_FINDINGS.md).
+
+## Phase 15: atomic output can originate from an incomplete source
+
+A new publisher can commit `inflight` after migration has selected two old receipts. The weak migration then atomically fences epoch 2, deletes every old full receipt and inserts summaries only for its earlier source. Current publication remains at the new revision, while the committed request's historical authority disappears. A separate read refresh catches the early publication but still misses one arriving after that refresh.
+
+Transactional selection reserves the writer before selecting and holds it through closure. The publisher receives numeric busy 5; its unchanged epoch-1 retry after closure is refused. Validated selection instead permits the publication, rereads the full source inside its write transaction, and compares literal epoch/revision/receipt tuples before any migration writes. A mismatch rolls back without cleanup; a fresh migration retry includes the new receipt. The two modes protect committed history with different publication-completion costs.
+
+Each migration witness records selected/actual revision and receipt counts in its commit. Each runtime publication witness records requested/active epoch with its effect. The controller checks exact commands, complete source sets, role-bound barriers, actual state/effects and consistent before/after snapshots. The independent verifier derives history denominators from actual commits, so never-committed refusal does not masquerade as successful historical replay. The run has 96 records, 48 live barriers, 224 normal child completions and ten criteria; 353 tests pass. Repeated interference, crash composition, many-writer progress and performance remain outside scope. [Protocol](SELECTION_PROTOCOL.md) · [Findings](SELECTION_FINDINGS.md).

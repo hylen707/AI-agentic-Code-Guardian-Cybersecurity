@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-07 — The source can become incomplete before an atomic commit
+
+**Question and prospective design.** Phase 14 selects migration input inside its writer transaction. What happens if that source is selected earlier and another publisher commits meanwhile? Froze the [protocol](SELECTION_PROTOCOL.md) and 24 cases before implementation. Compared cached selection, a separate refresh, a writer held through selection/commit and exact source validation inside a shorter write scope. The latter aborts a stale preparation before cleanup and retries from a fresh selection.
+
+**Observation.** Committed receipt losses are 8 → 4 → 0 → 0 across eight source gaps. Transactional selection has no old commitment in those eight cases because the publisher defers, then is refused after closure. Across all cases, old work completion is 14/20 → 14/20 → 6/20 → 14/20; original replay among actual old commitments is 6/14 → 10/14 → 6/6 → 14/14. Validated migration detects eight changed source sets and completes each fresh retry without losing the new records. Coherent current policy and epoch closure hold in every mode, including both weak source sets.
+
+**Validation.** All 353 tests passed, including 37 new tests. Independent stdlib reconstruction matches 96 records, every counter and ten criteria, plus input/twelve source hashes. All 224 child attempts complete normally across 48 role-bound live barriers, including modeled busy and stale-selection results, with zero unexpected infrastructure errors. Source/witness forgeries, lost causal prefixes, changed retry identities, invented historical responses and incorrect never-committed follow-ups are regression-tested. [Findings and raw evidence](SELECTION_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** Atomic output does not establish completeness of an earlier read. Holding the writer and validating/retrying both preserve actual committed history, but finish different amounts of old work. A refused, never-committed request is not a lost historical reply. Next: define repeated interference and a finite retry budget, counting publication completion, migration completion, refusal and history preservation separately. General progress, fairness, latency, crash composition and external effects remain open.
+
 ## 2026-11-06 — The replacement receipt has its own commit boundary
 
 **Question and prospective design.** Phase 13 can refuse safely when the original receipt disappears, but loses its response. Can a typed fingerprint/revision summary retain the needed authority after payload removal, and what happens if migration stops halfway? Froze the [protocol](COMPACTION_PROTOCOL.md) and 26 cases before implementation. Compared full retention, deletion, split-summary migration and a single transaction containing fence, deletion and replacement summaries.

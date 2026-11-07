@@ -1,6 +1,6 @@
 # Claims and evidence
 
-This map connects the fourteen completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
+This map connects the fifteen completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
 
 ## Phases 1 and 2: labels versus resource effects
 
@@ -179,3 +179,15 @@ The same aggregate replay count masks different loss windows. In eight cleanup/s
 - [316 passing tests](../experiments/results/2026-11-06T00-57-33-721168Z-compaction-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-06T00-57-33-721168Z-compaction-v1-console.txt), and [interpretation and limits](COMPACTION_FINDINGS.md).
 
 All ten criteria hold. Every mode prevents another effect in 24 known-original cases, preserves later policy in 25 cases, accepts the new-epoch control and refuses unseen old work. The verifier checks 64 declared child exits, 40 normal completions, input/nine source hashes and zero unexpected infrastructure errors. Typed SHA-256 comparison is conditional; payload-row removal is not physical erasure, bounded total storage or a concurrency result.
+
+## Phase 15: source completeness under publication
+
+Twenty-four cases run in `cached_selection`, `separate_refresh`, `transactional_selection` and `validated_selection`: 96 records. Missing committed `inflight` receipts across eight source gaps are **8 → 4 → 0 → 0**. Actual old publisher commits in those gaps are **8 → 8 → 0 → 8**; transactional selection instead defers and refuses eight never-committed requests. That is not eight successful historical replays.
+
+Across all twenty old-intent cases per mode, publication completes **14/20 → 14/20 → 6/20 → 14/20**. Original replays among those actual commitments are **6/14 → 10/14 → 6/6 → 14/14**. Missing old summary rows total 8 → 4 → 0 → 0; complete old-effect coverage cases are 16/24 → 20/24 → 24/24 → 24/24. All modes retain coherent current state, final epoch 2 and no old full receipt rows, including the two weak history-loss designs.
+
+- [Protocol](SELECTION_PROTOCOL.md), [24-case manifest](../experiments/tasks/selection-eval-v1/tasks.json), and [pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/07f99a5c57bb06984d683db99e92128d7605187c).
+- [96 raw actor/source/witness records](../experiments/results/2026-11-07T00-20-27-259668Z-selection-v1.jsonl), [summary and provenance](../experiments/results/2026-11-07T00-20-27-259668Z-selection-v1-summary.json), and [independent reconstruction](../experiments/results/2026-11-07T00-20-27-259668Z-selection-v1-verification.json).
+- [353 passing tests](../experiments/results/2026-11-07T00-20-27-259668Z-selection-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-07T00-20-27-259668Z-selection-v1-console.txt), and [interpretation and limits](SELECTION_FINDINGS.md).
+
+All ten criteria hold. Publisher busy attempts/completed retries are 2 → 2 → 10 → 2; stale migration attempts/completed retries are 0 → 0 → 0 → 8. Six publisher-first histories, both revision-4 replies after later revision 5, two migration-first refusals and four current-epoch completions pass in every mode. The verifier checks 48 live barriers, 224 normal child completions, input/twelve source hashes and zero unexpected infrastructure errors. These fixed schedules do not establish repeated-interference progress, fairness, latency or crash composition.

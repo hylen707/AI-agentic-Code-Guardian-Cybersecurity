@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 14, 2026-11-06 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 15, 2026-11-07 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
 
@@ -22,6 +22,7 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 12. Same-ID callers | Sixteen cases, four modes; 52 forced overlaps and twelve serial records | Both caller responses, exact request effects, rollback and busy retries | [Caller protocol](CALLER_PROTOCOL.md) | [Caller findings](CALLER_FINDINGS.md) |
 | 13. Retirement during resolution | Sixteen cases, three modes; 96 verified barriers | One effect, justified unavailable/original response, closed-epoch writes and retirement deferral | [Resolution protocol](RESOLUTION_PROTOCOL.md) | [Resolution findings](RESOLUTION_FINDINGS.md) |
 | 14. Compact receipt migration | Twenty-six cases, four modes; 64 declared exits and 40 normal completions | Supported historical replay/conflict, source representation, current policy and migration gaps | [Compaction protocol](COMPACTION_PROTOCOL.md) | [Compaction findings](COMPACTION_FINDINGS.md) |
+| 15. Concurrent source selection | Twenty-four cases, four modes; 48 forced barriers and 224 child completions | Selected/actual source membership, committed-history replay, publisher refusal and migration retry | [Selection protocol](SELECTION_PROTOCOL.md) | [Selection findings](SELECTION_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -47,7 +48,7 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-Phase 14 compares full, dropped and compact historical authority under process-exit cuts. The next protocol should overlap publication with migration source selection, distinguishing a source set captured before a later commit from selection held inside the fence/deletion transaction. An atomic final write does not establish completeness of an earlier source read. Mid-storage-operation cuts, failures during recovery, many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
+Phase 15 tests one intervening publication and one controller-scheduled retry. The next protocol should introduce repeated source changes and an explicit migration retry budget, counting migration completion, published work, refusals and preserved receipts separately. A completed single retry does not imply starvation freedom or a production latency bound. Mid-storage-operation cuts, failures during recovery, many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
 
 ## Documentation and evidence integrity
 
@@ -106,3 +107,11 @@ The [compaction protocol](COMPACTION_PROTOCOL.md) freezes 26 cases across four m
 **Cleanup/summary-gap availability / eight repeats** is 8/8 → 8/8 → 0/8 → 8/8. Drop and split have the same aggregate replay count but lose evidence at different cuts. **Completed known outcomes / twelve** is 12/12 → 0/12 → 12/12 → 12/12. Fourteen completed-migration captures per mode separately test full/summary row layouts and absence of old receipt payload BLOBs. These groups overlap.
 
 All modes must prevent another effect in 24 known-original follow-ups, preserve current policy in 25 non-new-epoch cases, complete the new-epoch intent and refuse unseen old work. Require all ten criteria, exact child prefixes/codes, 64 marked exits plus 40 normal completions, input/nine source hashes and zero unexpected errors. Compact matching is conditional on typed SHA-256 comparison; logical receipt payload removal is not secure erasure or bounded total database storage. [Findings](COMPACTION_FINDINGS.md).
+
+## Phase 15: complete source versus ordered refusal
+
+The [selection protocol](SELECTION_PROTOCOL.md) prospectively freezes 24 cases across four modes. Eight early/late source gaps yield missing committed request receipts 8 → 4 → 0 → 0. Actual old publications in those gaps are 8 → 8 → 0 → 8; the transactional arm refuses all eight after a busy retry and closure. Its zero historical losses therefore do not constitute eight successful historical replays.
+
+Across all cases, **supported old replay / actual old commits** is 6/14 → 10/14 → 6/6 → 14/14. **Old work completed / twenty old intents** is 14/20 → 14/20 → 6/20 → 14/20. These denominators must appear together. Four independent current-epoch intents complete and replay in every mode. Six publisher-first controls preserve original history, including two revision-4 responses while independent revision 5 stays current.
+
+Count missing summary rows (8 → 4 → 0 → 0), busy publisher attempts/completed retries (2 → 2 → 10 → 2), stale migration attempts/completed retries (0 → 0 → 0 → 8), and actual selected/observed source witnesses. Require all ten criteria, 96 records, 48 live barriers, exact traces for 224 normal child completions, input/twelve source hashes and zero unexpected infrastructure errors. Current state coherence and a closed epoch hold even in the weak history-loss modes. [Findings](SELECTION_FINDINGS.md).

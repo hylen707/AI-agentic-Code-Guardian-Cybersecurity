@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-07 — Complete source selection under publication
+
+- Froze the selection protocol and 24-case manifest at `07f99a5c57bb06984d683db99e92128d7605187c` before Phase 15 implementation and measurement.
+- Added cached, separately refreshed, transactional and literally validated source scopes; atomic publication/migration witnesses; role-bound child barriers; a real-process controller; a stdlib independent verifier; and 37 regression tests. Earlier implementation and retained evidence bytes remain unchanged.
+- Recorded 96 observations. Missing committed receipts are 8 → 4 → 0 → 0 across eight source gaps. Old work completes 14/20 → 14/20 → 6/20 → 14/20; supported original replays among actual commitments are 6/14 → 10/14 → 6/6 → 14/14. Validated selection detects eight stale sources, preserves the open source and completes every fresh migration retry. Transactional selection instead refuses old work after closure.
+- All 353 tests passed. Independent reconstruction matched every counter and ten criteria, checked input/twelve source hashes, and confirmed 48 live barriers plus 224 normal child completions with zero unexpected errors. Current state remains coherent in all modes, including history-loss cases.
+- Updated the overview, research argument, evidence index, architecture, study map, limits and reproduction guide. Fixed actor order, controller-scheduled retries, trusted observers, compact hash assumptions and absent fairness/performance claims remain explicit. [Findings and evidence](SELECTION_FINDINGS.md).
+
 ## 2026-11-06 — Compact receipts and interrupted migration
 
 - Froze the compaction protocol and 26-case manifest at `89902786509e97cfe8d4f24f02cde0457acda0e8` before Phase 14 implementation and measurement.

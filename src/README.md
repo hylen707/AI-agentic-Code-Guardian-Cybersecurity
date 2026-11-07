@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, concurrent-caller, retirement-during-resolution, and receipt-compaction prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
+The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, concurrent-caller, retirement-during-resolution, receipt-compaction, and concurrent-source-selection prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -78,4 +78,12 @@ The guard is acquired after collision rollback; if retirement has already won, t
 
 Publication still commits state, effect and full receipt together. Atomic compaction prepares source receipts under its writer transaction, advances the epoch, removes old full receipts and inserts summaries before committing. The split mode commits cleanup first, leaving a gap that a process exit can make permanent. Retrying that completed target cannot recreate missing summaries from the effect observer.
 
-`compaction_worker.py` exits at one declared application checkpoint. The controller reopens after the child stops and checks historical responses separately from current delivery. The independent stdlib verifier reconstructs all 104 records and ten criteria. All 316 tests pass, including 33 new tests and a deliberately substituted collision diagnostic that exposes the hash assumption. Receipt payload removal is not secure erasure, physical reclamation or bounded total storage. [Findings](../docs/COMPACTION_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-14-compact-receipts-and-migration-recovery).
+`compaction_worker.py` exits at one declared application checkpoint. The controller reopens after the child stops and checks historical responses separately from current delivery. The independent stdlib verifier reconstructs all 104 records and ten criteria. The recorded Phase 14 suite passed 316 tests, including 33 new tests and a deliberately substituted collision diagnostic that exposes the hash assumption. Receipt payload removal is not secure erasure, physical reclamation or bounded total storage. [Findings](../docs/COMPACTION_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-14-compact-receipts-and-migration-recovery).
+
+## Complete migration source selection
+
+`selection_store.py` composes the unchanged compact receipt store with cached selection, a separate final refresh, selection held inside `BEGIN IMMEDIATE`, and exact source validation inside the writer. The validated mode compares epoch, revision and sorted full receipt tuples; a changed source causes rollback and `stale_selection`, then a fresh controller-scheduled migration attempt. Weak arms atomically delete all old receipts while inserting only their earlier selected subset.
+
+The runtime publisher uses a checked nonblocking writer connection. Only exact code 5 at its BEGIN becomes a modeled busy attempt, and every retry preserves the original epoch/ID/bytes. Atomic publication and migration witnesses identify actual commits and selected/observed source counts. They measure history completeness and never repair an application receipt.
+
+`selection_worker.py` binds each live resume to role and stage. The controller retains all attempts, source sets, causal snapshots and original replays; a stdlib verifier independently reconstructs them. The full suite passes 353 tests, including 37 new tests. The measured comparison has 96 records, 48 live barriers and 224 normal child completions. One scheduled retry does not establish progress under repeated interference, fairness or latency. [Findings](../docs/SELECTION_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-15-complete-source-selection-under-publication).
