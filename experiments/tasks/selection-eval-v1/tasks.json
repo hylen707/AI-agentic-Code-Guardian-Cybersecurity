@@ -1,0 +1,125 @@
+{
+  "schema_version": "selection-eval-v1",
+  "cases": [
+    {
+      "case_id": "after_selection-ascii",
+      "schedule": "after_selection",
+      "value": "ascii"
+    },
+    {
+      "case_id": "after_selection-empty",
+      "schedule": "after_selection",
+      "value": "empty"
+    },
+    {
+      "case_id": "after_selection-unicode",
+      "schedule": "after_selection",
+      "value": "unicode"
+    },
+    {
+      "case_id": "after_selection-revoke",
+      "schedule": "after_selection",
+      "value": "revoke"
+    },
+    {
+      "case_id": "after_refresh-ascii",
+      "schedule": "after_refresh",
+      "value": "ascii"
+    },
+    {
+      "case_id": "after_refresh-empty",
+      "schedule": "after_refresh",
+      "value": "empty"
+    },
+    {
+      "case_id": "after_refresh-unicode",
+      "schedule": "after_refresh",
+      "value": "unicode"
+    },
+    {
+      "case_id": "after_refresh-revoke",
+      "schedule": "after_refresh",
+      "value": "revoke"
+    },
+    {
+      "case_id": "before_commit-ascii",
+      "schedule": "before_commit",
+      "value": "ascii"
+    },
+    {
+      "case_id": "before_commit-revoke",
+      "schedule": "before_commit",
+      "value": "revoke"
+    },
+    {
+      "case_id": "after_commit-ascii",
+      "schedule": "after_commit",
+      "value": "ascii"
+    },
+    {
+      "case_id": "after_commit-revoke",
+      "schedule": "after_commit",
+      "value": "revoke"
+    },
+    {
+      "case_id": "publisher_first-ascii",
+      "schedule": "publisher_first",
+      "value": "ascii"
+    },
+    {
+      "case_id": "publisher_first-empty",
+      "schedule": "publisher_first",
+      "value": "empty"
+    },
+    {
+      "case_id": "publisher_first-unicode",
+      "schedule": "publisher_first",
+      "value": "unicode"
+    },
+    {
+      "case_id": "publisher_first-revoke",
+      "schedule": "publisher_first",
+      "value": "revoke"
+    },
+    {
+      "case_id": "migration_first-ascii",
+      "schedule": "migration_first",
+      "value": "ascii"
+    },
+    {
+      "case_id": "migration_first-revoke",
+      "schedule": "migration_first",
+      "value": "revoke"
+    },
+    {
+      "case_id": "current_epoch-ascii",
+      "schedule": "current_epoch",
+      "value": "ascii"
+    },
+    {
+      "case_id": "current_epoch-empty",
+      "schedule": "current_epoch",
+      "value": "empty"
+    },
+    {
+      "case_id": "current_epoch-unicode",
+      "schedule": "current_epoch",
+      "value": "unicode"
+    },
+    {
+      "case_id": "current_epoch-revoke",
+      "schedule": "current_epoch",
+      "value": "revoke"
+    },
+    {
+      "case_id": "publisher_first_later-ascii",
+      "schedule": "publisher_first_later",
+      "value": "ascii"
+    },
+    {
+      "case_id": "publisher_first_later-revoke",
+      "schedule": "publisher_first_later",
+      "value": "revoke"
+    }
+  ]
+}
