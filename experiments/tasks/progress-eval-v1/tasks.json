@@ -1,0 +1,29 @@
+{
+  "schema_version": "progress-eval-v1",
+  "cases": [
+    {"case_id": "b1-n0-updates", "budget": 1, "publications": 0, "pattern": "updates"},
+    {"case_id": "b1-n0-revocations", "budget": 1, "publications": 0, "pattern": "revocations"},
+    {"case_id": "b1-n1-updates", "budget": 1, "publications": 1, "pattern": "updates"},
+    {"case_id": "b1-n1-revocations", "budget": 1, "publications": 1, "pattern": "revocations"},
+    {"case_id": "b1-n2-updates", "budget": 1, "publications": 2, "pattern": "updates"},
+    {"case_id": "b1-n2-revocations", "budget": 1, "publications": 2, "pattern": "revocations"},
+    {"case_id": "b1-n4-updates", "budget": 1, "publications": 4, "pattern": "updates"},
+    {"case_id": "b1-n4-revocations", "budget": 1, "publications": 4, "pattern": "revocations"},
+    {"case_id": "b2-n0-updates", "budget": 2, "publications": 0, "pattern": "updates"},
+    {"case_id": "b2-n0-revocations", "budget": 2, "publications": 0, "pattern": "revocations"},
+    {"case_id": "b2-n1-updates", "budget": 2, "publications": 1, "pattern": "updates"},
+    {"case_id": "b2-n1-revocations", "budget": 2, "publications": 1, "pattern": "revocations"},
+    {"case_id": "b2-n2-updates", "budget": 2, "publications": 2, "pattern": "updates"},
+    {"case_id": "b2-n2-revocations", "budget": 2, "publications": 2, "pattern": "revocations"},
+    {"case_id": "b2-n4-updates", "budget": 2, "publications": 4, "pattern": "updates"},
+    {"case_id": "b2-n4-revocations", "budget": 2, "publications": 4, "pattern": "revocations"},
+    {"case_id": "b3-n0-updates", "budget": 3, "publications": 0, "pattern": "updates"},
+    {"case_id": "b3-n0-revocations", "budget": 3, "publications": 0, "pattern": "revocations"},
+    {"case_id": "b3-n1-updates", "budget": 3, "publications": 1, "pattern": "updates"},
+    {"case_id": "b3-n1-revocations", "budget": 3, "publications": 1, "pattern": "revocations"},
+    {"case_id": "b3-n2-updates", "budget": 3, "publications": 2, "pattern": "updates"},
+    {"case_id": "b3-n2-revocations", "budget": 3, "publications": 2, "pattern": "revocations"},
+    {"case_id": "b3-n4-updates", "budget": 3, "publications": 4, "pattern": "updates"},
+    {"case_id": "b3-n4-revocations", "budget": 3, "publications": 4, "pattern": "revocations"}
+  ]
+}
