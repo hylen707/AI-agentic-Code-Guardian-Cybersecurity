@@ -1,6 +1,6 @@
 # Threat model and validity limits
 
-**Scope:** completed studies through Phase 15. These assumptions bound the measured results; they are not a deployable security specification.
+**Scope:** completed studies through Phase 16. These assumptions bound the measured results; they are not a deployable security specification.
 
 ## Assets and authorization contracts
 
@@ -51,12 +51,12 @@ The string gate loses two legitimate replay completions while missing two protec
 | Deterministic check/use schedules | Demonstrates selected orderings; does not measure concurrent race probability |
 | Shared implementation and trusted observation infrastructure | Agreement cannot independently establish correctness of OS semantics, all oracle code, or every execution |
 | Different contracts across stages | Identity-only Phase 6 failures do not invalidate Phase 5's narrower identity result; task completion and payload delivery are different measures |
-| Regression tests versus experiment trials | 353 current passing tests are not 353 independent adversarial samples |
+| Regression tests versus experiment trials | 386 current passing tests are not 386 independent adversarial samples |
 | No live-agent adapter or task trials | No evidence yet about model behavior, agent attack success, task accuracy, cost, latency, or deployment impact |
 
 ## Open questions
 
-Phase 7 evaluates approval at receipt, Phase 8 evaluates publisher-exit recovery, Phase 9 evaluates retained request IDs, Phase 10 evaluates logical retirement, Phase 11 fixes one publisher/retirer overlap, Phase 12 fixes two same-ID callers with retained receipts, Phase 13 places retirement around post-rollback resolution, Phase 14 tests compact summaries and migration interruption, and Phase 15 overlaps publication with source selection. Repeated-interference progress, many-caller histories, fairness, authenticated epochs, wall-clock expiry, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
+Phase 7 evaluates approval at receipt, Phase 8 evaluates publisher-exit recovery, Phase 9 evaluates retained request IDs, Phase 10 evaluates logical retirement, Phase 11 fixes one publisher/retirer overlap, Phase 12 fixes two same-ID callers with retained receipts, Phase 13 places retirement around post-rollback resolution, Phase 14 tests compact summaries and migration interruption, Phase 15 overlaps publication with source selection, and Phase 16 tests finite attempt policies under repeated source changes. Restart-persistent budgets, many-caller histories, fairness, authenticated epochs, wall-clock expiry, mutation during capture, dynamic protected membership, creation semantics, general directory confinement, and streaming validation remain separate obligations. Live-agent claims would additionally require model/prompt versions, tool permissions, budgets, repeated trials, and an independent task-correctness oracle. None of these is reported as completed.
 
 ## Dynamic approval extension
 
@@ -117,3 +117,9 @@ Phase 15 fixes one migration, one main publisher role and optional independent l
 The migration's actual source read and witnesses are trusted instrumentation. Weak modes observe source changes but deliberately do not gate on them. The literal source comparison includes full receipt tuples and introduces no additional hash-based manifest assumption; compact replay retains Phase 14's typed SHA-256 assumption. Application responses never consult the observer to recover a missing summary.
 
 The study reports actual committed-history denominators alongside old-work completion. It does not pool missing committed replies with never-committed refusals, infer fairness from barrier completion, benchmark performance or establish arbitrary many-writer behavior. Other correct interventions, such as using a fresh source read directly inside the short write transaction, are not ruled out. Crash/interference composition, multiple migrating actors, network and external effects, authenticated epochs, WAL and host power loss remain untested. [Protocol](SELECTION_PROTOCOL.md) · [Findings](SELECTION_FINDINGS.md).
+
+## Bounded-progress extension
+
+Phase 16 grants the migration writer-acquisition opportunities and injects at most one distinct publisher per selected attempt. Budgets are 1, 2 or 3; intent counts are 0, 1, 2 or 4. Its observed N<B boundary is a finite scheduled result, not a general progress theorem. A final-attempt writer scope finishes under this order but does not guarantee acquisition under an arbitrary scheduler, fairness, throughput or a wall-clock deadline.
+
+The budget is scoped to one controller invocation and is not persisted through crashes or restarts. No interrupted attempt is combined with repeated interference. Stopping at exhaustion leaves epoch 1 open with full receipts and may allow remaining declared intents to commit. That preserves actual history without completing compaction. Closing first refuses never-committed old intents; zero history loss cannot be reported as useful publication completion. All three policies retain trusted effect/witness instrumentation, which never supplies application replay authority. Compact rows retain the earlier digest assumptions, and logical row counts do not establish physical erasure or a storage bound.

@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 15. Updated 2026-11-07 (Asia/Seoul).
+**Status:** implemented components through Phase 16. Updated 2026-11-10 (Asia/Seoul).
 
 ## System boundary
 
@@ -52,6 +52,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/selection_worker.py` | Live migrator and publisher attempts | Role/stage-bound resume; exact busy and stale-selection results |
 | `experiments/run_selection_comparison.py` | Publication around source reads and commit | Source membership, causal captures, actual committed-history denominators |
 | `experiments/verify_selection_results.py` | Independent source/history reconstruction | Actor traces, literal validation, durable witnesses, replay support and twelve source hashes |
+| `src/progress_store.py` | Finite invocation policy over existing selection scopes | Positive attempt/budget validation; final-attempt fallback |
+| `experiments/progress_worker.py` | One numbered migration or publication attempt | Resume binds role, stage, attempt and budget |
+| `experiments/run_progress_comparison.py` | Repeated source changes and a bounded loop | Stop before remaining work; equal declared intents; full/compact authority |
+| `experiments/verify_progress_results.py` | Independent bounded-history reconstruction | Causal continuity, finite progress, supported replies and thirteen source hashes |
 
 ## Phase 5 ordering
 
@@ -181,4 +185,12 @@ A new publisher can commit `inflight` after migration has selected two old recei
 
 Transactional selection reserves the writer before selecting and holds it through closure. The publisher receives numeric busy 5; its unchanged epoch-1 retry after closure is refused. Validated selection instead permits the publication, rereads the full source inside its write transaction, and compares literal epoch/revision/receipt tuples before any migration writes. A mismatch rolls back without cleanup; a fresh migration retry includes the new receipt. The two modes protect committed history with different publication-completion costs.
 
-Each migration witness records selected/actual revision and receipt counts in its commit. Each runtime publication witness records requested/active epoch with its effect. The controller checks exact commands, complete source sets, role-bound barriers, actual state/effects and consistent before/after snapshots. The independent verifier derives history denominators from actual commits, so never-committed refusal does not masquerade as successful historical replay. The run has 96 records, 48 live barriers, 224 normal child completions and ten criteria; 353 tests pass. Repeated interference, crash composition, many-writer progress and performance remain outside scope. [Protocol](SELECTION_PROTOCOL.md) · [Findings](SELECTION_FINDINGS.md).
+Each migration witness records selected/actual revision and receipt counts in its commit. Each runtime publication witness records requested/active epoch with its effect. The controller checks exact commands, complete source sets, role-bound barriers, actual state/effects and consistent before/after snapshots. The independent verifier derives history denominators from actual commits, so never-committed refusal does not masquerade as successful historical replay. The run has 96 records, 48 live barriers, 224 normal child completions and ten criteria; the recorded Phase 15 suite passed 353 tests. Phase 16 below adds finite repeated-interference histories; crash composition, many-writer progress and performance remain outside scope. [Protocol](SELECTION_PROTOCOL.md) · [Findings](SELECTION_FINDINGS.md).
+
+## Phase 16: an invocation budget separates safe stopping from completion
+
+The progress wrapper reuses unchanged Phase 15 validated and transactional selection. A finite controller loop numbers each migration attempt and stops at completion or its declared budget. Validated-budget always validates; transactional-first holds the writer immediately; validated-fallback holds it on the final allowed attempt. The budget belongs to one invocation and is not durable across restarts.
+
+Each attempt pauses after selection with a resume bound to role, stage, attempt and budget. One remaining distinct epoch-1 intent attempts publication there. A changed source rolls validation back without cleanup. A held writer yields numeric publisher busy, followed by an identical-intent retry after release. The controller saves the stop snapshot before attempting all remaining intents, so early closure cannot silently remove their denominator and exhaustion cannot hide an extra migration.
+
+Validated-budget finishes 12/24 migrations and all 42/42 runtime publications; its twelve exhausted namespaces remain open with full authority. Transactional-first finishes 24/24 migrations and 0/42 publications; fallback finishes 24/24 and 16/42. Current delivery follows actual commit history throughout. Original and changed-intent queries use application receipts only and leave all final states unchanged. The stdlib verifier reconstructs every source set, attempt plan, child event, transaction witness and causal snapshot. Coverage is 72 records, 104 strict barriers, 260 normal child completions, ten criteria and thirteen source hashes. The full suite passes 386 tests, including 33 new tests. This is finite scheduled progress after granted writer acquisition, not general fairness or latency. [Protocol](PROGRESS_PROTOCOL.md) · [Findings](PROGRESS_FINDINGS.md).

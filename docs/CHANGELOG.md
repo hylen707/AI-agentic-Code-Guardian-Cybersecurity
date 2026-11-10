@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-10 — Bounded migration progress under repeated publication
+
+- Froze the progress protocol and 24-case manifest at `1c6328e80c8ef5ee07c00eb5bca447e958e44a71` before Phase 16 implementation and measurement.
+- Added finite invocation policies over unchanged validated/transactional selection, numbered role/stage/budget-bound child barriers, repeated-source-change control, a stdlib independent verifier and 33 regression tests. Earlier implementation and retained evidence bytes remain unchanged.
+- Recorded 72 observations with equal 42-intent runtime denominators per policy. Migration completes 12/24 → 24/24 → 24/24 and publication completes 42/42 → 0/42 → 16/42. Validated-only exhausts twelve cases without losing full authority; fallback finishes under the granted writer order and refuses 26 old intents. All actual committed originals remain supported.
+- All 386 tests passed. Independent reconstruction matched every counter and ten criteria, input/thirteen source hashes, 104 strict live barriers and 260 normal child completions, with zero unexpected infrastructure errors.
+- Updated the overview, research argument, evidence index, architecture, study map, limits and reproduction guide. Safe retention, completed compaction and useful publication remain separate. Per-invocation budgets, granted writer acquisition and absent restart/fairness/latency guarantees are explicit. [Findings and evidence](PROGRESS_FINDINGS.md).
+
 ## 2026-11-07 — Complete source selection under publication
 
 - Froze the selection protocol and 24-case manifest at `07f99a5c57bb06984d683db99e92128d7605187c` before Phase 15 implementation and measurement.

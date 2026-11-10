@@ -1,6 +1,6 @@
 # Claims and evidence
 
-This map connects the fifteen completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
+This map connects the sixteen completed stages to their conditions, denominators, and retained artifacts. Counts describe the selected cases. The [evaluation standards](EXPERIMENT_PLAN.md) define the metrics; [threat model and limits](LIMITATIONS.md) bound their interpretation.
 
 ## Phases 1 and 2: labels versus resource effects
 
@@ -87,7 +87,7 @@ Phase 1 uses versioned case design and Phase 2 has a [replay protocol](REPLAY_PR
 
 Start with the raw filename recorded in its summary. Check the expected case/arm grid, then count resource events or delivery fields using that study's definitions. Check controls, denials, errors, and legitimate completion alongside the headline protection count. In Phase 6, for example, count `unapproved_delivery`, `approved_delivery`, and `approved_but_stale` separately; a blocked row remains part of the eight-case approved-delivery denominator.
 
-The comparison runners store `summary.criteria`; exit 0 indicates clean execution, not that every criterion is true. Source and dataset hashes establish which local files produced a run; commit labels are caller-supplied metadata. Follow the [reproduction guide](../experiments/README.md#reading-and-preserving-artifacts) before interpreting a fresh execution as a historical reproduction.
+The comparison runners store `summary.criteria`; inspect these criteria alongside the execution status. The Phase 16 runner and verifier return nonzero when any criterion fails; a clean exit from an older runner is not a general proof of its claim. Source and dataset hashes establish which local files produced a run; commit labels are caller-supplied metadata. Follow the [reproduction guide](../experiments/README.md#reading-and-preserving-artifacts) before interpreting a fresh execution as a historical reproduction.
 
 No cross-study total is meaningful: label matches, protected operations, task completion, original-object completion, and delivered versions have different units.
 
@@ -191,3 +191,15 @@ Across all twenty old-intent cases per mode, publication completes **14/20 → 1
 - [353 passing tests](../experiments/results/2026-11-07T00-20-27-259668Z-selection-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-07T00-20-27-259668Z-selection-v1-console.txt), and [interpretation and limits](SELECTION_FINDINGS.md).
 
 All ten criteria hold. Publisher busy attempts/completed retries are 2 → 2 → 10 → 2; stale migration attempts/completed retries are 0 → 0 → 0 → 8. Six publisher-first histories, both revision-4 replies after later revision 5, two migration-first refusals and four current-epoch completions pass in every mode. The verifier checks 48 live barriers, 224 normal child completions, input/twelve source hashes and zero unexpected infrastructure errors. These fixed schedules do not establish repeated-interference progress, fairness, latency or crash composition.
+
+## Phase 16: finite budgets under repeated source changes
+
+Twenty-four budget/publication/value-pattern cases run in `validated_budget`, `transactional_first` and `validated_fallback`: 72 records. All policies receive 42 distinct old-epoch runtime intents. Migration completes **12/24 → 24/24 → 24/24**; budget exhaustion is **12/24 → 0/24 → 0/24**. Publication completion is **42/42 → 0/42 → 16/42** and refusal is **0/42 → 42/42 → 26/42**. These denominators must remain separate.
+
+All actual committed runtime originals replay: **42/42 → N/A (zero commits) → 16/16**; all 48 seeded originals per policy replay and changed committed intents conflict. Never-committed closed identities remain unavailable. Validated-only retains 34 runtime replays from full receipts in its exhausted cases and eight from compact receipts after completion. Final summary/full row counts, including seeds, are **32/58 → 48/0 → 64/0**. Missing history, duplicate effects and invented replies are zero.
+
+- [Protocol](PROGRESS_PROTOCOL.md), [24-case manifest](../experiments/tasks/progress-eval-v1/tasks.json), and [pre-implementation freeze](https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity/commit/1c6328e80c8ef5ee07c00eb5bca447e958e44a71).
+- [72 raw attempt/source/witness records](../experiments/results/2026-11-10T05-04-15-304663Z-progress-v1.jsonl), [summary and provenance](../experiments/results/2026-11-10T05-04-15-304663Z-progress-v1-summary.json), and [independent reconstruction](../experiments/results/2026-11-10T05-04-15-304663Z-progress-v1-verification.json).
+- [386 passing tests](../experiments/results/2026-11-10T05-04-15-304663Z-progress-v1-unit-tests.txt), [experiment console](../experiments/results/2026-11-10T05-04-15-304663Z-progress-v1-console.txt), and [interpretation and limits](PROGRESS_FINDINGS.md).
+
+All ten criteria hold. Stale/unchanged attempts are 28 → 0 → 16; numeric publisher busy/same-intent completed retries are 0 → 18 → 12. The verifier checks 104 strict live barriers, 260 normal child completions, input/thirteen source hashes and zero unexpected infrastructure errors. The budget is per invocation, writer acquisition is granted by the schedule, and full receipts after exhaustion mean safe retention with unfinished migration. Restart continuity, fairness, wall-clock bounds and crash composition remain untested.

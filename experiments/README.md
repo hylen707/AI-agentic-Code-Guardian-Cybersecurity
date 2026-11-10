@@ -12,9 +12,29 @@ Use Python 3.11+ and the standard library on Linux for the current full suite an
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6–14 runs passed 67, 85, 111, 141, 176, 209, 244, 283 and 316 tests; the current Phase 15 run passes 353. Retained overlap controllers use pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6–15 runs passed 67, 85, 111, 141, 176, 209, 244, 283, 316 and 353 tests; the current Phase 16 run passes 386. Retained overlap controllers use pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 16: bounded migration progress under repeated changes
+
+```bash
+python experiments/run_progress_comparison.py --dataset experiments/tasks/progress-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 1c6328e80c8ef5ee07c00eb5bca447e958e44a71 --output-dir /tmp/codeguardian-progress
+```
+
+Twenty-four cases cross attempt budgets 1/2/3, old intents 0/1/2/4, and update/revocation patterns. `validated_budget`, `transactional_first` and `validated_fallback` produce 72 records. One remaining distinct intent attempts publication after each available selection; every remaining intent is also attempted after migration stops. No extra migration is allowed beyond the budget. The stop snapshot is retained before draining remaining work.
+
+Migration completes 12/24 → 24/24 → 24/24; publication completes 42/42 → 0/42 → 16/42. All actual runtime commitments replay (42/42 → N/A → 16/16). Validated-only exhaustion retains full receipts; fallback's final writer scope trades additional old work for closure. All 48 seeded commitments per policy replay; changed committed intents conflict and never-committed closed identities remain unavailable. Queries cannot reset the current state.
+
+Verify the retained run:
+
+```bash
+python experiments/verify_progress_results.py --summary experiments/results/2026-11-10T05-04-15-304663Z-progress-v1-summary.json --dataset experiments/tasks/progress-eval-v1/tasks.json
+```
+
+For a fresh measurement, pass its new summary path instead. Optional `--output /tmp/codeguardian-progress-verification.json` exclusively creates a verification report. The verifier imports only the standard library and reconstructs policy plans, source sets, strict barriers, causal snapshots, child traces, actual commit histories, full/compact authority and query support. Require all ten criteria, 104 live barriers, 260 normal child completions, input/thirteen source hashes and zero unexpected infrastructure errors. Both runner and verifier return nonzero for failed criteria, while retaining failures in the raw evidence.
+
+Only numeric busy 5 at a publisher BEGIN is modeled deferral; migration BEGIN contention or other errors are infrastructure failures. Budgets belong to one invocation, not durable restart accounting or wall-clock deadlines. Granted writer acquisition, at most two live child roles and finite scheduled interference do not establish general fairness, performance or crash composition. [Protocol](../docs/PROGRESS_PROTOCOL.md) · [Findings and raw evidence](../docs/PROGRESS_FINDINGS.md).
 
 ## Phase 15: complete source selection under publication
 

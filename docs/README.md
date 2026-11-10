@@ -39,6 +39,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 13. Resolution/retirement overlap | [Resolution protocol](RESOLUTION_PROTOCOL.md); freeze before implementation | [Resolution findings](RESOLUTION_FINDINGS.md) |
 | 14. Compact receipt recovery | [Compaction protocol](COMPACTION_PROTOCOL.md); freeze before implementation | [Compaction findings](COMPACTION_FINDINGS.md) |
 | 15. Concurrent source selection | [Selection protocol](SELECTION_PROTOCOL.md); freeze before implementation | [Selection findings](SELECTION_FINDINGS.md) |
+| 16. Bounded migration progress | [Progress protocol](PROGRESS_PROTOCOL.md); freeze before implementation | [Progress findings](PROGRESS_FINDINGS.md) |
 
 ## Rationale and history
 
@@ -49,4 +50,3 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 - [Documentation benchmark](DOCUMENTATION_BENCHMARK.md): official reference projects, observed documentation patterns, and application decisions.
 
 The README is the entry point; this index owns navigation. The research statement owns the argument, the experiment guide owns execution instructions, and the evidence map owns cross-study artifact lookup. Frozen protocols, measured manifests, and raw evidence retain their historical contents. A later finding refines a claim through a new record rather than silently changing an earlier result.
-

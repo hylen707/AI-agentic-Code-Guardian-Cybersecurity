@@ -1,6 +1,6 @@
 # Source guide
 
-The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, concurrent-caller, retirement-during-resolution, receipt-compaction, and concurrent-source-selection prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
+The source directory contains resource-authorization mechanisms, version-specific readers, revision ordering, persistent publication, request-retry, epoch-retirement, overlapping-admission, concurrent-caller, retirement-during-resolution, receipt-compaction, concurrent-source-selection, and bounded-migration-progress prototypes. Earlier implementations remain unchanged so their measured outcomes can be reproduced.
 
 | Module | What it authorizes | How to evaluate it |
 |---|---|---|
@@ -86,4 +86,12 @@ Publication still commits state, effect and full receipt together. Atomic compac
 
 The runtime publisher uses a checked nonblocking writer connection. Only exact code 5 at its BEGIN becomes a modeled busy attempt, and every retry preserves the original epoch/ID/bytes. Atomic publication and migration witnesses identify actual commits and selected/observed source counts. They measure history completeness and never repair an application receipt.
 
-`selection_worker.py` binds each live resume to role and stage. The controller retains all attempts, source sets, causal snapshots and original replays; a stdlib verifier independently reconstructs them. The full suite passes 353 tests, including 37 new tests. The measured comparison has 96 records, 48 live barriers and 224 normal child completions. One scheduled retry does not establish progress under repeated interference, fairness or latency. [Findings](../docs/SELECTION_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-15-complete-source-selection-under-publication).
+`selection_worker.py` binds each live resume to role and stage. The controller retains all attempts, source sets, causal snapshots and original replays; a stdlib verifier independently reconstructs them. The recorded Phase 15 suite passed 353 tests, including 37 new tests. The measured comparison has 96 records, 48 live barriers and 224 normal child completions. One scheduled retry does not establish progress under repeated interference, fairness or latency. [Findings](../docs/SELECTION_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-15-complete-source-selection-under-publication).
+
+## Finite migration invocation budgets
+
+`progress_store.py` reuses the unchanged validated and transactional selection scopes. It validates a positive integer budget and an attempt within that budget; `migrate_attempt` records which scope applies. Validated-budget uses literal source validation throughout, transactional-first holds the writer immediately, and validated-fallback takes that scope on its last allowed attempt. The controller owns the finite loop, so the budget is per invocation and is not durable after restart.
+
+`progress_worker.py` binds each resume to migration role, stage, attempt and budget. The controller places one remaining distinct publisher after each available selection and attempts every remaining old intent after stopping. Stop, final and query snapshots distinguish safe full-receipt retention after exhaustion from completed compact migration. The application never reconstructs a receipt from measurement witnesses.
+
+The measured policies complete 12/24 → 24/24 → 24/24 migrations and 42/42 → 0/42 → 16/42 runtime intents, preserving every actual commitment. The full suite passes 386 tests, including 33 new tests. Independent standard-library reconstruction checks 72 records, 104 live barriers, 260 normal child completions, ten criteria and thirteen source hashes. This grants writer acquisition and provides no fairness, latency or crash/restart-budget guarantee. [Findings](../docs/PROGRESS_FINDINGS.md) · [Experiment guide](../experiments/README.md#phase-16-bounded-migration-progress-under-repeated-changes).

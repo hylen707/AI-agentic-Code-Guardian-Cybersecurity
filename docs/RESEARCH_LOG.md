@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-10 — Preserving history does not finish a bounded invocation
+
+**Question and prospective design.** Phase 15 retries once after a source change. Froze the [progress protocol](PROGRESS_PROTOCOL.md) and 24-case manifest at `1c6328e80c8ef5ee07c00eb5bca447e958e44a71` before implementation. Crossed attempt budgets 1/2/3 with 0/1/2/4 old publication intents and two value patterns. Compared validated-only attempts, immediate transactional selection and a final-attempt transactional fallback. Every remaining declared intent is attempted even after migration stops.
+
+**Observation.** Migration completion is 12/24 → 24/24 → 24/24, while publication completion is 42/42 → 0/42 → 16/42. Validated-only exhausts twelve cases, retaining full history in the still-open namespace; its 28 stale attempts change nothing from their pause snapshots. Fallback stales sixteen attempts before taking its final writer scope. Actual committed runtime originals all replay: 42/42 → N/A (zero commits) → 16/16. All 48 seeded originals per policy replay; no history or current policy is lost.
+
+**Validation.** All 386 tests passed, including 33 new tests. Independent stdlib reconstruction matches 72 records, every counter and ten criteria, input/thirteen source hashes, 104 strict attempt-bound barriers and 260 normal child completions, with zero unexpected infrastructure errors. Tests reject cross-attempt resumes, changed retry identities, incorrect busy codes and broken causal prefixes; a consistently recorded wrong historical reply still fails the scientific criteria. [Findings and raw evidence](PROGRESS_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** Safe retention and completed compaction are different outcomes. The final writer scope finishes in the granted acquisition order by refusing additional old work. This is not a fairness, deadline or optimality claim, and the invocation budget does not survive restart. Next: define restart continuity for attempt accounting, truthful terminal results and preserved publication evidence before composing interruption with contention.
+
 ## 2026-11-07 — The source can become incomplete before an atomic commit
 
 **Question and prospective design.** Phase 14 selects migration input inside its writer transaction. What happens if that source is selected earlier and another publisher commits meanwhile? Froze the [protocol](SELECTION_PROTOCOL.md) and 24 cases before implementation. Compared cached selection, a separate refresh, a writer held through selection/commit and exact source validation inside a shorter write scope. The latter aborts a stale preparation before cleanup and retries from a fresh selection.
