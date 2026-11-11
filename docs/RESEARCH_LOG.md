@@ -2,6 +2,16 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-11 — Recover both the attempt limit and the completed outcome
+
+**Question and prospective design.** Phase 16 limits one uninterrupted invocation. Froze the [restart protocol](RESTART_PROTOCOL.md) and 28-case manifest at `948e246274c57df29419f16ab3e1281f3c31d462` before implementation. Crossed budgets 1/2, seven histories and two value patterns. Compared volatile charging, post-result durable charging, pre-work reservation with a limit-first decision, and the same reservation with target reconciliation first. Five fixed process-exit cuts compose with controlled source changes; each job retains its target and original intent identities.
+
+**Observation.** Actual admitted-attempt overruns occur in 12/28 → 8/28 → 0/28 → 0/28 cases. Durable reservation holds the bound but a limit-first recovery check misreports two committed targets as exhausted. Reconciliation avoids both errors; joint bound/truth counts are 16/28 → 20/28 → 26/28 → 28/28. Actual closure is 16/28 → 16/28 → 12/28 → 12/28 because conservative charging leaves four additional cases open. All actual runtime commitments replay, and no current policy or history is lost.
+
+**Validation.** All 422 tests passed, including 36 new tests. Independent standard-library event replay matches 112 records, every counter and ten diagnostic criteria, input/sixteen source hashes, 164 strict live barriers, 92 exact marked exits, 560 normal child completions and 652 child processes. Unexpected infrastructure errors are zero. Tests reject altered generation resumes, cut markers, counters, job bindings, causal prefixes and hidden invocations; consistently recorded invented history still fails criteria. [Findings and raw evidence](RESTART_FINDINGS.md#evidence-and-reproduction).
+
+**Interpretation and next decision.** Permission must be charged before a process can disappear; terminal recovery must reconcile an already committed target before announcing exhaustion. A reserved slot need not produce useful work, and weak-policy extra closures need not respect the budget. These are fixed sequential restarts with parent/OS survival. Next: let two processes resume the same job together and measure shared admission accounting and justified terminal outcomes before claiming concurrent ownership or fair acquisition.
+
 ## 2026-11-10 — Preserving history does not finish a bounded invocation
 
 **Question and prospective design.** Phase 15 retries once after a source change. Froze the [progress protocol](PROGRESS_PROTOCOL.md) and 24-case manifest at `1c6328e80c8ef5ee07c00eb5bca447e958e44a71` before implementation. Crossed attempt budgets 1/2/3 with 0/1/2/4 old publication intents and two value patterns. Compared validated-only attempts, immediate transactional selection and a final-attempt transactional fallback. Every remaining declared intent is attempted even after migration stops.

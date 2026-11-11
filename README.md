@@ -2,21 +2,21 @@
 
 **What binds an authorization decision to the object, value or request that takes effect?**
 
-CodeGuardian is a reproducible systems-security study of authorization across execution, recovery and repeated requests. Sixteen experimental stages test how authorization can diverge from the resource, value, or publication intent ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
+CodeGuardian is a reproducible systems-security study of authorization across execution, recovery and repeated requests. Seventeen experimental stages test how authorization can diverge from the resource, value, or publication intent ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
 
 [Documentation](docs/README.md) · [Research statement](docs/RESEARCH_STATEMENT.md) · [Evidence](docs/EVIDENCE.md) · [Reproduction guide](experiments/README.md) · [Threat model and limits](docs/LIMITATIONS.md)
 
 ## Research question and contribution
 
-Approving a pathname does not ensure that a later operation reaches the approved object. Holding that object open does not freeze its contents. Returning an approved version does not ensure that the version is current. Completing one file replacement does not ensure that content and approval can be recovered together. Recovering a coherent approval does not ensure that retrying a publication preserves later decisions. Removing a retry receipt does not retire the request that produced it. A separate final admission check can still become obsolete before the write commits. Preventing a duplicate effect still leaves the obligation to return the correct result to both callers. Deleting the original receipt can preserve mutation safety while making that historical result unavailable. A compact replacement must retain the right evidence and survive its own migration boundary. Its source selection must also include requests that commit before the old records are removed. Preserving that evidence does not ensure migration finishes within a finite retry budget.
+Approving a pathname does not ensure that a later operation reaches the approved object. Holding that object open does not freeze its contents. Returning an approved version does not ensure that the version is current. Completing one file replacement does not ensure that content and approval can be recovered together. Recovering a coherent approval does not ensure that retrying a publication preserves later decisions. Removing a retry receipt does not retire the request that produced it. A separate final admission check can still become obsolete before the write commits. Preventing a duplicate effect still leaves the obligation to return the correct result to both callers. Deleting the original receipt can preserve mutation safety while making that historical result unavailable. A compact replacement must retain the right evidence and survive its own migration boundary. Its source selection must also include requests that commit before the old records are removed. Preserving that evidence does not ensure migration finishes within a finite retry budget. Restart can also forget that budget or return an exhausted result for a target already committed.
 
 This repository makes those distinctions testable through:
 
-- **Counterexamples and bounded interventions:** lexical checks → resolved targets → file identity → descriptor binding → verified content → approval revisions → restart recovery → request identity → receipt retirement → overlapping admission → concurrent caller outcomes → resolution during retirement → compact receipt recovery → concurrent source completeness → bounded migration progress.
+- **Counterexamples and bounded interventions:** lexical checks → resolved targets → file identity → descriptor binding → verified content → approval revisions → restart recovery → request identity → receipt retirement → overlapping admission → concurrent caller outcomes → resolution during retirement → compact receipt recovery → concurrent source completeness → bounded migration progress → restart accounting and outcome continuity.
 - **Separate protection and usefulness measures:** resource effects, task goals, content delivery, request effects, and historical replies have explicit, different denominators.
 - **An auditable evidence trail:** protocols, case manifests, raw records, summaries, and source hashes retain both successful controls and failures.
 
-The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all sixteen stages.
+The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all seventeen stages.
 
 ## Quick reproduction
 
@@ -26,13 +26,13 @@ Use **Python 3.11+ on Linux**, with hardlink, symlink, FIFO, and `pread` support
 git clone https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity.git
 cd AI-agentic-Code-Guardian-Cybersecurity
 python -m unittest discover -s tests -v
-python experiments/run_progress_comparison.py \
-  --dataset experiments/tasks/progress-eval-v1/tasks.json \
+python experiments/run_restart_comparison.py \
+  --dataset experiments/tasks/restart-eval-v1/tasks.json \
   --base-commit "$(git rev-parse HEAD)" \
-  --freeze-commit 1c6328e80c8ef5ee07c00eb5bca447e958e44a71
+  --freeze-commit 948e246274c57df29419f16ab3e1281f3c31d462
 ```
 
-The latest study produces **72 case/policy records** under repeated source changes and finite attempt budgets. Validated-only migration finishes **12/24** cases while completing **42/42** old publication intents; exhausted cases retain their full receipts. Transactional-first finishes **24/24** migrations but completes **0/42** old intents. Switching to the writer scope on the final allowed attempt finishes **24/24** migrations and **16/42** publications. Every actual committed original remains available. All **386 unit tests** pass. See the [findings](docs/PROGRESS_FINDINGS.md), [raw evidence](docs/EVIDENCE.md#phase-16-finite-budgets-under-repeated-source-changes), and [reproduction guide](experiments/README.md).
+The latest study produces **112 case/policy records** with real process exits and restarts. A memory-only attempt counter exceeds its declared bound in **12/28** cases; charging after work returns still exceeds it in **8/28**. Durable reservation before work exceeds it in none, but testing the limit before the recovered target falsely reports two completed migrations as exhausted. Reservation with target reconciliation meets both contracts in **28/28** cases. Conservative charging also leaves four additional cases unfinished. All actual publication history remains supported, and **422 unit tests** pass. See the [findings](docs/RESTART_FINDINGS.md), [raw evidence](docs/EVIDENCE.md#phase-17-restart-accounting-and-terminal-truth), and [reproduction guide](experiments/README.md).
 
 ## Representative findings
 
@@ -53,6 +53,7 @@ Each row belongs to a different study. **Do not pool the counts into an overall 
 | Can a compact replacement preserve the original result through interruption? | Original replays: **20/20 → 12/20 → 12/20 → 20/20**; cleanup/summary-gap replies: **8/8 → 8/8 → 0/8 → 8/8**. | Equal aggregate replay totals conceal different loss windows. Atomic migration preserves typed summaries under the hash assumption. [Phase 14](docs/COMPACTION_FINDINGS.md) |
 | Does an atomic migration include every request that committed before closure? | Lost committed receipts in eight source gaps: **8 → 4 → 0 → 0**. | Transactional selection completes 6/20 old intents; validated selection completes 14/20 with eight migration retries. Receipt safety and useful work differ. [Phase 15](docs/SELECTION_FINDINGS.md) |
 | Does a finite retry limit preserve history and finish migration? | Migration completion: **12/24 → 24/24 → 24/24**; old publication completion: **42/42 → 0/42 → 16/42**. | Exhaustion retains full authority; the final-attempt writer scope trades old work for closure in the arranged schedule. [Phase 16](docs/PROGRESS_FINDINGS.md) |
+| Do the attempt limit and reported outcome survive restart? | Budget overruns: **12/28 → 8/28 → 0/28 → 0/28**; false exhaustion: **0 → 0 → 2 → 0**. | Reserving before work preserves the bound; reconciling the target preserves terminal truth. A slot may be spent without completing migration. [Phase 17](docs/RESTART_FINDINGS.md) |
 
 Resolved-target and hardlink studies supply the intermediate steps; their separate controls, counts, and raw artifacts are in the [evidence map](docs/EVIDENCE.md).
 
@@ -76,7 +77,7 @@ The runner controls replacement, mutation, approval-transition, process-exit, or
 
 These are curated, developer-visible mechanism studies with deterministic schedules. They do not estimate concurrent race probability, provide a production sandbox, or establish live-agent task performance. The content reader validates small UTF-8 values and may inspect rejected bytes. The revision authority adds a receipt-time contract for cooperating publishers in one process; it can delay updates and does not guarantee freshness after receipt. See the [threat model and validity limits](docs/LIMITATIONS.md).
 
-The latest study separates safe receipt retention from completed migration under an explicit attempt limit. The next question is restart continuity: can a migration restart preserve its attempt budget and report a truthful outcome without losing earlier publication history? Many-caller histories, fairness, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
+The latest study separates admitted permission, useful work, actual closure and the truth of a recovered response. The next question is simultaneous resumption: can two processes resume the same fixed job while sharing its admission limit and returning justified terminal answers? General many-caller histories, fairness, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
 
 ## Read further
 

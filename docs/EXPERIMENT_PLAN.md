@@ -1,6 +1,6 @@
 # Study map and evaluation standards
 
-**Status:** living overview through Phase 16, 2026-11-10 (Asia/Seoul). Frozen protocols govern their respective runs.
+**Status:** living overview through Phase 17, 2026-11-11 (Asia/Seoul). Frozen protocols govern their respective runs.
 
 This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) for per-study counts and raw artifacts, the [experiment guide](../experiments/README.md) for commands, and [threat model and limits](LIMITATIONS.md) for assumptions and validity threats.
 
@@ -24,6 +24,7 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 14. Compact receipt migration | Twenty-six cases, four modes; 64 declared exits and 40 normal completions | Supported historical replay/conflict, source representation, current policy and migration gaps | [Compaction protocol](COMPACTION_PROTOCOL.md) | [Compaction findings](COMPACTION_FINDINGS.md) |
 | 15. Concurrent source selection | Twenty-four cases, four modes; 48 forced barriers and 224 child completions | Selected/actual source membership, committed-history replay, publisher refusal and migration retry | [Selection protocol](SELECTION_PROTOCOL.md) | [Selection findings](SELECTION_FINDINGS.md) |
 | 16. Bounded migration progress | Twenty-four cases, three policies; 104 barriers and 260 child completions | Finite attempt usage, closure, equal publication intents, full/compact original authority | [Progress protocol](PROGRESS_PROTOCOL.md) | [Progress findings](PROGRESS_FINDINGS.md) |
+| 17. Restart accounting and outcome | Twenty-eight cases, four policies; 92 marked exits and 560 normal completions | Admission bounds, counter recovery, actual closure, terminal truth and original authority | [Restart protocol](RESTART_PROTOCOL.md) | [Restart findings](RESTART_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -49,7 +50,7 @@ Raw records precede interpretation. Each study saves input/source hashes, enviro
 
 ## Next protocol, not yet executed
 
-Phase 16 tests repeated source changes with an explicit per-invocation attempt budget. The next protocol should interrupt and restart migration, measuring whether attempt accounting and truthful terminal status survive while earlier publication history remains authoritative. Finite completion after granted writer acquisition does not imply starvation freedom or a production latency bound. Mid-storage-operation cuts, failures during recovery, many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the measured claim.
+Phase 17 composes fixed exits and repeated source changes for one restarting job. The next protocol should let two processes resume that same job simultaneously, measuring shared admission accounting, actual source work and justified terminal outcomes separately. Sequential restart continuity does not imply concurrent ownership or fair acquisition. Mid-storage-operation cuts, failures during recovery, general many-caller histories, capture-time mutation, creation, resource limits, and live-agent evaluation remain separate obligations. Define success criteria and error accounting before extending the claim.
 
 ## Documentation and evidence integrity
 
@@ -124,3 +125,11 @@ The [progress protocol](PROGRESS_PROTOCOL.md) freezes 24 cases across three poli
 Count **migration completion / 24 cases** (12 → 24 → 24), **publication completion / 42 equal intents** (42 → 0 → 16), refusals (0 → 42 → 26), and **original replay / actual runtime commits** (42/42 → N/A → 16/16) separately. Validated-only finishes iff N<B in the injected schedule; its exhausted cases retain full receipts in epoch 1. Full authority is preservation, not completed compaction. Fallback takes the writer on the final attempt and completes under the granted acquisition order; its 26 refusals remain a useful-work cost.
 
 Require the 48 seeded originals per policy, changed-intent conflicts for all actual commits, unavailable exact/changed pairs for never-committed closed IDs, and an unchanged database after all queries. Require 28/0/16 inert stale rollbacks, 0/18/12 exact busy retries, final summary/full row totals 32/58 → 48/0 → 64/0, current-history and source witnesses, all ten criteria, 104 strict barriers, 260 normal child completions, input/thirteen source hashes and zero unexpected errors. The attempt budget is not restart-persistent and says nothing about elapsed deadlines or general acquisition fairness. [Findings](PROGRESS_FINDINGS.md).
+
+## Phase 17: admitted permission and truthful recovery
+
+The [restart protocol](RESTART_PROTOCOL.md) freezes budgets 1/2, seven schedules and two value patterns across four policies. An admission is permission committed before preparation, including a slot whose process exits before selection. Count actual admissions, completed source selections and committed migration separately. Compare memory-only charging, durable charging after the returned result, durable reservation with a limit-first recovery check, and the same reservation with target reconciliation first.
+
+Require admission totals 54 → 50 → 38 → 38; overrun cases 12/28 → 8/28 → 0/28 → 0/28; actual closure 16/28 → 16/28 → 12/28 → 12/28; false exhaustion 0 → 0 → 2 → 0; joint bound/truth cases 16/28 → 20/28 → 26/28 → 28/28. Four additional reserved cases remain open after uncertain slots are consumed. Do not claim those slots completed work or that extra weak-policy closures respected the bound.
+
+Attempt all 112 equal runtime intents per policy, including work remaining after the terminal response. Require original runtime replies 48/48 → 48/48 → 64/64 → 64/64, all 56 seed originals per policy, correct changed-intent conflicts and unavailable never-committed IDs, and inert queries. Require all ten diagnostic criteria, 164 strict barriers, 92 exact marked exits, 560 normal child completions, 652 processes, full/compact authority and source/counter continuity, input/sixteen source hashes and zero unexpected errors. Codes other than the marked 73, arbitrary busy and missing traces are infrastructure failures. This fixes one job and sequential process generations, with the parent/OS alive. [Findings](RESTART_FINDINGS.md).

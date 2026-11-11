@@ -40,6 +40,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 14. Compact receipt recovery | [Compaction protocol](COMPACTION_PROTOCOL.md); freeze before implementation | [Compaction findings](COMPACTION_FINDINGS.md) |
 | 15. Concurrent source selection | [Selection protocol](SELECTION_PROTOCOL.md); freeze before implementation | [Selection findings](SELECTION_FINDINGS.md) |
 | 16. Bounded migration progress | [Progress protocol](PROGRESS_PROTOCOL.md); freeze before implementation | [Progress findings](PROGRESS_FINDINGS.md) |
+| 17. Restart accounting and outcome | [Restart protocol](RESTART_PROTOCOL.md); freeze before implementation | [Restart findings](RESTART_FINDINGS.md) |
 
 ## Rationale and history
 

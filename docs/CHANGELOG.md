@@ -4,6 +4,14 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-11 — Migration budget and outcome continuity after restart
+
+- Froze the restart protocol and 28-case manifest at `948e246274c57df29419f16ab3e1281f3c31d462` before Phase 17 implementation and measurement.
+- Added fixed-job volatile, post-accounted and reserved counters; limit-first versus target-first recovery; marked generation-bound worker cuts; source-change/restart control; an independent stdlib verifier; and 36 regression tests. Earlier implementation and retained evidence bytes remain unchanged.
+- Recorded 112 observations. Budget-overrun cases are 12/28 → 8/28 → 0/28 → 0/28. Limit-first recovery falsely reports two completed targets as exhausted; target reconciliation avoids that error. Joint bound/truth cases are 16/28 → 20/28 → 26/28 → 28/28. Conservative reservation leaves four additional cases open, with all actual publication history supported.
+- All 422 tests passed. Independent replay matched every counter and ten diagnostic criteria, input/sixteen source hashes, 164 strict live barriers, 92 marked code-73 exits, 560 normal child completions and 652 processes, with zero unexpected infrastructure errors.
+- Updated the overview, research argument, evidence index, architecture, study map, limits and reproduction guide. Admission permission, actual closure, terminal truth and useful work remain separate; fixed-job sequential generations and parent/OS survival bound the claim. [Findings and evidence](RESTART_FINDINGS.md).
+
 ## 2026-11-10 — Bounded migration progress under repeated publication
 
 - Froze the progress protocol and 24-case manifest at `1c6328e80c8ef5ee07c00eb5bca447e958e44a71` before Phase 16 implementation and measurement.

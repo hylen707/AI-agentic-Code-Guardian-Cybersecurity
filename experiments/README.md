@@ -12,9 +12,29 @@ Use Python 3.11+ and the standard library on Linux for the current full suite an
 python -m unittest discover -s tests -v
 ```
 
-The historical Phase 6–15 runs passed 67, 85, 111, 141, 176, 209, 244, 283, 316 and 353 tests; the current Phase 16 run passes 386. Retained overlap controllers use pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
+The historical Phase 6–16 runs passed 67, 85, 111, 141, 176, 209, 244, 283, 316, 353 and 386 tests; the current Phase 17 run passes 422. Retained overlap controllers use pipe selectors and numeric SQLite error metadata; older standalone runners retain their recorded requirements. Unit tests include injected failures and regression checks; they are separate from experiment sample counts.
 
 The commands below run the currently checked-out code. `--base-commit "$(git rev-parse HEAD)"` records that checkout's starting revision; the runner also hashes its executed source files. Use a clean checkout for an auditable rerun. Historical starting revisions and commands remain in the linked summaries. Neither `--base-commit` nor `--freeze-commit` checks out, downloads, or verifies a revision: both are caller-supplied provenance labels. The freeze value identifies the historical prospective design, not the current implementation.
+
+## Phase 17: restart accounting and truthful outcomes
+
+```bash
+python experiments/run_restart_comparison.py --dataset experiments/tasks/restart-eval-v1/tasks.json --base-commit "$(git rev-parse HEAD)" --freeze-commit 948e246274c57df29419f16ab3e1281f3c31d462 --output-dir /tmp/codeguardian-restart
+```
+
+Twenty-eight cases cross budgets 1/2, seven schedules and update/revocation patterns. `volatile_budget`, `post_accounting`, `reserved_limit_first` and `reserved_reconcile` produce 112 records. Admission is permission committed before preparation, including a slot whose process exits before selection. Job policy/budget/target bindings remain fixed across generations. Five named cuts use exact markers and `os._exit(73)`; only stale-result cuts arm up to two exits. Consumed reservations can prevent a later cut from being reached.
+
+Budget-overrun cases are 12/28 → 8/28 → 0/28 → 0/28. The limit-first reservation falsely reports two committed targets as exhausted; reconciliation avoids that error. Actual closure remains 16/28 → 16/28 → 12/28 → 12/28 because conservative charging leaves four additional cases open. Each policy still attempts all 112 declared old intents. All actual runtime originals replay and queries leave current state unchanged. All ten study criteria include the expected weak-policy violations; they do not make every policy contract-compliant.
+
+Verify retained evidence:
+
+```bash
+python experiments/verify_restart_results.py --summary experiments/results/2026-11-11T01-35-18-483374Z-restart-v1-summary.json --dataset experiments/tasks/restart-eval-v1/tasks.json
+```
+
+For a fresh run, substitute its new summary filename. Optional `--output /tmp/codeguardian-restart-verification.json` exclusively creates a verification report. The verifier imports only the standard library and independently replays counters, admissions, sources, process prefixes, strict barrier bindings, publication history, current delivery and terminal truth. Require all ten criteria, input/sixteen source hashes, 164 live barriers, 92 exact code-73 exits, 560 normal child completions, 652 child processes and zero unexpected errors. Arbitrary exits, busy responses, malformed streams and timeouts remain visible failures. Both runner and verifier return nonzero if criteria fail.
+
+This is one fixed job with sequential migrating generations and at most one publisher during a selection pause. Parent/OS survival, trusted metadata, conservative charging and a direct namespace completion check bound the result. Simultaneous resumers, fair acquisition, elapsed deadlines and host power loss remain untested. [Protocol](../docs/RESTART_PROTOCOL.md) · [Findings and raw evidence](../docs/RESTART_FINDINGS.md).
 
 ## Phase 16: bounded migration progress under repeated changes
 

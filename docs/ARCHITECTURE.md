@@ -1,6 +1,6 @@
 # Architecture: decisions, resources, and execution
 
-**Status:** implemented components through Phase 16. Updated 2026-11-10 (Asia/Seoul).
+**Status:** implemented components through Phase 17. Updated 2026-11-11 (Asia/Seoul).
 
 ## System boundary
 
@@ -56,6 +56,10 @@ CodeGuardian separates proposal classification from execution and observation. T
 | `experiments/progress_worker.py` | One numbered migration or publication attempt | Resume binds role, stage, attempt and budget |
 | `experiments/run_progress_comparison.py` | Repeated source changes and a bounded loop | Stop before remaining work; equal declared intents; full/compact authority |
 | `experiments/verify_progress_results.py` | Independent bounded-history reconstruction | Causal continuity, finite progress, supported replies and thirteen source hashes |
+| `src/restart_store.py` | Fixed-job accounting across process generations | Memory/post-accounting/reserved admission; limit-first versus target reconciliation |
+| `experiments/restart_worker.py` | One restarting invocation and named exit cut | Exact code 73; generation/attempt/budget-bound resumes |
+| `experiments/run_restart_comparison.py` | Restart plus source-change composition | Admission versus selection counts, recovered outcomes, complete causal captures |
+| `experiments/verify_restart_results.py` | Independent standard-library event replay | Counter recovery, exit prefixes, terminal truth and sixteen source hashes |
 
 ## Phase 5 ordering
 
@@ -193,4 +197,14 @@ The progress wrapper reuses unchanged Phase 15 validated and transactional selec
 
 Each attempt pauses after selection with a resume bound to role, stage, attempt and budget. One remaining distinct epoch-1 intent attempts publication there. A changed source rolls validation back without cleanup. A held writer yields numeric publisher busy, followed by an identical-intent retry after release. The controller saves the stop snapshot before attempting all remaining intents, so early closure cannot silently remove their denominator and exhaustion cannot hide an extra migration.
 
-Validated-budget finishes 12/24 migrations and all 42/42 runtime publications; its twelve exhausted namespaces remain open with full authority. Transactional-first finishes 24/24 migrations and 0/42 publications; fallback finishes 24/24 and 16/42. Current delivery follows actual commit history throughout. Original and changed-intent queries use application receipts only and leave all final states unchanged. The stdlib verifier reconstructs every source set, attempt plan, child event, transaction witness and causal snapshot. Coverage is 72 records, 104 strict barriers, 260 normal child completions, ten criteria and thirteen source hashes. The full suite passes 386 tests, including 33 new tests. This is finite scheduled progress after granted writer acquisition, not general fairness or latency. [Protocol](PROGRESS_PROTOCOL.md) · [Findings](PROGRESS_FINDINGS.md).
+Validated-budget finishes 12/24 migrations and all 42/42 runtime publications; its twelve exhausted namespaces remain open with full authority. Transactional-first finishes 24/24 migrations and 0/42 publications; fallback finishes 24/24 and 16/42. Current delivery follows actual commit history throughout. Original and changed-intent queries use application receipts only and leave all final states unchanged. The stdlib verifier reconstructs every source set, attempt plan, child event, transaction witness and causal snapshot. Coverage is 72 records, 104 strict barriers, 260 normal child completions, ten criteria and thirteen source hashes. The recorded Phase 16 suite passed 386 tests, including 33 new tests. This is finite scheduled progress after granted writer acquisition, not general fairness or latency. [Protocol](PROGRESS_PROTOCOL.md) · [Findings](PROGRESS_FINDINGS.md).
+
+## Phase 17: preserve permission and reconcile a lost outcome
+
+The restart store fixes one job's policy, budget and target epoch. A writer transaction checks those bindings, admits an attempt and records its observer row. Reserved modes also increment durable used there; volatile mode keeps its count in process memory, and post-accounting increments durable used only after the validated migration returns. Admission is the budget unit even when the process exits before selection.
+
+Each process may run several attempts. The controller restarts the same job after an exact marked exit, preserving invocation and barrier snapshots. Named cuts occur after admission, after a stale result, after accounting, before COMMIT and after COMMIT. One schedule arms two stale-result exits; a consumed reserved budget can prevent reaching the second cut. A terminal response ends migration before remaining declared publishers are drained.
+
+Durable admission reservation eliminates the twelve/eight overrun cases seen with volatile/post-accounted counters. Checking its limit before the active epoch nevertheless misreports two committed targets as exhausted. Reconciliation reads direct application state first and does not consult observers or admit another attempt for a completed target. Both contracts hold in 28/28 selected cases. Four additional reserved cases stay open because uncertain slots are not refunded; actual migration completion remains separate from supported history and truthful outcomes.
+
+Coverage is 112 records, 164 strict live barriers, 92 marked exits, 560 normal child completions and 652 processes. Independent stdlib replay checks every job counter, source transition, causal prefix, original reply and all ten criteria, plus sixteen source hashes. The full suite passes 422 tests, including 36 new tests. Parent/OS survival, a single migrator and a fixed namespace target bound the result. Simultaneous resumers, fair acquisition, power loss and elapsed deadlines remain untested. [Protocol](RESTART_PROTOCOL.md) · [Findings](RESTART_FINDINGS.md).
