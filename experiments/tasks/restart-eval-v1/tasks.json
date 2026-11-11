@@ -1,0 +1,33 @@
+{
+  "schema_version": "restart-eval-v1",
+  "cases": [
+    {"case_id":"b1-quiet-updates","budget":1,"schedule":"quiet_control","pattern":"updates"},
+    {"case_id":"b1-quiet-revocations","budget":1,"schedule":"quiet_control","pattern":"revocations"},
+    {"case_id":"b1-interference-updates","budget":1,"schedule":"interference_control","pattern":"updates"},
+    {"case_id":"b1-interference-revocations","budget":1,"schedule":"interference_control","pattern":"revocations"},
+    {"case_id":"b1-admission-updates","budget":1,"schedule":"after_admission","pattern":"updates"},
+    {"case_id":"b1-admission-revocations","budget":1,"schedule":"after_admission","pattern":"revocations"},
+    {"case_id":"b1-stale-updates","budget":1,"schedule":"after_stale","pattern":"updates"},
+    {"case_id":"b1-stale-revocations","budget":1,"schedule":"after_stale","pattern":"revocations"},
+    {"case_id":"b1-accounting-updates","budget":1,"schedule":"after_accounting","pattern":"updates"},
+    {"case_id":"b1-accounting-revocations","budget":1,"schedule":"after_accounting","pattern":"revocations"},
+    {"case_id":"b1-precommit-updates","budget":1,"schedule":"before_commit","pattern":"updates"},
+    {"case_id":"b1-precommit-revocations","budget":1,"schedule":"before_commit","pattern":"revocations"},
+    {"case_id":"b1-postcommit-updates","budget":1,"schedule":"after_commit","pattern":"updates"},
+    {"case_id":"b1-postcommit-revocations","budget":1,"schedule":"after_commit","pattern":"revocations"},
+    {"case_id":"b2-quiet-updates","budget":2,"schedule":"quiet_control","pattern":"updates"},
+    {"case_id":"b2-quiet-revocations","budget":2,"schedule":"quiet_control","pattern":"revocations"},
+    {"case_id":"b2-interference-updates","budget":2,"schedule":"interference_control","pattern":"updates"},
+    {"case_id":"b2-interference-revocations","budget":2,"schedule":"interference_control","pattern":"revocations"},
+    {"case_id":"b2-admission-updates","budget":2,"schedule":"after_admission","pattern":"updates"},
+    {"case_id":"b2-admission-revocations","budget":2,"schedule":"after_admission","pattern":"revocations"},
+    {"case_id":"b2-stale-updates","budget":2,"schedule":"after_stale","pattern":"updates"},
+    {"case_id":"b2-stale-revocations","budget":2,"schedule":"after_stale","pattern":"revocations"},
+    {"case_id":"b2-accounting-updates","budget":2,"schedule":"after_accounting","pattern":"updates"},
+    {"case_id":"b2-accounting-revocations","budget":2,"schedule":"after_accounting","pattern":"revocations"},
+    {"case_id":"b2-precommit-updates","budget":2,"schedule":"before_commit","pattern":"updates"},
+    {"case_id":"b2-precommit-revocations","budget":2,"schedule":"before_commit","pattern":"revocations"},
+    {"case_id":"b2-postcommit-updates","budget":2,"schedule":"after_commit","pattern":"updates"},
+    {"case_id":"b2-postcommit-revocations","budget":2,"schedule":"after_commit","pattern":"revocations"}
+  ]
+}
