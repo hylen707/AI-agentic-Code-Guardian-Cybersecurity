@@ -1,0 +1,20 @@
+{
+  "restart_baseline": {
+    "cases": 7,
+    "caller_errors": 3,
+    "retry_later": 0,
+    "budget_snapshots": 2,
+    "converged_cases": 7,
+    "excess_admissions": 0,
+    "history_failures": 0
+  },
+  "reconciled_resumption": {
+    "cases": 7,
+    "caller_errors": 0,
+    "retry_later": 2,
+    "budget_snapshots": 2,
+    "converged_cases": 7,
+    "excess_admissions": 0,
+    "history_failures": 0
+  }
+}

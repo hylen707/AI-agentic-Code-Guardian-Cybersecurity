@@ -2,6 +2,14 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-17 — Resuming a fixed job with two callers
+
+**Question.** Phase 17 leaves simultaneous resumption open. Source inspection identified an unhandled `already_migrated` result between reservation and selection, plus writer contention treated as an exception. This follow-up is explicitly exploratory, with no prospective freeze.
+
+**Intervention and evidence.** Added a separate caller loop that accepts completed peer work, re-reads the durable target and classifies numeric `SQLITE_BUSY` as nonterminal. Four ordering families and budgets 1/2 yield seven schedules per arm (two admitted selections require budget 2). Fourteen raw case/arm records retain all original responses and two additional process responses each. Baseline caller exceptions are 3/14 versus 0/14; two contention replies become `retry_later`. Both arms retain the shared bound and seeded history in 7/7 cases. The controller grants a completing writer, so eventual closure here does not establish fairness.
+
+**Validation and next question.** All 430 tests passed on Linux/Python 3.14.4, including eight new regressions; SQLite connection warnings are retained in the full log. Independent structural/outcome checks validate the grid, barrier identities, reservations, effect and migration witness, replay/conflict answers, and raw/source hashes. Admission exhaustion remains a snapshot, not proof that an admitted peer cannot complete. Next: freeze a combined overlap/exit/source-change study and reconstruct per-response live histories. [Detailed contract, evidence and limitations](RESUMPTION_FINDINGS.md).
+
 ## 2026-11-11 — Recover both the attempt limit and the completed outcome
 
 **Question and prospective design.** Phase 16 limits one uninterrupted invocation. Froze the [restart protocol](RESTART_PROTOCOL.md) and 28-case manifest at `948e246274c57df29419f16ab3e1281f3c31d462` before implementation. Crossed budgets 1/2, seven histories and two value patterns. Compared volatile charging, post-result durable charging, pre-work reservation with a limit-first decision, and the same reservation with target reconciliation first. Five fixed process-exit cuts compose with controlled source changes; each job retains its target and original intent identities.

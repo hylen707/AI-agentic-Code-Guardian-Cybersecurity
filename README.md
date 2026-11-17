@@ -32,7 +32,9 @@ python experiments/run_restart_comparison.py \
   --freeze-commit 948e246274c57df29419f16ab3e1281f3c31d462
 ```
 
-The latest study produces **112 case/policy records** with real process exits and restarts. A memory-only attempt counter exceeds its declared bound in **12/28** cases; charging after work returns still exceeds it in **8/28**. Durable reservation before work exceeds it in none, but testing the limit before the recovered target falsely reports two completed migrations as exhausted. Reservation with target reconciliation meets both contracts in **28/28** cases. Conservative charging also leaves four additional cases unfinished. All actual publication history remains supported, and **422 unit tests** pass. See the [findings](docs/RESTART_FINDINGS.md), [raw evidence](docs/EVIDENCE.md#phase-17-restart-accounting-and-terminal-truth), and [reproduction guide](experiments/README.md).
+The latest study produces **112 case/policy records** with real process exits and restarts. A memory-only attempt counter exceeds its declared bound in **12/28** cases; charging after work returns still exceeds it in **8/28**. Durable reservation before work exceeds it in none, but testing the limit before the recovered target falsely reports two completed migrations as exhausted. Reservation with target reconciliation meets both contracts in **28/28** cases. Conservative charging also leaves four additional cases unfinished. All actual publication history remains supported, and Phase 17's recorded validation passed **422 unit tests**. See the [findings](docs/RESTART_FINDINGS.md), [raw evidence](docs/EVIDENCE.md#phase-17-restart-accounting-and-terminal-truth), and [reproduction guide](experiments/README.md).
+
+An exploratory [simultaneous-resumption pilot](docs/RESUMPTION_FINDINGS.md) adds 14 two-process case/arm records after Phase 17. The original loop produces three caller exceptions; accepting an already committed target and returning explicit retry responses for writer contention produces none in the seven paired schedules. Both arms retain their shared budget and historical publication. The current suite passes **430 tests**. This pilot was developed after source inspection and has not been prospectively frozen.
 
 ## Representative findings
 
@@ -77,7 +79,7 @@ The runner controls replacement, mutation, approval-transition, process-exit, or
 
 These are curated, developer-visible mechanism studies with deterministic schedules. They do not estimate concurrent race probability, provide a production sandbox, or establish live-agent task performance. The content reader validates small UTF-8 values and may inspect rejected bytes. The revision authority adds a receipt-time contract for cooperating publishers in one process; it can delay updates and does not guarantee freshness after receipt. See the [threat model and validity limits](docs/LIMITATIONS.md).
 
-The latest study separates admitted permission, useful work, actual closure and the truth of a recovered response. The next question is simultaneous resumption: can two processes resume the same fixed job while sharing its admission limit and returning justified terminal answers? General many-caller histories, fairness, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
+The latest study separates admitted permission, useful work, actual closure and the truth of a recovered response. The simultaneous-resumption pilot supplies initial two-caller counterexamples and an intervention. The next question combines those overlaps with process exits and repeated source changes under a prospectively frozen protocol. General many-caller histories, fairness, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
 
 ## Read further
 

@@ -4,6 +4,12 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-17 — Simultaneous resumption pilot
+
+- Added a separate reconciled caller loop over Phase 17's unchanged durable admission ledger. Already migrated targets are accepted; numeric writer contention returns nonterminal `retry_later`; other storage failures remain errors.
+- Recorded 14 exploratory case/arm observations across seven two-process schedules per arm. Original caller exceptions are 3/14 for the baseline and 0/14 for the intervention, with two explicit retry replies. Both arms preserve the attempt bound and seeded historical reply in 7/7 cases; two post-overlap callers per case observe completion.
+- All 430 tests passed on Linux/Python 3.14.4, including eight added regressions. The retained test log includes SQLite connection warnings. An independent stdlib structural/outcome checker validates the declared grid, reservations, barriers, closure, effects, history, and raw/source hashes. This post hoc pilot has no prospective protocol freeze and is separate from the seventeen completed stages. [Findings and reproduction](RESUMPTION_FINDINGS.md).
+
 ## 2026-11-11 — Migration budget and outcome continuity after restart
 
 - Froze the restart protocol and 28-case manifest at `948e246274c57df29419f16ab3e1281f3c31d462` before Phase 17 implementation and measurement.

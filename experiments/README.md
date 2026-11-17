@@ -334,3 +334,14 @@ python experiments/run_revision_comparison.py --dataset experiments/tasks/revisi
 Nine cases run in `snapshot_only`, `recheck_then_release`, and `coordinated_release` arms: 27 raw journal records. Expect invalid receipts 5/5 → 2/5 → 0/5 across five post-capture transitions, valid receipts 3/9 → 3/9 → 5/9, and denials 1 → 4 → 4. Coordinated release defers two publication attempts; all eight requested publications per arm eventually commit. Two valid coordinated receipts become obsolete afterward. Require all nine summary criteria and zero infrastructure errors. The Phase 7 test run passed 85 tests.
 
 The [analysis plan](../docs/REVISION_PROTOCOL.md) was frozen before the recorded measurement, after draft implementation existed. [Findings](../docs/REVISION_FINDINGS.md) link raw records, source hashes, and artifact verification. Use `--output-dir` for a separate rerun directory. No distributed coordination, immediate revocation, or crash rollback is claimed.
+
+## Simultaneous-resumption exploratory pilot
+
+This follow-up uses seven two-process schedules for each of two arms. It is post hoc and separate from the seventeen completed studies. Original exceptions remain in the 14 records; two further processes per record test convergence after the initial overlap settles.
+
+```bash
+python3 experiments/run_resumption_comparison.py --output /tmp/codeguardian-resumption-v1.jsonl
+python3 experiments/verify_resumption_results.py /tmp/codeguardian-resumption-v1.jsonl
+```
+
+The runner also writes a `.metadata.json` sidecar. The independent checker validates raw/source hashes and the fixed grid. Infrastructure failures abort rather than disappear from a denominator. See [response semantics, findings, test log and limits](../docs/RESUMPTION_FINDINGS.md).
