@@ -1,0 +1,925 @@
+{
+  "schema_version": "reclaim-eval-v1",
+  "cases": [
+    {
+      "case_id": "no_reclaim-updates",
+      "scenario": "no_reclaim",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "no_reclaim-revocations",
+      "scenario": "no_reclaim",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "stale_before_select-updates",
+      "scenario": "stale_before_select",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "before_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "stale_before_select-revocations",
+      "scenario": "stale_before_select",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "before_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "reclaim_after_selection-updates",
+      "scenario": "reclaim_after_selection",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "reclaim_after_selection-revocations",
+      "scenario": "reclaim_after_selection",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "reclaim_after_fence-updates",
+      "scenario": "reclaim_after_fence",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_fence"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "reclaim_after_fence-revocations",
+      "scenario": "reclaim_after_fence",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_fence"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "reclaim_before_commit-updates",
+      "scenario": "reclaim_before_commit",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "reclaim_before_commit-revocations",
+      "scenario": "reclaim_before_commit",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_commit-updates",
+      "scenario": "exit_before_commit",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_commit-revocations",
+      "scenario": "exit_before_commit",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_commit-updates",
+      "scenario": "exit_after_commit",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_commit"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_commit-revocations",
+      "scenario": "exit_after_commit",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_commit"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "source_changed-updates",
+      "scenario": "source_changed",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": "approved=새 버전\n"
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "source_changed-revocations",
+      "scenario": "source_changed",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": null
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "aba_owner-updates",
+      "scenario": "aba_owner",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 2,
+          "owner": 1
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "aba_owner-revocations",
+      "scenario": "aba_owner",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 2,
+          "owner": 1
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "stale_recovery_cas-updates",
+      "scenario": "stale_recovery_cas",
+      "pattern": "updates",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "before_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 3
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "stale_recovery_cas-revocations",
+      "scenario": "stale_recovery_cas",
+      "pattern": "revocations",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "lease": "initial",
+          "pauses": [
+            "before_selection"
+          ]
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 2
+        },
+        {
+          "op": "reclaim",
+          "expected_token": 1,
+          "owner": 3
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "lease": "current",
+          "pauses": []
+        }
+      ]
+    }
+  ]
+}
