@@ -1,0 +1,1331 @@
+{
+  "schema_version": "resume-eval-v1",
+  "cases": [
+    {
+      "case_id": "admission_finish-b1-updates",
+      "scenario": "admission_finish",
+      "budget": 1,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "admission_finish-b1-revocations",
+      "scenario": "admission_finish",
+      "budget": 1,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "admission_finish-b2-updates",
+      "scenario": "admission_finish",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "admission_finish-b2-revocations",
+      "scenario": "admission_finish",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "selection_finish-b2-updates",
+      "scenario": "selection_finish",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "selection_finish-b2-revocations",
+      "scenario": "selection_finish",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "writer_busy-b1-updates",
+      "scenario": "writer_busy",
+      "budget": 1,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "writer_busy-b1-revocations",
+      "scenario": "writer_busy",
+      "budget": 1,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "writer_busy-b2-updates",
+      "scenario": "writer_busy",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "writer_busy-b2-revocations",
+      "scenario": "writer_busy",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_admission-b1-updates",
+      "scenario": "exit_admission",
+      "budget": 1,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_admission-b1-revocations",
+      "scenario": "exit_admission",
+      "budget": 1,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_admission-b2-updates",
+      "scenario": "exit_admission",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_admission-b2-revocations",
+      "scenario": "exit_admission",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_stale-b1-updates",
+      "scenario": "exit_stale",
+      "budget": 1,
+      "pattern": "updates",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": "approved=안전 ✓\n"
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection",
+            "after_stale"
+          ]
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_stale-b1-revocations",
+      "scenario": "exit_stale",
+      "budget": 1,
+      "pattern": "revocations",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": null
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection",
+            "after_stale"
+          ]
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_stale-b2-updates",
+      "scenario": "exit_stale",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": "approved=version-c\n"
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection",
+            "after_stale"
+          ]
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_stale-b2-revocations",
+      "scenario": "exit_stale",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": null
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection",
+            "after_stale"
+          ]
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_commit-b1-updates",
+      "scenario": "exit_before_commit",
+      "budget": 1,
+      "pattern": "updates",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": ""
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_commit-b1-revocations",
+      "scenario": "exit_before_commit",
+      "budget": 1,
+      "pattern": "revocations",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": null
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_commit-b2-updates",
+      "scenario": "exit_before_commit",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": "approved=안전 ✓\n"
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_commit-b2-revocations",
+      "scenario": "exit_before_commit",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": null
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_commit-b1-updates",
+      "scenario": "exit_after_commit",
+      "budget": 1,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_commit-b1-revocations",
+      "scenario": "exit_after_commit",
+      "budget": 1,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_commit-b2-updates",
+      "scenario": "exit_after_commit",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_commit-b2-revocations",
+      "scenario": "exit_after_commit",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "both_selected_exit-b2-updates",
+      "scenario": "both_selected_exit",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection",
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "both_selected_exit-b2-revocations",
+      "scenario": "both_selected_exit",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": null,
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection",
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "both_selected_source_exit-b2-updates",
+      "scenario": "both_selected_source_exit",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": "approved=version-c\n"
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection",
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "both_selected_source_exit-b2-revocations",
+      "scenario": "both_selected_source_exit",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": null
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection",
+            "before_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "busy_reserved_exit-b2-updates",
+      "scenario": "busy_reserved_exit",
+      "budget": 2,
+      "pattern": "updates",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": ""
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "exit"
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "busy_reserved_exit-b2-revocations",
+      "scenario": "busy_reserved_exit",
+      "budget": 2,
+      "pattern": "revocations",
+      "publication": {
+        "epoch": 1,
+        "request_id": "source-change",
+        "content_utf8": null
+      },
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "pauses": [
+            "after_selection"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "pauses": [
+            "before_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "exit"
+        },
+        {
+          "op": "publish"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 4,
+          "pauses": []
+        }
+      ]
+    }
+  ]
+}
