@@ -137,3 +137,7 @@ Attempt all 112 equal runtime intents per policy, including work remaining after
 ## Phase 18: overlap, interruption and source change
 
 The [prospectively frozen protocol](RESUME_PROTOCOL.md) defines 32 cases per arm and a four-generation fixed job. Evaluate shared admission, observation-time answers, final closure and historical authority separately. [Independent reconstruction and findings](RESUME_FINDINGS.md) retain all 64 records and failed-run denominators.
+
+## Phase 19: replacement and effect authority
+
+The [prospectively frozen protocol](RECLAIM_PROTOCOL.md) defines twenty cases per arm and three check scopes. Measure authority at the actual effect, grant history, busy versus committed recovery, closure and historical replies independently. Owner-label reuse and typed empty/revoked values are explicit controls. [Findings and verification](RECLAIM_FINDINGS.md) retain all sixty records; capacity and lifetime-work contracts are not pooled.

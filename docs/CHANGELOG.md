@@ -4,6 +4,12 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-18 — Reusable authority and stale-holder fencing
+
+- Froze the Phase 19 protocol and 20-case manifest at `ea005ce0a6c26e01ba90a4271900663407acd5b0` before implementation. Added an isolated reclamation store with monotonic grants, expected-token replacement, cached/separate/transactional checks and migration-time authority witnesses. Earlier mechanism modules and evidence remain unchanged.
+- Recorded 60 case/arm histories: invalid migration effects 10/20 → 2/20 → 0/20. Every arm closes 20/20 targets and supports 42/42 historical originals. Transactional checks postpone six recovery calls and create fourteen replacement grants, versus four blocked calls and sixteen grants in each weaker arm.
+- All 486 tests passed, including 31 new regressions and typed live/recorded binding checks. Independent stdlib replay verifies the full grid, frozen/base/source/raw identities, 120 child processes, twelve marked exits and 54 live barriers. Prior Phase 18 and pilot evidence still verify. Reusable capacity is explicitly separate from a cumulative attempt/work limit. [Findings and reproduction](RECLAIM_FINDINGS.md).
+
 ## 2026-11-18 — Overlapping resumption with exits and source changes
 
 - Froze the Phase 18 protocol and 32-case manifest at `f87c4a11609b02a8660b4be7358cb1fc70880cec` before implementing the harness. Existing mechanism source remains byte-identical to base `9f7621a`.

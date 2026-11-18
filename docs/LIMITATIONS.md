@@ -135,3 +135,7 @@ The weak policies' extra closure results do not establish budget-compliant progr
 ## Phase 18: granted histories and exhaustion snapshots
 
 Phase 18 adds two-caller overlap, exits and source changes under a frozen manifest. All writer order is controller-granted; all cuts are application-level process exits with parent/OS survival. The response contract allows an open, admission-exhausted target to close through an already admitted peer. It does not reclaim reservations, establish exclusive worker ownership, guarantee progress, cover storage-operation failures or prove arbitrary many-caller histories. The earlier exploratory pilot remains a separate study. [Detailed limits](RESUME_FINDINGS.md#interpretation-and-next-question).
+
+## Phase 19: reusable capacity is not a refunded lifetime budget
+
+Phase 19 studies one current authority slot and explicit trusted replacement, not automatic detection of a dead worker. Old holders deliberately remain alive. Lifetime grants remain monotonic and may exceed one; this cannot be used as evidence that the earlier attempt budget was preserved while reclaimed. Tokens gate migration, not independently trusted publication/recovery. No client authentication, secret capability, clock lease, fairness, arbitrary history, storage fault or host-loss result is established. [Limits and next boundary](RECLAIM_FINDINGS.md#limits-and-next-question).

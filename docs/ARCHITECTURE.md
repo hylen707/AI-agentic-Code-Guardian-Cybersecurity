@@ -212,3 +212,7 @@ Coverage is 112 records, 164 strict live barriers, 92 marked exits, 560 normal c
 ## Phase 18: reconstructing overlapping recovery
 
 The resume worker emits bound events and pauses while the controller grants one caller or parent publisher an execution interval. Each returned boundary records durable state. A separate stdlib generator model replays reservations, source snapshots, writer ownership, tentative migration, commit/rollback and responses. Existing mechanism modules are unchanged. [Contract and evidence](RESUME_FINDINGS.md).
+
+## Phase 19: a durable token at the migration write boundary
+
+`src/reclamation/store.py` extends the publication/selection representation with a singleton current authority, append-only token grants and an observational migration-time authority witness. Trusted replacement performs a token CAS. The three arms enforce cached permission, a separate check, or a check inside the effect transaction; all retain source validation. Parent source/recovery operations are separately trusted. A new worker and independent stdlib model bind generation, owner, token and checkpoint, including exact wire types. [Contract and evidence](RECLAIM_FINDINGS.md).

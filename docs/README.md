@@ -42,6 +42,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 16. Bounded migration progress | [Progress protocol](PROGRESS_PROTOCOL.md); freeze before implementation | [Progress findings](PROGRESS_FINDINGS.md) |
 | 17. Restart accounting and outcome | [Restart protocol](RESTART_PROTOCOL.md); freeze before implementation | [Restart findings](RESTART_FINDINGS.md) |
 | 18. Overlapping recovery | [Resume protocol](RESUME_PROTOCOL.md); freeze before implementation | [Resume findings](RESUME_FINDINGS.md) |
+| 19. Reusable authority and fencing | [Reclaim protocol](RECLAIM_PROTOCOL.md); freeze before implementation | [Reclaim findings](RECLAIM_FINDINGS.md) |
 
 ## Rationale and history
 
@@ -55,7 +56,7 @@ The README is the entry point; this index owns navigation. The research statemen
 
 ## Latest prospective study
 
-[Phase 18 protocol](RESUME_PROTOCOL.md) → [overlapping recovery findings](RESUME_FINDINGS.md) → [raw histories and independent verification](RESUME_FINDINGS.md#evidence-and-reproduction). This study follows the exploratory pilot, with its own frozen manifest and denominator.
+[Phase 19 protocol](RECLAIM_PROTOCOL.md) → [reusable authority findings](RECLAIM_FINDINGS.md) → [raw histories and independent verification](RECLAIM_FINDINGS.md#verification-and-reproduction). Its reusable-slot contract is separate from Phase 18's cumulative budget; both studies retain their frozen manifests and denominators.
 
 ## Follow-up pilots
 

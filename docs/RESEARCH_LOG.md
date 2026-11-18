@@ -2,6 +2,14 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-18 — Reassignment is safe only if stale authority cannot commit
+
+**Question and prospective design.** Froze the [Phase 19 protocol](RECLAIM_PROTOCOL.md) and 20-case manifest at `ea005ce0a6c26e01ba90a4271900663407acd5b0` before implementation. Compare cached, separate and transactional token enforcement under trusted explicit replacement. This changes the accounting contract to one reusable slot with append-only lifetime grants; it does not erase or refund Phase 18's budget.
+
+**Observation.** Invalid effects are 10/20 → 2/20 → 0/20, despite all arms completing every target and preserving all 42 historical originals. A separate check still becomes obsolete after recovery. Transactional enforcement blocks six recovery calls while the current writer holds its transaction; only fourteen replacements actually commit, versus sixteen in each weak arm. Owner reuse does not restore an old token. Source changes can independently reject stale selection.
+
+**Validation and next boundary.** All 486 tests passed, including 31 new regressions; independent stdlib reconstruction matches 60 histories and four criteria, including typed bindings, 120 child processes, twelve marked exits and 54 barriers. Earlier evidence still verifies. Recovery calls themselves complete normally in this study; next distinguish a particular interrupted replacement request's historical result from whatever authority is current after a later recovery. [Evidence and limits](RECLAIM_FINDINGS.md).
+
 ## 2026-11-18 — An exhaustion snapshot is not a permanent job outcome
 
 **Question and prospective design.** Froze the [Phase 18 protocol](RESUME_PROTOCOL.md) and 32-case manifest at `f87c4a11609b02a8660b4be7358cb1fc70880cec` before harness implementation. Combined two callers, durable reservations, marked exits, source changes and two subsequent resumers; both compared mechanisms remain unchanged from `9f7621a`.

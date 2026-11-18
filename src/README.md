@@ -111,3 +111,7 @@ Budget-overrun cases are 12/28 → 8/28 → 0/28 → 0/28; false exhaustion is 0
 ## Phase 18: unchanged mechanisms, combined histories
 
 Phase 18 compares the existing `restart_store.py` and `resumption_store.py` loops without mechanism edits. `experiments/resume_worker.py` exposes generation/attempt-bound continuation and application-level exit cuts; the controller and independent stdlib model are separate modules. Admission exhaustion is observation-time information, not exclusive ownership or permanent job failure. [Architecture, response contract and evidence](../docs/RESUME_FINDINGS.md).
+
+## Phase 19: isolated reusable-authority mechanism
+
+`reclamation/store.py` extends `SelectionPublicationStore` with trusted token-CAS replacement and three fence scopes. A singleton owner/token identifies current authority; append-only grants retain lifetime history. `replace()` distinguishes busy, conflict, reclaimed and already completed; `migrate_once()` validates source and optionally enforces authority in its effect transaction. Observational witnesses do not authorize weak arms. Earlier root mechanism modules remain unchanged. [Architecture and exact contract](../docs/RECLAIM_FINDINGS.md).

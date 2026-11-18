@@ -349,3 +349,7 @@ The runner also writes a `.metadata.json` sidecar. The independent checker valid
 ## Phase 18: overlapping recovery
 
 Run `python experiments/run_resume_comparison.py --output /tmp/codeguardian-resume-v1.jsonl --base-commit 9f7621a4d92964cbeb35d9d5c6b4f0b09603b0d2 --freeze-commit f87c4a11609b02a8660b4be7358cb1fc70880cec`, then `python experiments/verify_resume_results.py /tmp/codeguardian-resume-v1.metadata.json`. The 64-record grid uses the frozen `experiments/tasks/resume-eval-v1/tasks.json` manifest. Both mechanisms remain unchanged from the base commit. The verifier reconstructs each granted history and checks frozen/base/source/raw identities. [Findings and executable contract](../docs/RESUME_FINDINGS.md).
+
+## Phase 19: reusable authority and fencing
+
+Run `python experiments/run_reclaim_comparison.py --output /tmp/codeguardian-reclaim-v1.jsonl --base-commit baf986b4fa701c38bd2407e114c87b0773b4cc51 --freeze-commit ea005ce0a6c26e01ba90a4271900663407acd5b0`, then `python experiments/verify_reclaim_results.py /tmp/codeguardian-reclaim-v1.metadata.json`. The frozen `experiments/tasks/reclaim-eval-v1/tasks.json` manifest supplies twenty cases per arm and sixty records. The independent verifier reconstructs grants, source selection, writer ownership, commit/rollback and exact typed bindings. [Findings, retained artifacts and limits](../docs/RECLAIM_FINDINGS.md).
