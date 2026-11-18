@@ -107,3 +107,7 @@ Budget-overrun cases are 12/28 → 8/28 → 0/28 → 0/28; false exhaustion is 0
 ## Simultaneous resumption pilot
 
 `resumption_store.py` adds a two-caller loop over unchanged `reserved_reconcile` admission: already completed migration is reconciled, and numeric SQLite writer contention yields nonterminal `retry_later`. Reservations are never refunded. Admission exhaustion is a snapshot and may precede an in-flight peer's completion. [Contract and evidence](../docs/RESUMPTION_FINDINGS.md).
+
+## Phase 18: unchanged mechanisms, combined histories
+
+Phase 18 compares the existing `restart_store.py` and `resumption_store.py` loops without mechanism edits. `experiments/resume_worker.py` exposes generation/attempt-bound continuation and application-level exit cuts; the controller and independent stdlib model are separate modules. Admission exhaustion is observation-time information, not exclusive ownership or permanent job failure. [Architecture, response contract and evidence](../docs/RESUME_FINDINGS.md).

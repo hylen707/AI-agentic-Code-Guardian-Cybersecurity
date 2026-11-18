@@ -345,3 +345,7 @@ python3 experiments/verify_resumption_results.py /tmp/codeguardian-resumption-v1
 ```
 
 The runner also writes a `.metadata.json` sidecar. The independent checker validates raw/source hashes and the fixed grid. Infrastructure failures abort rather than disappear from a denominator. See [response semantics, findings, test log and limits](../docs/RESUMPTION_FINDINGS.md).
+
+## Phase 18: overlapping recovery
+
+Run `python experiments/run_resume_comparison.py --output /tmp/codeguardian-resume-v1.jsonl --base-commit 9f7621a4d92964cbeb35d9d5c6b4f0b09603b0d2 --freeze-commit f87c4a11609b02a8660b4be7358cb1fc70880cec`, then `python experiments/verify_resume_results.py /tmp/codeguardian-resume-v1.metadata.json`. The 64-record grid uses the frozen `experiments/tasks/resume-eval-v1/tasks.json` manifest. Both mechanisms remain unchanged from the base commit. The verifier reconstructs each granted history and checks frozen/base/source/raw identities. [Findings and executable contract](../docs/RESUME_FINDINGS.md).

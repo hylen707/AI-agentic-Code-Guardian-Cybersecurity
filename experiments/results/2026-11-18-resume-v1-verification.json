@@ -1,0 +1,53 @@
+{
+  "summary": {
+    "restart_baseline": {
+      "cases": 32,
+      "infrastructure_errors": 0,
+      "admissions": 48,
+      "excess_admissions": 0,
+      "counter_agrees": 32,
+      "actual_completed": 22,
+      "caller_errors": 12,
+      "retry_later": 0,
+      "response_violations": 0,
+      "exhausted_while_peer_live": 6,
+      "exhausted_then_closed": 2,
+      "planned_exits": 22,
+      "normal_children": 106,
+      "barriers": 46,
+      "publications": 12,
+      "missing_authority": 0,
+      "duplicate_authority": 0,
+      "query_failures": 0,
+      "queries_inert": 32
+    },
+    "reconciled_resumption": {
+      "cases": 32,
+      "infrastructure_errors": 0,
+      "admissions": 48,
+      "excess_admissions": 0,
+      "counter_agrees": 32,
+      "actual_completed": 22,
+      "caller_errors": 0,
+      "retry_later": 10,
+      "response_violations": 0,
+      "exhausted_while_peer_live": 6,
+      "exhausted_then_closed": 2,
+      "planned_exits": 22,
+      "normal_children": 106,
+      "barriers": 46,
+      "publications": 12,
+      "missing_authority": 0,
+      "duplicate_authority": 0,
+      "query_failures": 0,
+      "queries_inert": 32
+    }
+  },
+  "criteria": {
+    "complete_evidence": true,
+    "admission_bound": true,
+    "response_contract": true,
+    "historical_authority": true
+  },
+  "all_criteria_passed": true
+}

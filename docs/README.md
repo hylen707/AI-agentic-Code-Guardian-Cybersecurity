@@ -41,6 +41,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 15. Concurrent source selection | [Selection protocol](SELECTION_PROTOCOL.md); freeze before implementation | [Selection findings](SELECTION_FINDINGS.md) |
 | 16. Bounded migration progress | [Progress protocol](PROGRESS_PROTOCOL.md); freeze before implementation | [Progress findings](PROGRESS_FINDINGS.md) |
 | 17. Restart accounting and outcome | [Restart protocol](RESTART_PROTOCOL.md); freeze before implementation | [Restart findings](RESTART_FINDINGS.md) |
+| 18. Overlapping recovery | [Resume protocol](RESUME_PROTOCOL.md); freeze before implementation | [Resume findings](RESUME_FINDINGS.md) |
 
 ## Rationale and history
 
@@ -51,6 +52,10 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 - [Documentation benchmark](DOCUMENTATION_BENCHMARK.md): official reference projects, observed documentation patterns, and application decisions.
 
 The README is the entry point; this index owns navigation. The research statement owns the argument, the experiment guide owns execution instructions, and the evidence map owns cross-study artifact lookup. Frozen protocols, measured manifests, and raw evidence retain their historical contents. A later finding refines a claim through a new record rather than silently changing an earlier result.
+
+## Latest prospective study
+
+[Phase 18 protocol](RESUME_PROTOCOL.md) → [overlapping recovery findings](RESUME_FINDINGS.md) → [raw histories and independent verification](RESUME_FINDINGS.md#evidence-and-reproduction). This study follows the exploratory pilot, with its own frozen manifest and denominator.
 
 ## Follow-up pilots
 

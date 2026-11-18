@@ -4,6 +4,13 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-18 — Overlapping resumption with exits and source changes
+
+- Froze the Phase 18 protocol and 32-case manifest at `f87c4a11609b02a8660b4be7358cb1fc70880cec` before implementing the harness. Existing mechanism source remains byte-identical to base `9f7621a`.
+- Added bound child generations, live continuation/exit commands, marked code-73 cuts, per-boundary snapshots and an independent stdlib model of reservation, selection, writer ownership, commit/rollback and replies.
+- Recorded 64 case/arm histories: original caller errors 12/64 → 0/64, ten explicit retry replies, no budget overruns, and final closure 22/32 for both arms. Each arm preserves 76/76 actual historical originals; two justified exhaustion observations precede peer completion. Ten open cases retain fourteen consumed slots per arm.
+- All 455 tests passed, including 25 new regressions. Independent replay matches every counter and four criteria, verifies frozen/base/source/raw identities, and validates 256 child processes, 44 marked exits and 92 bound barriers. [Findings and reproduction](RESUME_FINDINGS.md).
+
 ## 2026-11-17 — Simultaneous resumption pilot
 
 - Added a separate reconciled caller loop over Phase 17's unchanged durable admission ledger. Already migrated targets are accepted; numeric writer contention returns nonterminal `retry_later`; other storage failures remain errors.

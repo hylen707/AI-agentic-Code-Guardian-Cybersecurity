@@ -2,6 +2,14 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-18 — An exhaustion snapshot is not a permanent job outcome
+
+**Question and prospective design.** Froze the [Phase 18 protocol](RESUME_PROTOCOL.md) and 32-case manifest at `f87c4a11609b02a8660b4be7358cb1fc70880cec` before harness implementation. Combined two callers, durable reservations, marked exits, source changes and two subsequent resumers; both compared mechanisms remain unchanged from `9f7621a`.
+
+**Observation.** Original caller errors fall from 12/64 to 0/64; ten writer errors become explicit retry responses. Both arms respect the shared budget, return supported outcome assertions, and preserve 76/76 historical originals. Both close only 22/32 cases. Six exhaustion observations per arm occur with a live peer, and two targets later close. Ten open cases retain fourteen spent slots. Reporting completion, admitting another attempt and reclaiming older permission are different decisions.
+
+**Validation and next question.** All 455 tests passed, including 25 new regressions. Independent stdlib replay reconstructs each granted live history, checking 256 child processes, 44 marked exits and 92 bound barriers plus freeze/base/source/raw identities. It does not prove arbitrary many-caller correctness or fairness. Next: define when abandoned permission can be reclaimed and how an older generation is fenced before reuse. [Findings, evidence and limits](RESUME_FINDINGS.md).
+
 ## 2026-11-17 — Resuming a fixed job with two callers
 
 **Question.** Phase 17 leaves simultaneous resumption open. Source inspection identified an unhandled `already_migrated` result between reservation and selection, plus writer contention treated as an exception. This follow-up is explicitly exploratory, with no prospective freeze.
