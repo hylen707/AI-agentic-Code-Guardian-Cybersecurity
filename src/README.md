@@ -115,3 +115,7 @@ Phase 18 compares the existing `restart_store.py` and `resumption_store.py` loop
 ## Phase 19: isolated reusable-authority mechanism
 
 `reclamation/store.py` extends `SelectionPublicationStore` with trusted token-CAS replacement and three fence scopes. A singleton owner/token identifies current authority; append-only grants retain lifetime history. `replace()` distinguishes busy, conflict, reclaimed and already completed; `migrate_once()` validates source and optionally enforces authority in its effect transaction. Observational witnesses do not authorize weak arms. Earlier root mechanism modules remain unchanged. [Architecture and exact contract](../docs/RECLAIM_FINDINGS.md).
+
+## Phase 20: request-bound recovery outcomes
+
+`recovery_requests/store.py` extends the unchanged reclamation store with `replace_once(request)`, exact ID/expected-token/owner inputs and fixed current-only/separate/atomic request modes. Receipts contain immutable historical outcomes; lookup precedes target-completed handling. Observer witnesses establish actual first decisions but never authorize requests or answer retries. Migration remains transactionally fenced, and administrative/source operations are trusted. [Architecture, contract and evidence](../docs/REQUEST_FINDINGS.md).

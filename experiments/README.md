@@ -353,3 +353,7 @@ Run `python experiments/run_resume_comparison.py --output /tmp/codeguardian-resu
 ## Phase 19: reusable authority and fencing
 
 Run `python experiments/run_reclaim_comparison.py --output /tmp/codeguardian-reclaim-v1.jsonl --base-commit baf986b4fa701c38bd2407e114c87b0773b4cc51 --freeze-commit ea005ce0a6c26e01ba90a4271900663407acd5b0`, then `python experiments/verify_reclaim_results.py /tmp/codeguardian-reclaim-v1.metadata.json`. The frozen `experiments/tasks/reclaim-eval-v1/tasks.json` manifest supplies twenty cases per arm and sixty records. The independent verifier reconstructs grants, source selection, writer ownership, commit/rollback and exact typed bindings. [Findings, retained artifacts and limits](../docs/RECLAIM_FINDINGS.md).
+
+## Phase 20: interrupted recovery requests
+
+Run `python experiments/run_request_comparison.py --output /tmp/codeguardian-request-v1.jsonl --base-commit 28d841f5eac844a2389cc3ff513fedde962e45ce --freeze-commit d2ffbb5de6d9bec79a2a70273510ee338c9e28b9`, then `python experiments/verify_request_results.py /tmp/codeguardian-request-v1.metadata.json`. The frozen `experiments/tasks/request-eval-v1/tasks.json` manifest supplies twenty-four cases per arm and seventy-two records. The independent model reconstructs decision/grant commits, request receipts, collisions and exact typed bindings, including before/after-closure historical probes. [Findings and retained artifacts](../docs/REQUEST_FINDINGS.md).

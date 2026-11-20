@@ -141,3 +141,7 @@ The [prospectively frozen protocol](RESUME_PROTOCOL.md) defines 32 cases per arm
 ## Phase 19: replacement and effect authority
 
 The [prospectively frozen protocol](RECLAIM_PROTOCOL.md) defines twenty cases per arm and three check scopes. Measure authority at the actual effect, grant history, busy versus committed recovery, closure and historical replies independently. Owner-label reuse and typed empty/revoked values are explicit controls. [Findings and verification](RECLAIM_FINDINGS.md) retain all sixty records; capacity and lifetime-work contracts are not pooled.
+
+## Phase 20: recovery identity through interruption and overlap
+
+The [prospectively frozen request protocol](REQUEST_PROTOCOL.md) fixes 24 cases per arm and three result scopes. Derive the original intention/outcome from its first committed oracle witness. Measure original results, changed-ID rejection, unjustified grants, current-authority stability and publication history independently; preserve all seventy-two records. [Findings and independent verification](REQUEST_FINDINGS.md).

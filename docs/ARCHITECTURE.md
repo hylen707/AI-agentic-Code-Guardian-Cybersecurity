@@ -216,3 +216,7 @@ The resume worker emits bound events and pauses while the controller grants one 
 ## Phase 19: a durable token at the migration write boundary
 
 `src/reclamation/store.py` extends the publication/selection representation with a singleton current authority, append-only token grants and an observational migration-time authority witness. Trusted replacement performs a token CAS. The three arms enforce cached permission, a separate check, or a check inside the effect transaction; all retain source validation. Parent source/recovery operations are separately trusted. A new worker and independent stdlib model bind generation, owner, token and checkpoint, including exact wire types. [Contract and evidence](RECLAIM_FINDINGS.md).
+
+## Phase 20: recovery decisions and immutable receipts
+
+`src/recovery_requests/store.py` retains Phase 19's transactional migration fence and adds exact request tuples, a fixed request policy, immutable receipts and observer decision witnesses. Current-only re-evaluates CAS; separate treatment records after decision commit; atomic treatment looks up the ID before closure and couples decision/grant/result in one transaction. Witnesses are oracle evidence, not an application reply source. Parent event values are copied at capture; typed bindings and immutable input capture preserve the invoked tuple. [Exact contract and evidence](REQUEST_FINDINGS.md).

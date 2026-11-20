@@ -4,6 +4,12 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-20 — Interrupted recovery requests and original outcomes
+
+- Froze the Phase 20 protocol and 24-case manifest at `d2ffbb5de6d9bec79a2a70273510ee338c9e28b9` before implementation. Added current-only, separate-receipt and atomic decision/result treatment in an isolated module; inherited fencing/publication mechanisms remain unchanged.
+- Recorded 72 case/arm histories. Original-result probe correctness is 0/60 → 36/60 → 60/60; grants not justified by the ID's first decision are 4 → 2 → 0. Separate receipts produce 32 false historical answers despite every arm closing 24/24 targets and replaying 48/48 publication originals.
+- All 517 tests passed, including 31 new regressions. Independent stdlib replay checks five criteria, source/raw/freeze identities, 174 child processes, 36 marked exits, sixty bound barriers and 360 parent recovery probes. Historical replies do not restore old authority; retained receipts and job-local IDs bound the claim. [Findings and reproduction](REQUEST_FINDINGS.md).
+
 ## 2026-11-18 — Reusable authority and stale-holder fencing
 
 - Froze the Phase 19 protocol and 20-case manifest at `ea005ce0a6c26e01ba90a4271900663407acd5b0` before implementation. Added an isolated reclamation store with monotonic grants, expected-token replacement, cached/separate/transactional checks and migration-time authority witnesses. Earlier mechanism modules and evidence remain unchanged.

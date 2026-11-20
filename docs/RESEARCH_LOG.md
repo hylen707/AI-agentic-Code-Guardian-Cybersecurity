@@ -2,6 +2,14 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-20 — A recovery receipt can preserve the wrong decision
+
+**Question and prospective design.** Froze the [Phase 20 protocol](REQUEST_PROTOCOL.md) and 24-case manifest at `d2ffbb5de6d9bec79a2a70273510ee338c9e28b9` before implementation. Test interrupted/overlapping recovery requests under current-only, separate and atomic result treatment. All migration uses the unchanged Phase 19 transactional fence; the request contract binds even a first conflict or completed outcome.
+
+**Observation.** Original-result probes are correct in 0/60 → 36/60 → 60/60 observations; unjustified grants are 4 → 2 → 0. A same-intent competitor can record a later conflict after an earlier grant, producing false history without another grant. A changed intent can exploit the separate receipt gap. Both keyed arms retain thirty receipt rows, but only atomic coupling retains every original outcome. All arms close their targets and preserve 48/48 publication originals.
+
+**Validation and next boundary.** All 517 tests passed, including 31 new regressions and immutable input/event capture. Independent stdlib reconstruction verifies 72 histories, five criteria, 174 child processes, 36 marked exits and sixty live barriers, plus before/after-closure recovery probes and publication history. Earlier Phase 19/18 evidence still verifies. Next: bound result retention without accepting a retired ID as a new grant request. [Evidence and scope](REQUEST_FINDINGS.md).
+
 ## 2026-11-18 — Reassignment is safe only if stale authority cannot commit
 
 **Question and prospective design.** Froze the [Phase 19 protocol](RECLAIM_PROTOCOL.md) and 20-case manifest at `ea005ce0a6c26e01ba90a4271900663407acd5b0` before implementation. Compare cached, separate and transactional token enforcement under trusted explicit replacement. This changes the accounting contract to one reusable slot with append-only lifetime grants; it does not erase or refund Phase 18's budget.

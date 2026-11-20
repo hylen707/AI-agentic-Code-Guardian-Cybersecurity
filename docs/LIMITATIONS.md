@@ -139,3 +139,7 @@ Phase 18 adds two-caller overlap, exits and source changes under a frozen manife
 ## Phase 19: reusable capacity is not a refunded lifetime budget
 
 Phase 19 studies one current authority slot and explicit trusted replacement, not automatic detection of a dead worker. Old holders deliberately remain alive. Lifetime grants remain monotonic and may exceed one; this cannot be used as evidence that the earlier attempt budget was preserved while reclaimed. Tokens gate migration, not independently trusted publication/recovery. No client authentication, secret capability, clock lease, fairness, arbitrary history, storage fault or host-loss result is established. [Limits and next boundary](RECLAIM_FINDINGS.md#limits-and-next-question).
+
+## Phase 20: original results are not current authority
+
+Phase 20 evaluates `replace_once` for a trusted fixed job with retained request receipts, at most two overlapping recovery processes and controller-granted writer order. An old grant in a replay is historical data and is never reinstalled. The first non-busy decision binds even a conflict; fresh re-evaluation requires a new ID. Authority-query inertness excludes observer/receipt writes. No request authentication, bounded retention, arbitrary history, host/storage fault, fairness or lifetime-work bound is established. The reference model may share conceptual assumptions with the implementation. [Detailed limits](REQUEST_FINDINGS.md#limits-and-next-boundary).
