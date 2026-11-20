@@ -1,0 +1,1187 @@
+{
+  "schema_version": "request-eval-v1",
+  "cases": [
+    {
+      "case_id": "quiet_retry-ascii_revoked",
+      "scenario": "quiet_retry",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "quiet_retry-unicode_empty",
+      "scenario": "quiet_retry",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_decision-ascii_revoked",
+      "scenario": "exit_before_decision",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "before_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_decision-unicode_empty",
+      "scenario": "exit_before_decision",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "before_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_decision-ascii_revoked",
+      "scenario": "exit_after_decision",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_decision-unicode_empty",
+      "scenario": "exit_after_decision",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_reply-ascii_revoked",
+      "scenario": "exit_before_reply",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "before_reply"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_reply-unicode_empty",
+      "scenario": "exit_before_reply",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "before_reply"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "later_replacement_after_loss-ascii_revoked",
+      "scenario": "later_replacement_after_loss",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-b",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "later_replacement_after_loss-unicode_empty",
+      "scenario": "later_replacement_after_loss",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-β",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "target_closes_after_loss-ascii_revoked",
+      "scenario": "target_closes_after_loss",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "migrate"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "target_closes_after_loss-unicode_empty",
+      "scenario": "target_closes_after_loss",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "migrate"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "overlap_lookup_same-ascii_revoked",
+      "scenario": "overlap_lookup_same",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_lookup"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "overlap_lookup_same-unicode_empty",
+      "scenario": "overlap_lookup_same",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_lookup"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "overlap_lookup_changed-ascii_revoked",
+      "scenario": "overlap_lookup_changed",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_lookup"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 9
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 9
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "overlap_lookup_changed-unicode_empty",
+      "scenario": "overlap_lookup_changed",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_lookup"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 9
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 9
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "receipt_gap_same-ascii_revoked",
+      "scenario": "receipt_gap_same",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        }
+      ]
+    },
+    {
+      "case_id": "receipt_gap_same-unicode_empty",
+      "scenario": "receipt_gap_same",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        }
+      ]
+    },
+    {
+      "case_id": "receipt_gap_changed-ascii_revoked",
+      "scenario": "receipt_gap_changed",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        }
+      ]
+    },
+    {
+      "case_id": "receipt_gap_changed-unicode_empty",
+      "scenario": "receipt_gap_changed",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        }
+      ]
+    },
+    {
+      "case_id": "first_conflict_then_applicable-ascii_revoked",
+      "scenario": "first_conflict_then_applicable",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-b",
+            "expected_token": 1,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "first_conflict_then_applicable-unicode_empty",
+      "scenario": "first_conflict_then_applicable",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-β",
+            "expected_token": 1,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "owner_reuse_after_loss-ascii_revoked",
+      "scenario": "owner_reuse_after_loss",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "recovery-b",
+            "expected_token": 2,
+            "owner": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "owner_reuse_after_loss-unicode_empty",
+      "scenario": "owner_reuse_after_loss",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "generation": 1,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "generation": 2,
+          "request": {
+            "request_id": "회수-β",
+            "expected_token": 2,
+            "owner": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "generation": 3,
+          "request": {
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        }
+      ]
+    }
+  ]
+}
