@@ -1,0 +1,2668 @@
+{
+  "schema_version": "retention-eval-v1",
+  "capacity": 2,
+  "cases": [
+    {
+      "case_id": "quiet_retirement-ascii_revoked",
+      "scenario": "quiet_retirement",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "unused",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 6,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "quiet_retirement-unicode_empty",
+      "scenario": "quiet_retirement",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "unused",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 6,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_rotation-ascii_revoked",
+      "scenario": "exit_before_rotation",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": [
+            "before_rotation_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_rotation-unicode_empty",
+      "scenario": "exit_before_rotation",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": [
+            "before_rotation_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_rotation-ascii_revoked",
+      "scenario": "exit_after_rotation",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": [
+            "after_rotation_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_after_rotation-unicode_empty",
+      "scenario": "exit_after_rotation",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": [
+            "after_rotation_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_rotation_reply-ascii_revoked",
+      "scenario": "exit_before_rotation_reply",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": [
+            "before_reply"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "exit_before_rotation_reply-unicode_empty",
+      "scenario": "exit_before_rotation_reply",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": [
+            "before_reply"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "stale_admission_unused-ascii_revoked",
+      "scenario": "stale_admission_unused",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "stale_admission_unused-unicode_empty",
+      "scenario": "stale_admission_unused",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "stale_admission_changed-ascii_revoked",
+      "scenario": "stale_admission_changed",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "stale_admission_changed-unicode_empty",
+      "scenario": "stale_admission_changed",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": [
+            "after_admission"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 2,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "lookup_holds_writer-ascii_revoked",
+      "scenario": "lookup_holds_writer",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_lookup"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "lookup_holds_writer-unicode_empty",
+      "scenario": "lookup_holds_writer",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_lookup"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "rotation_holds_writer-ascii_revoked",
+      "scenario": "rotation_holds_writer",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 1,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": [
+            "before_rotation_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "rotation_holds_writer-unicode_empty",
+      "scenario": "rotation_holds_writer",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 1,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": [
+            "before_rotation_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "reply_after_retirement-ascii_revoked",
+      "scenario": "reply_after_retirement",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "reply_after_retirement-unicode_empty",
+      "scenario": "reply_after_retirement",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "continue"
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "capacity_and_reuse-ascii_revoked",
+      "scenario": "capacity_and_reuse",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "second",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "overflow",
+            "expected_token": 3,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "second",
+            "expected_token": 3,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 6,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 7,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 3,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 8,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "second",
+            "expected_token": 4,
+            "owner": 5
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 9,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "overflow",
+            "expected_token": 5,
+            "owner": 6
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "capacity_and_reuse-unicode_empty",
+      "scenario": "capacity_and_reuse",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "second",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "overflow",
+            "expected_token": 3,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "second",
+            "expected_token": 3,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 6,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 7,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 3,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 8,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "second",
+            "expected_token": 4,
+            "owner": 5
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 9,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "overflow",
+            "expected_token": 5,
+            "owner": 6
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "multiple_rotations-ascii_revoked",
+      "scenario": "multiple_rotations",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "second",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 3,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "second",
+            "expected_token": 4,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 6,
+          "request": {
+            "expected_epoch": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 7,
+          "request": {
+            "recovery_epoch": 3,
+            "request_id": "recovery-a",
+            "expected_token": 5,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 8,
+          "request": {
+            "recovery_epoch": 3,
+            "request_id": "second",
+            "expected_token": 6,
+            "owner": 5
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 9,
+          "request": {
+            "expected_epoch": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 10,
+          "request": {
+            "recovery_epoch": 4,
+            "request_id": "recovery-a",
+            "expected_token": 7,
+            "owner": 5
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 11,
+          "request": {
+            "recovery_epoch": 4,
+            "request_id": "second",
+            "expected_token": 8,
+            "owner": 6
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "multiple_rotations-unicode_empty",
+      "scenario": "multiple_rotations",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "second",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 3,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "second",
+            "expected_token": 4,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 6,
+          "request": {
+            "expected_epoch": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 7,
+          "request": {
+            "recovery_epoch": 3,
+            "request_id": "회수-α",
+            "expected_token": 5,
+            "owner": 4
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 8,
+          "request": {
+            "recovery_epoch": 3,
+            "request_id": "second",
+            "expected_token": 6,
+            "owner": 5
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 9,
+          "request": {
+            "expected_epoch": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 10,
+          "request": {
+            "recovery_epoch": 4,
+            "request_id": "회수-α",
+            "expected_token": 7,
+            "owner": 5
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 11,
+          "request": {
+            "recovery_epoch": 4,
+            "request_id": "second",
+            "expected_token": 8,
+            "owner": 6
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "future_namespace-ascii_revoked",
+      "scenario": "future_namespace",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 6,
+          "request": {
+            "recovery_epoch": 4,
+            "request_id": "future",
+            "expected_token": 3,
+            "owner": 4
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "future_namespace-unicode_empty",
+      "scenario": "future_namespace",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 6,
+          "request": {
+            "recovery_epoch": 4,
+            "request_id": "future",
+            "expected_token": 3,
+            "owner": 4
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "closed_target_retirement-ascii_revoked",
+      "scenario": "closed_target_retirement",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "migrate"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "closed_target_retirement-unicode_empty",
+      "scenario": "closed_target_retirement",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "migrate"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "conflict_retirement-ascii_revoked",
+      "scenario": "conflict_retirement",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "second",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 6,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "conflict_retirement-unicode_empty",
+      "scenario": "conflict_retirement",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 2,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "second",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 4,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 6,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "decision_rollback_then_retire-ascii_revoked",
+      "scenario": "decision_rollback_then_retire",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "before_decision_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "decision_rollback_then_retire-unicode_empty",
+      "scenario": "decision_rollback_then_retire",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "before_decision_commit"
+          ]
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 3,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 5,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "lost_result_then_retire-ascii_revoked",
+      "scenario": "lost_result_then_retire",
+      "pattern": "ascii_revoked",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": null
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "recovery-a",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "recovery-a",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    },
+    {
+      "case_id": "lost_result_then_retire-unicode_empty",
+      "scenario": "lost_result_then_retire",
+      "pattern": "unicode_empty",
+      "seeds": [
+        {
+          "epoch": 1,
+          "request_id": "seed-a",
+          "content_utf8": "approved=안전 ✓\n"
+        },
+        {
+          "epoch": 1,
+          "request_id": "seed-b",
+          "content_utf8": ""
+        }
+      ],
+      "steps": [
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 1,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": [
+            "after_decision_commit"
+          ]
+        },
+        {
+          "op": "resume",
+          "generation": 1,
+          "action": "exit"
+        },
+        {
+          "op": "start",
+          "role": "advance",
+          "generation": 2,
+          "request": {
+            "expected_epoch": 1
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 3,
+          "request": {
+            "recovery_epoch": 1,
+            "request_id": "회수-α",
+            "expected_token": 1,
+            "owner": 2
+          },
+          "pauses": []
+        },
+        {
+          "op": "start",
+          "role": "replace",
+          "generation": 4,
+          "request": {
+            "recovery_epoch": 2,
+            "request_id": "회수-α",
+            "expected_token": 2,
+            "owner": 3
+          },
+          "pauses": []
+        }
+      ]
+    }
+  ]
+}
