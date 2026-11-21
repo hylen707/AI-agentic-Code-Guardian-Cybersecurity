@@ -2,21 +2,21 @@
 
 **What binds an authorization decision to the object, value or request that takes effect?**
 
-CodeGuardian is a reproducible systems-security study of authorization across execution, recovery and repeated requests. Twenty experimental stages test how authorization can diverge from the resource, value, or publication intent ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
+CodeGuardian is a reproducible systems-security study of authorization across execution, recovery and repeated requests. Twenty-one experimental stages test how authorization can diverge from the resource, value, or publication intent ultimately used. The experiments execute real file operations on disposable synthetic fixtures; live-agent effectiveness has not been evaluated.
 
 [Documentation](docs/README.md) · [Research statement](docs/RESEARCH_STATEMENT.md) · [Evidence](docs/EVIDENCE.md) · [Reproduction guide](experiments/README.md) · [Threat model and limits](docs/LIMITATIONS.md)
 
 ## Research question and contribution
 
-Approving a pathname does not ensure that a later operation reaches the approved object. Holding that object open does not freeze its contents. Returning an approved version does not ensure that the version is current. Completing one file replacement does not ensure that content and approval can be recovered together. Recovering a coherent approval does not ensure that retrying a publication preserves later decisions. Removing a retry receipt does not retire the request that produced it. A separate final admission check can still become obsolete before the write commits. Preventing a duplicate effect still leaves the obligation to return the correct result to both callers. Deleting the original receipt can preserve mutation safety while making that historical result unavailable. A compact replacement must retain the right evidence and survive its own migration boundary. Its source selection must also include requests that commit before the old records are removed. Preserving that evidence does not ensure migration finishes within a finite retry budget. Restart can also forget that budget or return an exhausted result for a target already committed. With overlapping resumption, a justified exhaustion snapshot can precede peer completion, while all reserved permission can be consumed without closing the target. Reassigning reusable permission then requires fencing the displaced holder at the write boundary. The replacement request also needs a durable identity and result; current authority cannot substitute for its historical outcome.
+Approving a pathname does not ensure that a later operation reaches the approved object. Holding that object open does not freeze its contents. Returning an approved version does not ensure that the version is current. Completing one file replacement does not ensure that content and approval can be recovered together. Recovering a coherent approval does not ensure that retrying a publication preserves later decisions. Removing a retry receipt does not retire the request that produced it. A separate final admission check can still become obsolete before the write commits. Preventing a duplicate effect still leaves the obligation to return the correct result to both callers. Deleting the original receipt can preserve mutation safety while making that historical result unavailable. A compact replacement must retain the right evidence and survive its own migration boundary. Its source selection must also include requests that commit before the old records are removed. Preserving that evidence does not ensure migration finishes within a finite retry budget. Restart can also forget that budget or return an exhausted result for a target already committed. With overlapping resumption, a justified exhaustion snapshot can precede peer completion, while all reserved permission can be consumed without closing the target. Reassigning reusable permission then requires fencing the displaced holder at the write boundary. The replacement request also needs a durable identity and result; current authority cannot substitute for its historical outcome. Retiring that outcome must also close its old request space, including requests already admitted before deletion.
 
 This repository makes those distinctions testable through:
 
-- **Counterexamples and bounded interventions:** lexical checks → resolved targets → file identity → descriptor binding → verified content → approval revisions → restart recovery → request identity → receipt retirement → overlapping admission → concurrent caller outcomes → resolution during retirement → compact receipt recovery → concurrent source completeness → bounded migration progress → restart accounting and outcome continuity → overlapping recovery and observation-time truth → reusable authority and transactional fencing → recovery-request result continuity.
+- **Counterexamples and bounded interventions:** lexical checks → resolved targets → file identity → descriptor binding → verified content → approval revisions → restart recovery → request identity → receipt retirement → overlapping admission → concurrent caller outcomes → resolution during retirement → compact receipt recovery → concurrent source completeness → bounded migration progress → restart accounting and outcome continuity → overlapping recovery and observation-time truth → reusable authority and transactional fencing → recovery-request result continuity → bounded recovery results with transactional retirement.
 - **Separate protection and usefulness measures:** resource effects, task goals, content delivery, request effects, and historical replies have explicit, different denominators.
 - **An auditable evidence trail:** protocols, case manifests, raw records, summaries, and source hashes retain both successful controls and failures.
 
-The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all twenty stages.
+The mechanisms are established systems concepts. The contribution is the experimental argument and its reproducibility. See the [research statement](docs/RESEARCH_STATEMENT.md) for the reasoning and [evidence map](docs/EVIDENCE.md) for all twenty-one stages.
 
 ## Quick reproduction
 
@@ -26,16 +26,16 @@ Use **Python 3.11+ on Linux**, with hardlink, symlink, FIFO, and `pread` support
 git clone https://github.com/hylen707/AI-agentic-Code-Guardian-Cybersecurity.git
 cd AI-agentic-Code-Guardian-Cybersecurity
 python -m unittest discover -s tests -v
-python experiments/run_request_comparison.py \
-  --output /tmp/codeguardian-request-v1.jsonl \
-  --base-commit 28d841f5eac844a2389cc3ff513fedde962e45ce \
-  --freeze-commit d2ffbb5de6d9bec79a2a70273510ee338c9e28b9
-python experiments/verify_request_results.py /tmp/codeguardian-request-v1.metadata.json
+python experiments/run_retention_comparison.py \
+  --output /tmp/codeguardian-retention-v1.jsonl.gz \
+  --base-commit fa5d7075f1896069672e24e6ca116de0a90c0666 \
+  --freeze-commit 81dbcb23b64ed3001abb4f68057d7cfe9a64a943
+python experiments/verify_retention_results.py /tmp/codeguardian-retention-v1.metadata.json
 ```
 
-The latest study produces **72 case/arm records** from a prospectively frozen 24-case manifest. Original recovery-result probes are correct in **0/60 → 36/60 → 60/60** observations for current-only, separate-receipt and atomic-receipt treatment. Grants not justified by the ID's first decision fall from **4 → 2 → 0**. All arms close their targets and preserve publication history, so completion alone does not establish request/result continuity. All **517 tests** pass. [Findings and evidence](docs/REQUEST_FINDINGS.md).
+The latest study produces **96 case/arm records** from a prospectively frozen 32-case manifest. Grants committed under a retired recovery epoch fall from **34 → 4 → 0** for result deletion, cached admission and transactional admission. Both guarded arms reject **376/376** later retired queries, yet only transactional admission also stops requests already in flight. Its retained result set stays at **two rows or fewer**. All **554 tests** pass. [Findings and evidence](docs/RETENTION_FINDINGS.md).
 
-Phases 19–20 use reusable authority with append-only token grants, not a refund of Phase 18's cumulative attempt budget. Historical receipt fields describe an old outcome; they are never installed as current authority.
+Phases 19–21 use reusable authority with append-only token grants, not a refund of Phase 18's cumulative attempt budget. Historical receipt fields describe an old outcome; they are never installed as current authority.
 
 The preceding [simultaneous-resumption pilot](docs/RESUMPTION_FINDINGS.md) remains a separate post hoc study; its 14 records are not pooled with Phase 18.
 
@@ -62,6 +62,7 @@ Each row belongs to a different study. **Do not pool the counts into an overall 
 | Can shared resumption stay bounded through overlap and interruption? | Caller errors: **12/64 → 0/64**; final closure: **22/32 in both arms**. | All reservations stay bounded and 76/76 originals replay per arm; two exhaustion observations precede peer completion. [Phase 18](docs/RESUME_FINDINGS.md) |
 | Does replacement stop the former authority holder? | Invalid effects: **10/20 → 2/20 → 0/20**; all arms close 20/20 targets. | A separate token check can become obsolete; the transactional check defers recovery while the authorized writer commits. Reusable authority differs from a lifetime budget. [Phase 19](docs/RECLAIM_FINDINGS.md) |
 | Does an interrupted replacement retain its original request result? | Correct original probes: **0/60 → 36/60 → 60/60**; unjustified grants: **4 → 2 → 0**. | A separate receipt can certify a later conflict after an earlier grant; atomic request/result coupling preserves history without restoring old authority. [Phase 20](docs/REQUEST_FINDINGS.md) |
+| Does bounded result retention close old recovery request space? | Retired-epoch grants: **34 → 4 → 0**; maximum result rows: **10 → 2 → 2**. | Cached admission passes every later retired query while admitting four in-flight retired grants. Transactional admission preserves both current result membership and the row bound. [Phase 21](docs/RETENTION_FINDINGS.md) |
 
 Resolved-target and hardlink studies supply the intermediate steps; their separate controls, counts, and raw artifacts are in the [evidence map](docs/EVIDENCE.md).
 
@@ -85,7 +86,7 @@ The runner controls replacement, mutation, approval-transition, process-exit, or
 
 These are curated, developer-visible mechanism studies with deterministic schedules. They do not estimate concurrent race probability, provide a production sandbox, or establish live-agent task performance. The content reader validates small UTF-8 values and may inspect rejected bytes. The revision authority adds a receipt-time contract for cooperating publishers in one process; it can delay updates and does not guarantee freshness after receipt. See the [threat model and validity limits](docs/LIMITATIONS.md).
 
-Phase 18 separates bounded admission from actual closure and observation-time responses. Phase 19 tests explicit trusted replacement under a reusable-authority contract; it fences stale holders without claiming automatic failure detection. Phase 20 couples recovery-request identity and result across loss, overlap, later replacement and closure. Its next question is bounded result retention without reopening old request IDs. General many-caller histories, fairness, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
+Phase 18 separates bounded admission from actual closure and observation-time responses. Phase 19 tests explicit trusted replacement under a reusable-authority contract; it fences stale holders without claiming automatic failure detection. Phase 20 couples recovery-request identity and result across loss, overlap, later replacement and closure. Phase 21 bounds the retained result set and closes old recovery epochs through transactional admission. The next question is systematic exploration of a small request/retirement state space. General many-caller histories, fairness, caller authentication, clock-based expiration, and failures inside storage operations remain untested.
 
 ## Read further
 

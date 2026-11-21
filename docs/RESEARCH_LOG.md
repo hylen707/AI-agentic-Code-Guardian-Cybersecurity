@@ -2,6 +2,14 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-21 — Passing retired queries can conceal in-flight retired grants
+
+**Question and prospective design.** Froze the [Phase 21 protocol](RETENTION_PROTOCOL.md) and 32-case manifest at `81dbcb23b64ed3001abb4f68057d7cfe9a64a943` before implementation. Bound application results with a separate recovery epoch, capacity two and atomic advancement/deletion. Compare erased, cached and transactional admission while preserving inherited authority/publication mechanisms.
+
+**Observation.** Retired-epoch grants are 34 → 4 → 0. Both guarded arms reject 376/376 later retired queries and observe at most two result rows, yet cached admission admits four retired grants and sixteen snapshots containing retired results. It shares the strong arm's 166 lifetime grants, showing why totals alone miss which epoch obtained authority. Atomic admission defers four additional calls; every arm eventually closes all targets and preserves publication history.
+
+**Validation and next boundary.** All 554 tests passed, including 37 added regressions. Independent reconstruction passes six criteria over 96 records, 516 children, thirty marked exits, sixty barriers and 2,400 parent queries. Prior Phase 18–20 evidence verifies unchanged. Retirement deliberately removes result availability; the row bound excludes observer/grant history and total storage bytes. Next: systematic small-state exploration of request/retirement interleavings. [Evidence and limits](RETENTION_FINDINGS.md).
+
 ## 2026-11-20 — A recovery receipt can preserve the wrong decision
 
 **Question and prospective design.** Froze the [Phase 20 protocol](REQUEST_PROTOCOL.md) and 24-case manifest at `d2ffbb5de6d9bec79a2a70273510ee338c9e28b9` before implementation. Test interrupted/overlapping recovery requests under current-only, separate and atomic result treatment. All migration uses the unchanged Phase 19 transactional fence; the request contract binds even a first conflict or completed outcome.

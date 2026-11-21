@@ -1,0 +1,85 @@
+{
+  "commands": [
+    {
+      "name": "full_suite",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "output": "experiments/results/2026-11-21-retention-v1-tests.txt",
+      "started_at_utc": "2026-11-21T11:35:40.107554+00:00",
+      "elapsed_seconds": 55.264,
+      "exit_code": 0
+    },
+    {
+      "name": "frozen_grid",
+      "command": [
+        "python",
+        "experiments/run_retention_comparison.py",
+        "--output",
+        "experiments/results/2026-11-21-retention-v1.jsonl.gz",
+        "--base-commit",
+        "fa5d7075f1896069672e24e6ca116de0a90c0666",
+        "--freeze-commit",
+        "81dbcb23b64ed3001abb4f68057d7cfe9a64a943"
+      ],
+      "output": "/tmp/retention-grid-summary.json",
+      "started_at_utc": "2026-11-21T11:36:35.371597+00:00",
+      "elapsed_seconds": 26.406,
+      "exit_code": 0
+    },
+    {
+      "name": "independent_verification",
+      "command": [
+        "python",
+        "experiments/verify_retention_results.py",
+        "experiments/results/2026-11-21-retention-v1.metadata.json"
+      ],
+      "output": "experiments/results/2026-11-21-retention-v1-verification.json",
+      "started_at_utc": "2026-11-21T11:37:01.777944+00:00",
+      "elapsed_seconds": 2.025,
+      "exit_code": 0
+    },
+    {
+      "name": "prior_request",
+      "command": [
+        "python",
+        "experiments/verify_request_results.py",
+        "experiments/results/2026-11-20-request-v1.metadata.json"
+      ],
+      "output": "/tmp/prior-request-verification.json",
+      "started_at_utc": "2026-11-21T11:37:03.803184+00:00",
+      "elapsed_seconds": 0.358,
+      "exit_code": 0
+    },
+    {
+      "name": "prior_reclamation",
+      "command": [
+        "python",
+        "experiments/verify_reclaim_results.py",
+        "experiments/results/2026-11-18-reclaim-v1.metadata.json"
+      ],
+      "output": "/tmp/prior-reclamation-verification.json",
+      "started_at_utc": "2026-11-21T11:37:04.161978+00:00",
+      "elapsed_seconds": 0.157,
+      "exit_code": 0
+    },
+    {
+      "name": "prior_resumption",
+      "command": [
+        "python",
+        "experiments/verify_resume_results.py",
+        "experiments/results/2026-11-18-resume-v1.metadata.json"
+      ],
+      "output": "/tmp/prior-resumption-verification.json",
+      "started_at_utc": "2026-11-21T11:37:04.319690+00:00",
+      "elapsed_seconds": 0.121,
+      "exit_code": 0
+    }
+  ]
+}

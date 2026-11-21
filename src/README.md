@@ -119,3 +119,7 @@ Phase 18 compares the existing `restart_store.py` and `resumption_store.py` loop
 ## Phase 20: request-bound recovery outcomes
 
 `recovery_requests/store.py` extends the unchanged reclamation store with `replace_once(request)`, exact ID/expected-token/owner inputs and fixed current-only/separate/atomic request modes. Receipts contain immutable historical outcomes; lookup precedes target-completed handling. Observer witnesses establish actual first decisions but never authorize requests or answer retries. Migration remains transactionally fenced, and administrative/source operations are trusted. [Architecture, contract and evidence](../docs/REQUEST_FINDINGS.md).
+
+## Phase 21: bounded recovery results
+
+`recovery_retention/store.py` adds exact recovery-epoch requests and trusted `advance_epoch({expected_epoch})` to unchanged transactional migration fencing. A composite epoch/ID result key, one durable current epoch and capacity two support bounded logical results without per-ID retirement tombstones. Epoch checks precede lookup; existing results precede capacity. Advancement/deletion is atomic in every arm; admission is erase-only, separately cached or transactional. A retired request gets `retired`, a future one `future_epoch`, and an unrecorded current ID at capacity `capacity_exhausted`. These responses bind no ID or grant. Observer histories are excluded from the result bound and never serve API replies. [Contract and evidence](../docs/RETENTION_FINDINGS.md).

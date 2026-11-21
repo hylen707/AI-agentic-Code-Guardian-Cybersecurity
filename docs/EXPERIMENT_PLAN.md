@@ -25,6 +25,10 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 15. Concurrent source selection | Twenty-four cases, four modes; 48 forced barriers and 224 child completions | Selected/actual source membership, committed-history replay, publisher refusal and migration retry | [Selection protocol](SELECTION_PROTOCOL.md) | [Selection findings](SELECTION_FINDINGS.md) |
 | 16. Bounded migration progress | Twenty-four cases, three policies; 104 barriers and 260 child completions | Finite attempt usage, closure, equal publication intents, full/compact original authority | [Progress protocol](PROGRESS_PROTOCOL.md) | [Progress findings](PROGRESS_FINDINGS.md) |
 | 17. Restart accounting and outcome | Twenty-eight cases, four policies; 92 marked exits and 560 normal completions | Admission bounds, counter recovery, actual closure, terminal truth and original authority | [Restart protocol](RESTART_PROTOCOL.md) | [Restart findings](RESTART_FINDINGS.md) |
+| 18. Overlapping recovery | Thirty-two cases, two arms; 256 processes and 44 marked exits | Shared admission, caller errors, exhaustion snapshots, closure and historical results | [Resume protocol](RESUME_PROTOCOL.md) | [Resume findings](RESUME_FINDINGS.md) |
+| 19. Reusable authority | Twenty cases, three arms; 120 processes and twelve marked exits | Authority at effect, replacement grants, busy writers and publication history | [Reclaim protocol](RECLAIM_PROTOCOL.md) | [Reclaim findings](RECLAIM_FINDINGS.md) |
+| 20. Recovery-request results | Twenty-four cases, three arms; 174 processes and 36 marked exits | Original outcomes, changed intents, unjustified grants and current authority | [Request protocol](REQUEST_PROTOCOL.md) | [Request findings](REQUEST_FINDINGS.md) |
+| 21. Bounded recovery results | Thirty-two cases, three arms; 516 processes and thirty marked exits | Retired decisions/grants, current result membership, logical row bound and deliberate unavailability | [Retention protocol](RETENTION_PROTOCOL.md) | [Retention findings](RETENTION_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -145,3 +149,7 @@ The [prospectively frozen protocol](RECLAIM_PROTOCOL.md) defines twenty cases pe
 ## Phase 20: recovery identity through interruption and overlap
 
 The [prospectively frozen request protocol](REQUEST_PROTOCOL.md) fixes 24 cases per arm and three result scopes. Derive the original intention/outcome from its first committed oracle witness. Measure original results, changed-ID rejection, unjustified grants, current-authority stability and publication history independently; preserve all seventy-two records. [Findings and independent verification](REQUEST_FINDINGS.md).
+
+## Phase 21: bounded results and transactional retirement
+
+The [prospectively frozen retention protocol](RETENTION_PROTOCOL.md) fixes 32 cases per arm, capacity two and three epoch-admission treatments. Reconstruct commit-time recovery epochs and distinguish retired grants from late delivery of a previously valid result. Count retired queries against actual first committed identities; report snapshot observations and maxima separately from cases. Logical result rows exclude observer witnesses and append-only grants. [Findings and independent verification](RETENTION_FINDINGS.md) retain all ninety-six records.

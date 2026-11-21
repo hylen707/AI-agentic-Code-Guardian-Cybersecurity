@@ -220,3 +220,7 @@ The resume worker emits bound events and pauses while the controller grants one 
 ## Phase 20: recovery decisions and immutable receipts
 
 `src/recovery_requests/store.py` retains Phase 19's transactional migration fence and adds exact request tuples, a fixed request policy, immutable receipts and observer decision witnesses. Current-only re-evaluates CAS; separate treatment records after decision commit; atomic treatment looks up the ID before closure and couples decision/grant/result in one transaction. Witnesses are oracle evidence, not an application reply source. Parent event values are copied at capture; typed bindings and immutable input capture preserve the invoked tuple. [Exact contract and evidence](REQUEST_FINDINGS.md).
+
+## Phase 21: the recovery-result retention boundary
+
+`src/recovery_retention/store.py` isolates namespaced results from publication epochs and monotonic authority tokens. A durable recovery epoch and a fixed two-row capacity govern result storage. Trusted expected-epoch advancement atomically increments the epoch and deletes older results. Erase-only ignores retired admission; cached admission reads before the writer; transactional admission holds the writer through epoch check, ID lookup, capacity, decision, grant and result. Old epochs are rejected before result lookup or target closure. Observer decisions record the actual commit-time epoch and never authorize API operations. Inspection returns application and observer state in one read snapshot. [Contract, argument and evidence](RETENTION_FINDINGS.md).

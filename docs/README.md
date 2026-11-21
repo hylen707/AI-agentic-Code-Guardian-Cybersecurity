@@ -44,6 +44,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 18. Overlapping recovery | [Resume protocol](RESUME_PROTOCOL.md); freeze before implementation | [Resume findings](RESUME_FINDINGS.md) |
 | 19. Reusable authority and fencing | [Reclaim protocol](RECLAIM_PROTOCOL.md); freeze before implementation | [Reclaim findings](RECLAIM_FINDINGS.md) |
 | 20. Recovery-request results | [Request protocol](REQUEST_PROTOCOL.md); freeze before implementation | [Request findings](REQUEST_FINDINGS.md) |
+| 21. Bounded recovery results | [Retention protocol](RETENTION_PROTOCOL.md); freeze before implementation | [Retention findings](RETENTION_FINDINGS.md) |
 
 ## Rationale and history
 
@@ -57,7 +58,7 @@ The README is the entry point; this index owns navigation. The research statemen
 
 ## Latest prospective study
 
-[Phase 20 protocol](REQUEST_PROTOCOL.md) → [recovery-request result findings](REQUEST_FINDINGS.md) → [retained evidence and independent reconstruction](REQUEST_FINDINGS.md#verification-and-reproduction). Historical recovery outcomes, current authority, logical request identity and publication history have separate measures. Earlier studies retain their own contracts and denominators.
+[Phase 21 protocol](RETENTION_PROTOCOL.md) → [bounded recovery-result findings](RETENTION_FINDINGS.md) → [retained evidence and independent reconstruction](RETENTION_FINDINGS.md#verification-and-reproduction). Retired admission, logical result count, deliberate unavailability, current authority and historical publication outcomes have separate measures. Earlier studies retain their own contracts and denominators.
 
 ## Follow-up pilots
 

@@ -4,6 +4,12 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-21 — Bounded recovery results and transactional retirement
+
+- Froze the Phase 21 protocol and 32-case manifest at `81dbcb23b64ed3001abb4f68057d7cfe9a64a943` before implementation. Added an isolated namespaced result store, capacity two, trusted expected-epoch advancement/deletion and erase-only/cached/transactional admission; inherited sources remain unchanged.
+- Retained 96 case/arm histories. Retired-epoch grants are 34 → 4 → 0; maximum result rows are 10 → 2 → 2. Both guarded arms reject 376/376 later retired queries, yet cached admission still grants authority to in-flight retired requests. The atomic arm has no stale result snapshots or bound violations.
+- All 554 tests passed, including 37 new regressions. Independent stdlib reconstruction checks six criteria, 516 children, thirty marked exits, sixty barriers and 2,400 parent API queries. Phase 18–20 retained evidence still verifies. The bound concerns logical application results, excluding append-only witnesses/grants and storage bytes. [Findings and reproduction](RETENTION_FINDINGS.md).
+
 ## 2026-11-20 — Interrupted recovery requests and original outcomes
 
 - Froze the Phase 20 protocol and 24-case manifest at `d2ffbb5de6d9bec79a2a70273510ee338c9e28b9` before implementation. Added current-only, separate-receipt and atomic decision/result treatment in an isolated module; inherited fencing/publication mechanisms remain unchanged.
