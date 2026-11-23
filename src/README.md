@@ -123,3 +123,7 @@ Phase 18 compares the existing `restart_store.py` and `resumption_store.py` loop
 ## Phase 21: bounded recovery results
 
 `recovery_retention/store.py` adds exact recovery-epoch requests and trusted `advance_epoch({expected_epoch})` to unchanged transactional migration fencing. A composite epoch/ID result key, one durable current epoch and capacity two support bounded logical results without per-ID retirement tombstones. Epoch checks precede lookup; existing results precede capacity. Advancement/deletion is atomic in every arm; admission is erase-only, separately cached or transactional. A retired request gets `retired`, a future one `future_epoch`, and an unrecorded current ID at capacity `capacity_exhausted`. These responses bind no ID or grant. Observer histories are excluded from the result bound and never serve API replies. [Contract and evidence](../docs/RETENTION_FINDINGS.md).
+
+## Phase 22: unchanged mechanisms under generated histories
+
+No application mechanism is added or modified. The generated study uses the existing recovery-retention store and Phase 21 worker/transport. A frozen grammar expands into 512 sequential and 612 declared overlap histories per arm; an independent API specification checks observable prefixes while the unchanged reference reconstructs transaction effects. New implementation lives under `experiments/`; source hashes include inherited mechanism, transport and reference dependencies. [Methods and results](../docs/EXPLORATION_FINDINGS.md).

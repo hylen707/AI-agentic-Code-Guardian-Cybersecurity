@@ -1,0 +1,480 @@
+{
+  "summary": {
+    "erase_only": {
+      "sequence": {
+        "cases": 512,
+        "infrastructure_errors": 0,
+        "retired_decisions": 42,
+        "retired_grants": 30,
+        "rebound_ids": 6,
+        "max_live_result_rows": 2,
+        "snapshot_observations": 4096,
+        "stale_result_snapshots": 216,
+        "result_bound_violations": 0,
+        "pivots_realized": 0,
+        "unreached_pivots": 0,
+        "children": 0,
+        "normal_children": 0,
+        "planned_exits": 0,
+        "barriers": 0,
+        "busy": 0,
+        "caller_errors": 0,
+        "transport_response_errors": 0,
+        "parent_operations": 2048,
+        "actual_completed": 512,
+        "publication_replays": 1024,
+        "publication_conflicts": 1024,
+        "publication_failures": 0,
+        "publication_queries_inert": 512
+      },
+      "overlap": {
+        "cases": 612,
+        "infrastructure_errors": 0,
+        "retired_decisions": 76,
+        "retired_grants": 45,
+        "rebound_ids": 18,
+        "max_live_result_rows": 2,
+        "snapshot_observations": 5380,
+        "stale_result_snapshots": 420,
+        "result_bound_violations": 0,
+        "pivots_realized": 552,
+        "unreached_pivots": 60,
+        "children": 1224,
+        "normal_children": 948,
+        "planned_exits": 276,
+        "barriers": 552,
+        "busy": 186,
+        "caller_errors": 0,
+        "transport_response_errors": 0,
+        "parent_operations": 1156,
+        "actual_completed": 612,
+        "publication_replays": 1224,
+        "publication_conflicts": 1224,
+        "publication_failures": 0,
+        "publication_queries_inert": 612
+      }
+    },
+    "cached_floor": {
+      "sequence": {
+        "cases": 512,
+        "infrastructure_errors": 0,
+        "retired_decisions": 0,
+        "retired_grants": 0,
+        "rebound_ids": 0,
+        "max_live_result_rows": 2,
+        "snapshot_observations": 4096,
+        "stale_result_snapshots": 0,
+        "result_bound_violations": 0,
+        "pivots_realized": 0,
+        "unreached_pivots": 0,
+        "children": 0,
+        "normal_children": 0,
+        "planned_exits": 0,
+        "barriers": 0,
+        "busy": 0,
+        "caller_errors": 0,
+        "transport_response_errors": 0,
+        "parent_operations": 2048,
+        "actual_completed": 512,
+        "publication_replays": 1024,
+        "publication_conflicts": 1024,
+        "publication_failures": 0,
+        "publication_queries_inert": 512
+      },
+      "overlap": {
+        "cases": 612,
+        "infrastructure_errors": 0,
+        "retired_decisions": 17,
+        "retired_grants": 10,
+        "rebound_ids": 6,
+        "max_live_result_rows": 2,
+        "snapshot_observations": 5362,
+        "stale_result_snapshots": 85,
+        "result_bound_violations": 0,
+        "pivots_realized": 534,
+        "unreached_pivots": 78,
+        "children": 1224,
+        "normal_children": 957,
+        "planned_exits": 267,
+        "barriers": 534,
+        "busy": 172,
+        "caller_errors": 0,
+        "transport_response_errors": 0,
+        "parent_operations": 1156,
+        "actual_completed": 612,
+        "publication_replays": 1224,
+        "publication_conflicts": 1224,
+        "publication_failures": 0,
+        "publication_queries_inert": 612
+      }
+    },
+    "atomic_floor": {
+      "sequence": {
+        "cases": 512,
+        "infrastructure_errors": 0,
+        "retired_decisions": 0,
+        "retired_grants": 0,
+        "rebound_ids": 0,
+        "max_live_result_rows": 2,
+        "snapshot_observations": 4096,
+        "stale_result_snapshots": 0,
+        "result_bound_violations": 0,
+        "pivots_realized": 0,
+        "unreached_pivots": 0,
+        "children": 0,
+        "normal_children": 0,
+        "planned_exits": 0,
+        "barriers": 0,
+        "busy": 0,
+        "caller_errors": 0,
+        "transport_response_errors": 0,
+        "parent_operations": 2048,
+        "actual_completed": 512,
+        "publication_replays": 1024,
+        "publication_conflicts": 1024,
+        "publication_failures": 0,
+        "publication_queries_inert": 512
+      },
+      "overlap": {
+        "cases": 612,
+        "infrastructure_errors": 0,
+        "retired_decisions": 0,
+        "retired_grants": 0,
+        "rebound_ids": 0,
+        "max_live_result_rows": 2,
+        "snapshot_observations": 5362,
+        "stale_result_snapshots": 0,
+        "result_bound_violations": 0,
+        "pivots_realized": 534,
+        "unreached_pivots": 78,
+        "children": 1224,
+        "normal_children": 957,
+        "planned_exits": 267,
+        "barriers": 534,
+        "busy": 282,
+        "caller_errors": 0,
+        "transport_response_errors": 0,
+        "parent_operations": 1156,
+        "actual_completed": 612,
+        "publication_replays": 1224,
+        "publication_conflicts": 1224,
+        "publication_failures": 0,
+        "publication_queries_inert": 612
+      }
+    }
+  },
+  "prefix_checks": {
+    "erase_only": {
+      "sequence": {
+        "checked_prefixes": 4096,
+        "consistent_prefixes": 3870,
+        "consistent_histories": 470,
+        "inconsistent_histories": 42,
+        "shortest_observed_failure": {
+          "case_id": "s-600",
+          "family": "sequence",
+          "operation_count": 2,
+          "boundary_count": 3,
+          "history": [
+            {
+              "id": "p0",
+              "role": "advance",
+              "request": {
+                "expected_epoch": 1
+              },
+              "start": 1,
+              "end": 2,
+              "answer": {
+                "active_recovery_epoch": 2,
+                "previous_epoch": 1,
+                "removed_receipts": 0,
+                "status": "advanced"
+              }
+            },
+            {
+              "id": "p1",
+              "role": "replace",
+              "request": {
+                "recovery_epoch": 1,
+                "request_id": "request-α",
+                "expected_token": 1,
+                "owner": 2
+              },
+              "start": 4,
+              "end": 5,
+              "answer": {
+                "outcome": {
+                  "lease": {
+                    "owner": 2,
+                    "token": 2
+                  },
+                  "previous": 1,
+                  "status": "reclaimed"
+                },
+                "recovery_epoch": 1,
+                "request_id": "request-α",
+                "status": "recorded"
+              }
+            }
+          ],
+          "observed_state": {
+            "floor": 2,
+            "lease": {
+              "owner": 2,
+              "token": 2
+            },
+            "target": 1,
+            "grants": [
+              {
+                "owner": 1,
+                "previous": 0,
+                "token": 1
+              },
+              {
+                "owner": 2,
+                "previous": 1,
+                "token": 2
+              }
+            ],
+            "results": [
+              {
+                "expected_token": 1,
+                "outcome": {
+                  "lease": {
+                    "owner": 2,
+                    "token": 2
+                  },
+                  "previous": 1,
+                  "status": "reclaimed"
+                },
+                "owner": 2,
+                "recovery_epoch": 1,
+                "request_id": "request-α"
+              }
+            ]
+          }
+        },
+        "unique_observable_states": 158,
+        "unique_labeled_transitions": 666
+      },
+      "overlap": {
+        "checked_prefixes": 5380,
+        "consistent_prefixes": 4936,
+        "consistent_histories": 536,
+        "inconsistent_histories": 76,
+        "shortest_observed_failure": {
+          "case_id": "o-0-5-1-0",
+          "family": "overlap",
+          "operation_count": 2,
+          "boundary_count": 3,
+          "history": [
+            {
+              "id": "c1",
+              "role": "advance",
+              "request": {
+                "expected_epoch": 1
+              },
+              "start": 1,
+              "end": null,
+              "answer": null
+            },
+            {
+              "id": "c2",
+              "role": "replace",
+              "request": {
+                "expected_token": 1,
+                "owner": 2,
+                "recovery_epoch": 1,
+                "request_id": "request-α"
+              },
+              "start": 3,
+              "end": 4,
+              "answer": {
+                "outcome": {
+                  "lease": {
+                    "owner": 2,
+                    "token": 2
+                  },
+                  "previous": 1,
+                  "status": "reclaimed"
+                },
+                "recovery_epoch": 1,
+                "request_id": "request-α",
+                "status": "recorded"
+              }
+            }
+          ],
+          "observed_state": {
+            "floor": 2,
+            "lease": {
+              "owner": 2,
+              "token": 2
+            },
+            "target": 1,
+            "grants": [
+              {
+                "owner": 1,
+                "previous": 0,
+                "token": 1
+              },
+              {
+                "owner": 2,
+                "previous": 1,
+                "token": 2
+              }
+            ],
+            "results": [
+              {
+                "expected_token": 1,
+                "outcome": {
+                  "lease": {
+                    "owner": 2,
+                    "token": 2
+                  },
+                  "previous": 1,
+                  "status": "reclaimed"
+                },
+                "owner": 2,
+                "recovery_epoch": 1,
+                "request_id": "request-α"
+              }
+            ]
+          }
+        },
+        "unique_observable_states": 80,
+        "unique_labeled_transitions": 456
+      }
+    },
+    "cached_floor": {
+      "sequence": {
+        "checked_prefixes": 4096,
+        "consistent_prefixes": 4096,
+        "consistent_histories": 512,
+        "inconsistent_histories": 0,
+        "shortest_observed_failure": null,
+        "unique_observable_states": 116,
+        "unique_labeled_transitions": 560
+      },
+      "overlap": {
+        "checked_prefixes": 5362,
+        "consistent_prefixes": 5277,
+        "consistent_histories": 595,
+        "inconsistent_histories": 17,
+        "shortest_observed_failure": {
+          "case_id": "o-0-3-0-0",
+          "family": "overlap",
+          "operation_count": 2,
+          "boundary_count": 4,
+          "history": [
+            {
+              "id": "c1",
+              "role": "replace",
+              "request": {
+                "expected_token": 1,
+                "owner": 2,
+                "recovery_epoch": 1,
+                "request_id": "request-α"
+              },
+              "start": 1,
+              "end": 6,
+              "answer": {
+                "outcome": {
+                  "lease": {
+                    "owner": 2,
+                    "token": 2
+                  },
+                  "previous": 1,
+                  "status": "reclaimed"
+                },
+                "recovery_epoch": 1,
+                "request_id": "request-α",
+                "status": "recorded"
+              }
+            },
+            {
+              "id": "c2",
+              "role": "advance",
+              "request": {
+                "expected_epoch": 1
+              },
+              "start": 3,
+              "end": 4,
+              "answer": {
+                "active_recovery_epoch": 2,
+                "previous_epoch": 1,
+                "removed_receipts": 0,
+                "status": "advanced"
+              }
+            }
+          ],
+          "observed_state": {
+            "floor": 2,
+            "lease": {
+              "owner": 2,
+              "token": 2
+            },
+            "target": 1,
+            "grants": [
+              {
+                "owner": 1,
+                "previous": 0,
+                "token": 1
+              },
+              {
+                "owner": 2,
+                "previous": 1,
+                "token": 2
+              }
+            ],
+            "results": [
+              {
+                "expected_token": 1,
+                "outcome": {
+                  "lease": {
+                    "owner": 2,
+                    "token": 2
+                  },
+                  "previous": 1,
+                  "status": "reclaimed"
+                },
+                "owner": 2,
+                "recovery_epoch": 1,
+                "request_id": "request-α"
+              }
+            ]
+          }
+        },
+        "unique_observable_states": 76,
+        "unique_labeled_transitions": 430
+      }
+    },
+    "atomic_floor": {
+      "sequence": {
+        "checked_prefixes": 4096,
+        "consistent_prefixes": 4096,
+        "consistent_histories": 512,
+        "inconsistent_histories": 0,
+        "shortest_observed_failure": null,
+        "unique_observable_states": 116,
+        "unique_labeled_transitions": 560
+      },
+      "overlap": {
+        "checked_prefixes": 5362,
+        "consistent_prefixes": 5362,
+        "consistent_histories": 612,
+        "inconsistent_histories": 0,
+        "shortest_observed_failure": null,
+        "unique_observable_states": 51,
+        "unique_labeled_transitions": 339
+      }
+    }
+  },
+  "criteria": {
+    "complete_evidence": true,
+    "supported_execution": true,
+    "atomic_membership_and_bounds": true,
+    "atomic_prefix_consistency": true,
+    "weak_counterexamples_retained": true
+  },
+  "all_criteria_passed": true
+}

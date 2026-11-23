@@ -45,6 +45,7 @@ CodeGuardian studies the continuity between an authorization decision and the ob
 | 19. Reusable authority and fencing | [Reclaim protocol](RECLAIM_PROTOCOL.md); freeze before implementation | [Reclaim findings](RECLAIM_FINDINGS.md) |
 | 20. Recovery-request results | [Request protocol](REQUEST_PROTOCOL.md); freeze before implementation | [Request findings](REQUEST_FINDINGS.md) |
 | 21. Bounded recovery results | [Retention protocol](RETENTION_PROTOCOL.md); freeze before implementation | [Retention findings](RETENTION_FINDINGS.md) |
+| 22. Generated recovery histories | [Exploration protocol](EXPLORATION_PROTOCOL.md); grammar frozen before implementation | [Exploration findings](EXPLORATION_FINDINGS.md) |
 
 ## Rationale and history
 
@@ -58,7 +59,7 @@ The README is the entry point; this index owns navigation. The research statemen
 
 ## Latest prospective study
 
-[Phase 21 protocol](RETENTION_PROTOCOL.md) → [bounded recovery-result findings](RETENTION_FINDINGS.md) → [retained evidence and independent reconstruction](RETENTION_FINDINGS.md#verification-and-reproduction). Retired admission, logical result count, deliberate unavailability, current authority and historical publication outcomes have separate measures. Earlier studies retain their own contracts and denominators.
+[Phase 22 protocol](EXPLORATION_PROTOCOL.md) → [generated-history findings](EXPLORATION_FINDINGS.md) → [retained evidence and independent checking](EXPLORATION_FINDINGS.md#verification-and-reproduction). The finite grammar, realized pivots, observable-prefix checks and application safety measures retain separate denominators. Earlier studies retain their own contracts and evidence.
 
 ## Follow-up pilots
 

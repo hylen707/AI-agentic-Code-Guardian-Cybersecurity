@@ -2,6 +2,14 @@
 
 This dated record connects research questions, executed work, evidence, and interpretation. Entries preserve what was known at the time, including failures and superseded next steps. Narrative dates use Asia/Seoul; raw artifact filenames use UTC.
 
+## 2026-11-23 — Sequential success leaves an observable overlap contradiction
+
+**Question and prospective design.** Froze the [Phase 22 protocol](EXPLORATION_PROTOCOL.md) and eight-template grammar at `72ec18deca46756349e3cad33a640432058f3d6b` before implementing generation and the new checker. Preserve application mechanisms and the Phase 21 reference; add a separate sequential API specification constrained by replies, invocation order and observed state.
+
+**Observation.** Transactional admission explains every one of 1,124 histories and 9,458 snapshots. Cached admission explains all 512 sequential histories yet fails seventeen overlap candidates, with seventeen retired decisions and ten retired grants. Every treatment stays within two rows; the row count misses illegal membership. All 216 unreached pivots remain serial records in the declared grid.
+
+**Validation and next boundary.** All 581 tests passed, including 27 new regressions and strict typed action/command checks. Independent reconstruction and abstract-prefix search pass five criteria over 3,372 records, 3,672 children, 1,620 realized pivots and 810 marked exits. Earlier Phase 20/21 evidence verifies unchanged. Next: a second independently scheduled pivot or a third caller under a larger explicit grammar, without treating this finite space as a general proof. [Evidence and limits](EXPLORATION_FINDINGS.md).
+
 ## 2026-11-21 — Passing retired queries can conceal in-flight retired grants
 
 **Question and prospective design.** Froze the [Phase 21 protocol](RETENTION_PROTOCOL.md) and 32-case manifest at `81dbcb23b64ed3001abb4f68057d7cfe9a64a943` before implementation. Bound application results with a separate recovery epoch, capacity two and atomic advancement/deletion. Compare erased, cached and transactional admission while preserving inherited authority/publication mechanisms.

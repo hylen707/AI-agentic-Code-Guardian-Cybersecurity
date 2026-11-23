@@ -29,6 +29,7 @@ This document defines metrics and controls. Use the [evidence map](EVIDENCE.md) 
 | 19. Reusable authority | Twenty cases, three arms; 120 processes and twelve marked exits | Authority at effect, replacement grants, busy writers and publication history | [Reclaim protocol](RECLAIM_PROTOCOL.md) | [Reclaim findings](RECLAIM_FINDINGS.md) |
 | 20. Recovery-request results | Twenty-four cases, three arms; 174 processes and 36 marked exits | Original outcomes, changed intents, unjustified grants and current authority | [Request protocol](REQUEST_PROTOCOL.md) | [Request findings](REQUEST_FINDINGS.md) |
 | 21. Bounded recovery results | Thirty-two cases, three arms; 516 processes and thirty marked exits | Retired decisions/grants, current result membership, logical row bound and deliberate unavailability | [Retention protocol](RETENTION_PROTOCOL.md) | [Retention findings](RETENTION_FINDINGS.md) |
+| 22. Generated recovery histories | 512 sequential and 612 one-pivot candidates per arm; 3,672 children | Observable-prefix consistency, exact replies/state, retired admission, realized pivots and signature coverage | [Exploration protocol](EXPLORATION_PROTOCOL.md) | [Exploration findings](EXPLORATION_FINDINGS.md) |
 
 These studies develop a mechanism argument. They do not estimate a population success rate, and their denominators should not be combined. A prospective freeze prevents silent post-result changes; it does not make developer-visible cases a blind holdout.
 
@@ -153,3 +154,7 @@ The [prospectively frozen request protocol](REQUEST_PROTOCOL.md) fixes 24 cases 
 ## Phase 21: bounded results and transactional retirement
 
 The [prospectively frozen retention protocol](RETENTION_PROTOCOL.md) fixes 32 cases per arm, capacity two and three epoch-admission treatments. Reconstruct commit-time recovery epochs and distinguish retired grants from late delivery of a previously valid result. Count retired queries against actual first committed identities; report snapshot observations and maxima separately from cases. Logical result rows exclude observer witnesses and append-only grants. [Findings and independent verification](RETENTION_FINDINGS.md) retain all ninety-six records.
+
+## Phase 22: finite generation and observable-prefix consistency
+
+The [prospectively frozen exploration protocol](EXPLORATION_PROTOCOL.md) fixes an eight-template alphabet, sequential depth three and nine seed prefixes for a one-pivot two-child grammar. Retain all 3,372 records, including 216 candidates with an unreached checkpoint. Recount mechanism outcomes separately from abstract-prefix consistency; report repeated observations, realized pivots and unique signatures with their own units. [Findings and independent checks](EXPLORATION_FINDINGS.md) distinguish sequential success from overlap failures without claiming complete scheduler exploration.

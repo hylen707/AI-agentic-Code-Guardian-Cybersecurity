@@ -4,6 +4,12 @@ This record tracks implemented changes and their validation in reverse chronolog
 
 Do not record a planned feature as completed, and do not describe a test as passing unless it has actually been run and its output checked.
 
+## 2026-11-23 — Generated recovery histories and observable-prefix checks
+
+- Froze the Phase 22 protocol and finite grammar at `72ec18deca46756349e3cad33a640432058f3d6b` before implementation. Added generation, a controller and an abstract history checker; inherited mechanism, transport and independent reference sources remain unchanged.
+- Recorded all 3,372 histories. Transactional admission explains 1,124/1,124 histories and 9,458/9,458 observations. Cached admission passes all 512 sequential histories but fails seventeen overlap candidates, with ten retired grants. All treatments remain within two result rows in this grammar.
+- All 581 tests passed, including 27 new regressions. Five independent criteria pass; prior Phase 20/21 evidence still verifies. The run retains 3,672 children, 1,620 realized pivots, 810 marked exits and 216 unreached candidates. Finite generation does not establish arbitrary-history correctness or exhaustive scheduler coverage. [Findings and reproduction](EXPLORATION_FINDINGS.md).
+
 ## 2026-11-21 — Bounded recovery results and transactional retirement
 
 - Froze the Phase 21 protocol and 32-case manifest at `81dbcb23b64ed3001abb4f68057d7cfe9a64a943` before implementation. Added an isolated namespaced result store, capacity two, trusted expected-epoch advancement/deletion and erase-only/cached/transactional admission; inherited sources remain unchanged.

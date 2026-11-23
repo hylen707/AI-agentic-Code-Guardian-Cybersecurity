@@ -1,0 +1,89 @@
+{
+  "commands": [
+    {
+      "name": "full_suite",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "output": "/tmp/exploration-initial-tests.txt",
+      "started_at_utc": "2026-11-23T01:34:45.641720+00:00",
+      "elapsed_seconds": 62.792,
+      "exit_code": 0
+    },
+    {
+      "name": "generated_grid",
+      "command": [
+        "python",
+        "experiments/run_exploration.py",
+        "--output",
+        "experiments/results/2026-11-23-exploration-v1.jsonl.gz",
+        "--base-commit",
+        "aba4945d9b866a865c3dd49b6e9bf6a0dcb73505",
+        "--freeze-commit",
+        "72ec18deca46756349e3cad33a640432058f3d6b"
+      ],
+      "output": "/tmp/exploration-run-log.txt",
+      "started_at_utc": "2026-11-23T01:35:48.433911+00:00",
+      "elapsed_seconds": 194.552,
+      "exit_code": 0
+    },
+    {
+      "name": "independent_verification",
+      "command": [
+        "python",
+        "experiments/verify_exploration.py",
+        "experiments/results/2026-11-23-exploration-v1.metadata.json"
+      ],
+      "output": "experiments/results/2026-11-23-exploration-v1-verification.json",
+      "started_at_utc": "2026-11-23T01:39:02.986069+00:00",
+      "elapsed_seconds": 9.75,
+      "exit_code": 0
+    },
+    {
+      "name": "prior_retention",
+      "command": [
+        "python",
+        "experiments/verify_retention_results.py",
+        "experiments/results/2026-11-21-retention-v1.metadata.json"
+      ],
+      "output": "/tmp/exploration-prior-retention.json",
+      "started_at_utc": "2026-11-23T01:39:12.736884+00:00",
+      "elapsed_seconds": 2.507,
+      "exit_code": 0
+    },
+    {
+      "name": "prior_requests",
+      "command": [
+        "python",
+        "experiments/verify_request_results.py",
+        "experiments/results/2026-11-20-request-v1.metadata.json"
+      ],
+      "output": "/tmp/exploration-prior-requests.json",
+      "started_at_utc": "2026-11-23T01:39:15.244393+00:00",
+      "elapsed_seconds": 0.39,
+      "exit_code": 0
+    },
+    {
+      "name": "final_full_suite",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "output": "experiments/results/2026-11-23-exploration-v1-tests.txt",
+      "started_at_utc": "2026-11-23T01:37:30.287858+00:00",
+      "elapsed_seconds": 60.565,
+      "exit_code": 0
+    }
+  ]
+}
