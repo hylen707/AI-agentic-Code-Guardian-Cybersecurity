@@ -1,0 +1,27 @@
+{
+  "schema_version": "exploration-eval-v1",
+  "sequence_depth": 3,
+  "overlap_prefix_depth": 1,
+  "capacity": 2,
+  "alphabet": ["old_a", "changed_a", "current_a", "current_b", "current_c", "future_a", "advance", "close"],
+  "keys": {"a": "request-α", "b": "slot-b", "c": "slot-c"},
+  "pairs": [
+    {"name": "old_same", "a": "old_a", "b": "old_a"},
+    {"name": "old_changed", "a": "old_a", "b": "changed_a"},
+    {"name": "current_distinct", "a": "current_a", "b": "current_b"},
+    {"name": "current_advance", "a": "current_a", "b": "advance"},
+    {"name": "old_advance", "a": "old_a", "b": "advance"},
+    {"name": "advance_old", "a": "advance", "b": "old_a"},
+    {"name": "advance_future", "a": "advance", "b": "future_a"},
+    {"name": "advance_same", "a": "advance", "b": "advance"}
+  ],
+  "request_checkpoints": ["after_admission", "after_lookup", "before_decision_commit", "after_decision_commit", "before_reply"],
+  "advance_checkpoints": ["before_rotation_commit", "after_rotation_commit", "before_reply"],
+  "finishes": ["continue", "exit"],
+  "modes": ["erase_only", "cached_floor", "atomic_floor"],
+  "seeds": [
+    {"epoch": 1, "request_id": "seed-a", "content_utf8": "approved=안전 ✓\n"},
+    {"epoch": 1, "request_id": "seed-b", "content_utf8": null}
+  ],
+  "expected_per_arm": {"sequence": 512, "overlap": 612, "total": 1124}
+}
